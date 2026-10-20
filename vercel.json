@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/Virendra_Phirke_Resume.html"
+    }
+  ],
+  "cleanUrls": true
+}
