@@ -24,7 +24,7 @@ export function getResumeFormat(id = DEFAULT_RESUME_FORMAT) {
 
 /**
  * Apply only country defaults that the user has not explicitly supplied.
- * The input profile is never mutated; explicit order/headings remain intact.
+ * The input profile is never mutated; explicit section order and custom headings remain intact.
  */
 export function resolveResumePresentation(resumeData, formatId) {
   const source = resumeData && typeof resumeData === "object" && !Array.isArray(resumeData)

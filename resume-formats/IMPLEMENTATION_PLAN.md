@@ -15,16 +15,21 @@ The current application is a single-page HTML/CSS/JavaScript resume builder:
 
 Keep the existing JSON schema as the canonical content model. Country profiles must be presentation metadata and guidance, not separate incompatible resume data schemas. A selected country profile should be applied as a non-destructive rendering layer.
 
-### Proposed integration
+## Integration completed
 
-1. Add an optional country-format selector to the existing toolbar/editor.
-2. Load `resume-formats/registry.js` as an ES module (or bundle the registry into the current script if deployment constraints require it).
-3. Resolve the selected profile through `shared/normalize-profile.js`.
-4. Apply a root format identifier such as `data-resume-format="uk"` to the preview and export clone.
-5. Use country-scoped CSS classes/variables for page size, margins, typography, heading labels, spacing, and section ordering. Do not replace the current default style.
-6. Keep user-supplied JSON authoritative. Country presets may provide section order and labels only when the user has not explicitly supplied them.
-7. Preserve unknown/custom fields in the JSON. Never silently remove photo, address, work authorization, nationality, or other fields; show country guidance and let the user decide.
-8. Persist the selected format separately from resume JSON so existing JSON files remain backward-compatible.
+1. Added an optional country-format selector to the toolbar, with an explicit `Original layout (A4)` choice.
+2. Loaded `resume-formats/registry.js` and `shared/normalize-profile.js` as ES modules.
+3. Resolved country-specific section order and default headings without mutating the source JSON. User-customized headings and explicit section order take precedence.
+4. Applied selected page size and margins to the preview and browser-native print output.
+5. Applied matching paper size, content width, and margins to the html2pdf export path.
+6. Persisted the selected format under a separate local-storage key, leaving existing resume JSON storage backward-compatible.
+7. Kept the original A4 layout as the initial/default selection.
+
+## Remaining release verification
+
+- Test the selector, mobile toolbar, page dimensions, print preview, and both PDF paths in a real browser.
+- Verify no clipping or page-break regressions for all seven profiles.
+- Verify JSON import/export, reset, local storage, theme, zoom, and existing editor controls.
 
 ## Country profile principles
 

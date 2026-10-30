@@ -23,7 +23,7 @@ Profiles contain presentation and editorial guidance only. They do not rewrite a
 
 ## Current integration status
 
-These files are deliberately isolated and are not imported by `index.html` yet. This keeps the existing resume editor, JSON schema, preview, local-storage behavior, print output, and PDF export unchanged while the country profiles are reviewed. The next integration stage can add an optional format selector and apply the selected profile through a controlled rendering adapter.
+The profiles are integrated through an optional country-format selector in `index.html`. The original A4 layout remains the default. Country selection is stored separately from resume JSON, applies country-specific section ordering, default headings, page size, margins, and both print/PDF export settings. The existing JSON schema and user content remain canonical; custom headings and section order are preserved. Browser-level visual and exported-PDF regression checks are still required before release.
 
 ## Usage (module consumers)
 

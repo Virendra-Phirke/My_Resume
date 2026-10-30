@@ -663,7 +663,12 @@
       }
 
       .toolbar {
+        flex-wrap: wrap;
         padding: 9px 12px;
+      }
+
+      .brand {
+        flex: 1 1 100%;
       }
 
       .zoombar {
@@ -1398,8 +1403,8 @@
         };
 
         /* ----- header ----- */
-        if (viewData.name) add(root, el('div', 'r-name', viewData.name));
-        const c = isObj(viewData.contact) ? viewData.contact : {};
+        if (d.name) add(root, el('div', 'r-name', d.name));
+        const c = isObj(d.contact) ? d.contact : {};
         const parts = [];
         ['location', 'email', 'phone'].forEach(k => c[k] && parts.push(document.createTextNode(str(c[k]))));
         [['website', 'websiteUrl'], ['linkedin', 'linkedinUrl'], ['github', 'githubUrl'], ['portfolio', 'portfolioUrl']]
