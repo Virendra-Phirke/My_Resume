@@ -710,7 +710,7 @@
         font-size: 12px;
       }
 
-      #download-label {
+      #word-label {
         display: none;
       }
 
@@ -1959,16 +1959,16 @@
     <button class="btn" id="toggle-editor" type="button" title="Show / hide the JSON editor"><svg class="i">
         <use href="#i-panel" />
       </svg><span>Hide JSON</span></button>
-    <button class="btn" id="visual-print-btn" type="button" title="Save a vector PDF with the optional profile photo">Save Visual PDF</button>
     <button class="btn primary" id="print-btn" type="button"
       title="Opens browser print dialog — choose “Save as PDF” for an ATS-compliant vector PDF with selectable text and clickable links (Ctrl/Cmd+P)"><svg
         class="i">
         <use href="#i-print" />
-      </svg><span>Save Vector PDF (ATS)</span></button>
-    <button class="btn" id="download-btn" type="button"
-      title="Quick download as image-based PDF via html2pdf (Ctrl/Cmd+S)"><svg class="i">
-        <use href="#i-down" />
-      </svg><span id="download-label">Quick PDF (Raster)</span></button>
+      </svg><span>Vector PDF</span></button>
+    <button class="btn" id="word-btn" type="button"
+      title="Download editable Microsoft Word document (.docx) to make manual changes in Word or Google Docs (Ctrl/Cmd+S)"><svg
+        class="i">
+        <use href="#i-doc" />
+      </svg><span id="word-label">Word (.docx)</span></button>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="View">
@@ -2151,7 +2151,7 @@
             <li><strong>Tailor to the role:</strong> Incorporate keywords from the target job posting directly into your skills and project bullets.</li>
             <li><strong>Use action verbs & numbers:</strong> Start bullets with verbs (Built, Led, Optimized) and quantify results (e.g., 40% speedup, 10k+ users).</li>
             <li><strong>Keep it concise:</strong> 1 page for early-career; up to 2 pages for senior roles or countries expecting 2 pages (UK, Australia).</li>
-            <li><strong>Export options:</strong> Use <em>Save Vector PDF (ATS)</em> for machine-readable text or <em>Save Visual PDF</em> for visual presentation with photo.</li>
+            <li><strong>Export options:</strong> Use <em>Vector PDF</em> for an ATS-compliant, vector-sharp document, or <em>Word (.docx)</em> to make manual changes in Microsoft Word or Google Docs.</li>
           </ul>
         </div>
       </div>
@@ -3279,7 +3279,8 @@
         return libPromise;
       }
       (window.requestIdleCallback || ((f) => setTimeout(f, 2500)))(() => loadLib(), { timeout: 4000 });
-      const fileName = () => (str(current && current.name).trim().replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'Resume') + (activeFormatId === 'original' ? '' : '_' + activeFormatId.toUpperCase()) + '_Resume.pdf';
+      const baseDocName = () => (str(current && current.name).trim().replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'Resume') + (activeFormatId === 'original' ? '' : '_' + activeFormatId.toUpperCase());
+      const fileName = (ext = 'pdf') => baseDocName() + '_Resume.' + ext;
 
       /* ---------------- Light-theme Print & PDF Export Guarantees ---------------- */
       let printThemeState = null;
@@ -3298,73 +3299,403 @@
       window.addEventListener('beforeprint', prepareLightExport);
       window.addEventListener('afterprint', cleanupLightExport);
 
-      function openPrintDialog(mode) {
+      function openPrintDialog() {
         const old = document.title;
-        document.title = fileName().replace(/\.pdf$/, '') + (mode === 'visual' ? '_Visual' : '_ATS');
-        document.documentElement.dataset.exportMode = mode;
+        document.title = baseDocName() + '_Resume';
         prepareLightExport();
         setTimeout(() => {
           window.print();
           setTimeout(() => {
             document.title = old;
-            delete document.documentElement.dataset.exportMode;
             cleanupLightExport();
           }, 500);
         }, 50);
       }
-      $('print-btn').onclick = () => openPrintDialog('ats');
-      $('visual-print-btn').onclick = () => openPrintDialog('visual');
+      $('print-btn').onclick = openPrintDialog;
 
-      $('download-btn').onclick = async function () {
-        const btn = this;
-        const lbl = $('download-label'); btn.disabled = true; const label = lbl.textContent; lbl.textContent = 'Generating…';
-        if (!(await loadLib())) {                                // CDN blocked / offline → fall back to print dialog
-          btn.disabled = false; lbl.textContent = label;
-          toast('PDF library could not be loaded (offline?). Opening the print dialog — choose “Save as PDF”.', 'error');
-          return $('print-btn').click();
-        }
-        prepareLightExport();
-        const stage = $('export-stage'); stage.replaceChildren();
-        const clone = resumeEl.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('export');
-        clone.style.width = (activePage.widthPt - activePage.marginsPt[1] - activePage.marginsPt[3]) + 'pt';
-        clone.style.minHeight = '0';
-        stage.appendChild(clone);
-        try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (_) { }
+      /* ---------------- Word (.docx) Export ---------------- */
+      const DOCX_URLS = [
+        'https://cdn.jsdelivr.net/npm/docx@9.15.0/dist/index.umd.cjs',
+        'https://unpkg.com/docx@9.15.0/dist/index.umd.cjs'
+      ];
+      let docxLibPromise = null;
+      function loadDocxLib() {
+        if (window.docx && typeof window.docx.Document === 'function') return Promise.resolve(window.docx);
+        if (docxLibPromise) return docxLibPromise;
+        docxLibPromise = (async () => {
+          for (const url of DOCX_URLS) {
+            try {
+              const res = await fetch(url);
+              if (!res.ok) continue;
+              const code = await res.text();
+              const mod = { exports: {} };
+              const fn = new Function('module', 'exports', code);
+              fn(mod, mod.exports);
+              if (mod.exports && typeof mod.exports.Document === 'function') {
+                window.docx = mod.exports;
+                return window.docx;
+              }
+            } catch (_) {}
+          }
+          docxLibPromise = null;
+          return null;
+        })();
+        return docxLibPromise;
+      }
+      (window.requestIdleCallback || ((f) => setTimeout(f, 2500)))(() => loadDocxLib(), { timeout: 4000 });
+
+      // Fallback HTML-based Word Document (.doc) if offline or CDN blocked
+      function exportWordHtmlFallback(data, formatId) {
+        const title = str(data && data.name ? data.name : 'Resume');
+        const contentHtml = resumeEl.querySelector('.content') ? resumeEl.querySelector('.content').innerHTML : resumeEl.innerHTML;
+        const fontName = formatId === 'original' || formatId === 'uk' ? 'Calibri' : 'Arial';
+        const docHtml = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+          '<head><meta charset="utf-8"><title>' + title + '</title>' +
+          '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->' +
+          '<style>' +
+          '@page Section1 { size: 595.3pt 841.9pt; margin: 43.15pt 57.6pt 39.6pt 57.6pt; mso-header-margin: 36pt; mso-footer-margin: 36pt; mso-paper-source: 0; }' +
+          'div.Section1 { page: Section1; }' +
+          'body { font-family: ' + fontName + ', sans-serif; font-size: 10pt; line-height: 1.25; color: #333333; }' +
+          '.r-name { font-size: 18pt; font-weight: bold; color: #1F3864; text-align: center; }' +
+          '.r-h { font-size: 11pt; font-weight: bold; color: #1F3864; border-bottom: 1.5pt solid #1F3864; margin-top: 10pt; margin-bottom: 4pt; }' +
+          '.r-proj-title { font-weight: bold; margin-top: 7pt; }' +
+          '.r-tech { font-style: italic; color: #1F3864; margin-bottom: 3pt; }' +
+          '.r-ul { margin: 2pt 0; padding-left: 18pt; }' +
+          '.r-ul li { margin-bottom: 2pt; }' +
+          'a { color: #1F3864; text-decoration: none; }' +
+          '</style></head>' +
+          '<body><div class="Section1">' + contentHtml + '</div></body></html>';
+
+        const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName('doc');
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      }
+
+      async function exportWordDocument() {
+        const btn = $('word-btn');
+        const lbl = $('word-label');
+        btn.disabled = true;
+        const oldText = lbl.textContent;
+        lbl.textContent = 'Generating (.docx)…';
+
         try {
-          await window.html2pdf().set({
-            margin: activePage.marginsPt,
-            filename: fileName(),
-            image: { type: 'png' },
-            html2canvas: { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
-            jsPDF: { unit: 'pt', format: activePage.size.toLowerCase(), orientation: 'portrait', compress: true },
-            pagebreak: {
-              mode: ['css', 'legacy'],
-              avoid: [
-                '.r-item-block',
-                '.r-proj-item',
-                '.r-exp-item',
-                '.r-edu-item',
-                '.r-cert-block',
-                '.r-skills-block',
-                '.r-skills-grid',
-                '.r-personal-info-card',
-                '.r-h',
-                '.r-sidebar-heading',
-                '.r-banner--australia',
-                '.r-banner--uae',
-                '.r-header-india',
-                '.profile-header',
-                'li'
-              ]
+          const docxLib = await loadDocxLib();
+          if (!docxLib) {
+            exportWordHtmlFallback(current, activeFormatId);
+            toast('Word document (.doc) downloaded — ready for manual edits in Word or Google Docs');
+            return;
+          }
+
+          const presentation = activeFormatId === 'original' ? { data: current } : resolveResumePresentation(current, activeFormatId);
+          const d = presentation.data || current || {};
+          const isCalibri = activeFormatId === 'original' || activeFormatId === 'uk';
+          const fontName = isCalibri ? 'Calibri' : 'Arial';
+          const inkColor = activeFormatId === 'uk' ? '1e3a8a' :
+            activeFormatId === 'canada' ? '0f4c5c' :
+            activeFormatId === 'australia' ? '0d233a' :
+            activeFormatId === 'germany' ? '1e293b' :
+            activeFormatId === 'uae' ? '14243b' : '1F3864';
+
+          const children = [];
+
+          // Name
+          children.push(new docxLib.Paragraph({
+            alignment: activeFormatId === 'original' ? docxLib.AlignmentType.CENTER : docxLib.AlignmentType.LEFT,
+            children: [
+              new docxLib.TextRun({ text: d.name || 'Resume', bold: true, size: 38, color: inkColor, font: fontName })
+            ],
+            spacing: { after: 30 }
+          }));
+
+          // Subtitle
+          if (d.subtitle) {
+            children.push(new docxLib.Paragraph({
+              alignment: activeFormatId === 'original' ? docxLib.AlignmentType.CENTER : docxLib.AlignmentType.LEFT,
+              children: [
+                new docxLib.TextRun({ text: d.subtitle, bold: true, size: 21, color: '374151', font: fontName })
+              ],
+              spacing: { after: 60 }
+            }));
+          }
+
+          // Contact line
+          const c = d.contact || {};
+          const contactItems = [];
+          if (c.location) contactItems.push(c.location);
+          if (c.phone) contactItems.push(c.phone);
+          if (c.email) contactItems.push(c.email);
+          if (c.linkedin) contactItems.push(c.linkedin);
+          if (c.github) contactItems.push(c.github);
+          if (c.website) contactItems.push(c.website);
+
+          if (contactItems.length) {
+            children.push(new docxLib.Paragraph({
+              alignment: activeFormatId === 'original' ? docxLib.AlignmentType.CENTER : docxLib.AlignmentType.LEFT,
+              children: [
+                new docxLib.TextRun({ text: contactItems.join('   |   '), size: 18, color: '374151', font: fontName })
+              ],
+              spacing: { after: 120 }
+            }));
+          }
+
+          // Section Heading Helper
+          function addHeading(title) {
+            children.push(new docxLib.Paragraph({
+              children: [
+                new docxLib.TextRun({ text: String(title).toUpperCase(), bold: true, size: 22, color: inkColor, font: fontName })
+              ],
+              border: {
+                bottom: { style: docxLib.BorderStyle.SINGLE, size: 12, color: inkColor, space: 2 }
+              },
+              spacing: { before: 180, after: 70 }
+            }));
+          }
+
+          const H = Object.assign({}, DEFAULT_HEADINGS, isObj(d.headings) ? d.headings : {});
+
+          // Section Builders
+          const W = {
+            summary() {
+              const summaryText = d.summary || d.profile;
+              if (!summaryText) return;
+              addHeading(H.summary || 'Professional Summary');
+              children.push(new docxLib.Paragraph({
+                children: [new docxLib.TextRun({ text: asText(summaryText, ' '), size: 20, font: fontName })],
+                spacing: { after: 90 }
+              }));
+            },
+            skills() {
+              const skillData = d.skills || d.technicalSkills;
+              if (!asList(skillData).length && !isObj(skillData)) return;
+              addHeading(H.skills || 'Technical Skills');
+              if (activeFormatId === 'uk' || activeFormatId === 'canada' || activeFormatId === 'australia') {
+                getFlatSkills(skillData).forEach(sk => {
+                  children.push(new docxLib.Paragraph({
+                    text: sk,
+                    bullet: { level: 0 },
+                    spacing: { after: 35 }
+                  }));
+                });
+              } else {
+                if (isObj(skillData) && !Array.isArray(skillData)) {
+                  Object.entries(skillData).forEach(([cat, val]) => {
+                    children.push(new docxLib.Paragraph({
+                      children: [
+                        new docxLib.TextRun({ text: str(cat).replace(/:\s*$/, '') + ': ', bold: true, size: 20, font: fontName }),
+                        new docxLib.TextRun({ text: asText(val), size: 20, font: fontName })
+                      ],
+                      spacing: { after: 40 }
+                    }));
+                  });
+                } else {
+                  asList(skillData).forEach(s => {
+                    const lbl = isObj(s) ? (s.label || s.category) : '';
+                    const val = isObj(s) ? (s.value != null ? s.value : s.skills) : str(s);
+                    children.push(new docxLib.Paragraph({
+                      children: [
+                        ...(lbl ? [new docxLib.TextRun({ text: str(lbl).replace(/:\s*$/, '') + ': ', bold: true, size: 20, font: fontName })] : []),
+                        new docxLib.TextRun({ text: asText(val), size: 20, font: fontName })
+                      ],
+                      spacing: { after: 40 }
+                    }));
+                  });
+                }
+              }
+            },
+            experience() {
+              const items = asList(d.experience || d.workExperience).filter(isObj);
+              if (!items.length) return;
+              addHeading(H.experience || 'Work Experience');
+              items.forEach(exp => {
+                children.push(new docxLib.Paragraph({
+                  tabStops: [{ type: docxLib.TabStopType.RIGHT, position: docxLib.TabStopPosition.MAX }],
+                  children: [
+                    new docxLib.TextRun({ text: exp.role || exp.title || '', bold: true, size: 21, font: fontName }),
+                    new docxLib.TextRun({ children: [new docxLib.Tab(), exp.dates || exp.period || ''], size: 20, font: fontName })
+                  ],
+                  spacing: { before: 100, after: 20 }
+                }));
+                const sub = [exp.company || exp.employer, exp.location].filter(Boolean).join(', ');
+                if (sub) {
+                  children.push(new docxLib.Paragraph({
+                    children: [new docxLib.TextRun({ text: sub, italics: true, size: 20, font: fontName })],
+                    spacing: { after: 50 }
+                  }));
+                }
+                asList(exp.bullets || exp.responsibilities || exp.description).forEach(b => {
+                  children.push(new docxLib.Paragraph({
+                    text: str(b),
+                    bullet: { level: 0 },
+                    spacing: { after: 40 }
+                  }));
+                });
+              });
+            },
+            projects() {
+              const items = asList(d.projects).filter(isObj);
+              if (!items.length) return;
+              addHeading(H.projects || 'Projects');
+              items.forEach(p => {
+                const linkUrl = p.url || p.linkUrl;
+                const linkText = p.link || p.website || p.github;
+                children.push(new docxLib.Paragraph({
+                  children: [
+                    new docxLib.TextRun({ text: p.title || p.name || '', bold: true, size: 21, font: fontName }),
+                    ...(linkText ? [new docxLib.TextRun({ text: '   ' }), new docxLib.ExternalHyperlink({
+                      children: [new docxLib.TextRun({ text: linkText, color: inkColor, size: 19, font: fontName })],
+                      link: linkUrl || ('https://' + linkText)
+                    })] : [])
+                  ],
+                  spacing: { before: 120, after: 20 }
+                }));
+                const techStack = p.tech || p.technologies || p.stack;
+                if (techStack) {
+                  children.push(new docxLib.Paragraph({
+                    children: [new docxLib.TextRun({ text: asText(techStack, ' · '), italics: true, color: inkColor, size: 19, font: fontName })],
+                    spacing: { after: 50 }
+                  }));
+                }
+                asList(p.bullets || p.description).forEach(b => {
+                  children.push(new docxLib.Paragraph({
+                    text: str(b),
+                    bullet: { level: 0 },
+                    spacing: { after: 40 }
+                  }));
+                });
+              });
+            },
+            education() {
+              const items = asList(d.education).filter(isObj);
+              if (!items.length) return;
+              addHeading(H.education || 'Education');
+              items.forEach(e => {
+                children.push(new docxLib.Paragraph({
+                  tabStops: [{ type: docxLib.TabStopType.RIGHT, position: docxLib.TabStopPosition.MAX }],
+                  children: [
+                    new docxLib.TextRun({ text: e.degree || e.title || '', bold: true, size: 21, font: fontName }),
+                    new docxLib.TextRun({ children: [new docxLib.Tab(), e.year || e.dates || ''], size: 20, font: fontName })
+                  ],
+                  spacing: { before: 100, after: 20 }
+                }));
+                const inst = str(e.institution || e.school || e.university || '');
+                const grade = str(e.grade || e.gpa || e.cgpa || '');
+                children.push(new docxLib.Paragraph({
+                  children: [
+                    new docxLib.TextRun({ text: inst, italics: true, size: 20, font: fontName }),
+                    ...(grade ? [new docxLib.TextRun({ text: '   ' + (e.gradeLabel == null ? 'CGPA: ' : e.gradeLabel + ' ') + grade, bold: true, size: 20, font: fontName })] : [])
+                  ],
+                  spacing: { after: 50 }
+                }));
+              });
+            },
+            certifications() {
+              const items = asList(d.certifications);
+              if (!items.length) return;
+              addHeading(H.certifications || 'Certifications');
+              items.forEach(c => {
+                const text = isObj(c) ? [c.name || c.title, c.issuer, c.year].filter(Boolean).join(' — ') : str(c);
+                children.push(new docxLib.Paragraph({
+                  children: [new docxLib.TextRun({ text, bold: true, size: 20, font: fontName })],
+                  bullet: { level: 0 },
+                  spacing: { after: 40 }
+                }));
+              });
+            },
+            github() {
+              const g = d.github;
+              if (!isObj(g) || !(g.link || g.text || g.url)) return;
+              addHeading(H.github || 'GitHub Profile');
+              children.push(new docxLib.Paragraph({
+                children: [
+                  ...(g.link ? [new docxLib.ExternalHyperlink({
+                    children: [new docxLib.TextRun({ text: g.link, bold: true, color: inkColor, size: 20, font: fontName })],
+                    link: g.url || ('https://' + g.link)
+                  })] : []),
+                  ...(g.text ? [new docxLib.TextRun({ text: (g.link ? '  —  ' : '') + str(g.text), size: 20, font: fontName })] : [])
+                ],
+                spacing: { after: 80 }
+              }));
+            },
+            languages() {
+              const items = asList(d.languages);
+              if (!items.length) return;
+              addHeading(H.languages || 'Languages');
+              const langStr = items.map(l => isObj(l) ? l.name + (l.level ? ' (' + l.level + ')' : '') : str(l)).join('   |   ');
+              children.push(new docxLib.Paragraph({
+                children: [new docxLib.TextRun({ text: langStr, size: 20, font: fontName })],
+                spacing: { after: 60 }
+              }));
+            },
+            custom() {
+              asList(d.custom).forEach(sec => {
+                if (!isObj(sec)) return;
+                addHeading(sec.heading || sec.title || 'Additional Information');
+                if (sec.text) {
+                  children.push(new docxLib.Paragraph({
+                    children: [new docxLib.TextRun({ text: asText(sec.text, ' '), size: 20, font: fontName })],
+                    spacing: { after: 60 }
+                  }));
+                }
+                asList(sec.bullets).forEach(b => {
+                  children.push(new docxLib.Paragraph({
+                    text: str(b),
+                    bullet: { level: 0 },
+                    spacing: { after: 40 }
+                  }));
+                });
+              });
             }
-          }).from(clone).save();
+          };
+
+          // Render sections in order
+          const secOrder = asList(d.order).filter(k => W[k]);
+          const orderToUse = secOrder.length ? secOrder : SECTION_ORDER.filter(k => W[k]);
+          orderToUse.forEach(k => W[k]());
+
+          // Referees (Australia / UK)
+          if (d.referees) {
+            addHeading('Referees');
+            children.push(new docxLib.Paragraph({
+              children: [new docxLib.TextRun({ text: str(d.referees), italics: true, size: 20, font: fontName })],
+              spacing: { after: 60 }
+            }));
+          }
+
+          const doc = new docxLib.Document({
+            sections: [{
+              properties: {
+                page: {
+                  size: { width: 11906, height: 16838 }, // A4 standard in dxa
+                  margin: { top: 863, right: 1152, bottom: 792, left: 1152 }
+                }
+              },
+              children
+            }]
+          });
+
+          const blob = await docxLib.Packer.toBlob(doc);
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = fileName('docx');
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+          toast('Word document (.docx) downloaded — ready for manual edits in Word or Google Docs');
         } catch (err) {
-          toast('PDF generation failed: ' + err.message, 'error');
+          toast('Docx generation failed, falling back to Word .doc: ' + err.message, 'warn');
+          exportWordHtmlFallback(current, activeFormatId);
         } finally {
-          cleanupLightExport();
-          stage.replaceChildren(); btn.disabled = false; lbl.textContent = label; toast('PDF downloaded');
+          btn.disabled = false;
+          lbl.textContent = oldText;
         }
-      };
+      }
+      $('word-btn').onclick = exportWordDocument;
 
       /* ---------------- UI behaviours ---------------- */
       // guide modal
@@ -3461,7 +3792,7 @@
       document.addEventListener('keydown', (e) => {
         if (!(e.ctrlKey || e.metaKey) || e.altKey) return;
         const k = e.key.toLowerCase();
-        if (k === 's') { e.preventDefault(); $('download-btn').click(); }
+        if (k === 's') { e.preventDefault(); $('word-btn').click(); }
         else if (k === 'p') { e.preventDefault(); $('print-btn').click(); }
       });
 
