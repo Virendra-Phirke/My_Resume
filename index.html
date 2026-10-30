@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -727,6 +732,520 @@
       text-decoration: none;
     }
 
+    /* ============================================================
+     COUNTRY-SPECIFIC RESUME LAYOUTS & ATS DESIGN (Exact Reference)
+     ============================================================ */
+
+    /* Typography defaults for non-original layouts */
+    .page[data-resume-format]:not([data-resume-format="original"]) {
+      font-family: Arial, Helvetica, -apple-system, sans-serif;
+      font-size: 10pt;
+      line-height: 1.28;
+      color: #1f2937;
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Common contact item with SVG icon */
+    .r-contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4pt 10pt;
+      font-size: 8.8pt;
+      line-height: 1.35;
+      color: #374151;
+    }
+    .r-contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3.5pt;
+      white-space: nowrap;
+    }
+    .r-icon {
+      width: 10.5pt;
+      height: 10.5pt;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: none;
+      vertical-align: middle;
+      opacity: .85;
+    }
+    .r-contact-link {
+      color: inherit;
+      text-decoration: none;
+    }
+    .r-contact-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Avatar placeholder silhouette */
+    .profile-avatar-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      color: #94a3b8;
+      flex: none;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .profile-avatar-placeholder svg {
+      width: 65%;
+      height: 65%;
+      fill: currentColor;
+    }
+    .profile-avatar-placeholder.circle,
+    .profile-photo.circle {
+      border-radius: 50%;
+    }
+    .profile-avatar-placeholder.square,
+    .profile-photo.square {
+      border-radius: 6px;
+    }
+    .profile-photo {
+      object-fit: cover;
+      flex: none;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* Multi-column bullet skills grid (UK, Canada, Australia) */
+    .r-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2pt 14pt;
+      list-style: none;
+      padding: 0;
+      margin: 2pt 0 4pt 0;
+    }
+    .r-skills-grid li {
+      position: relative;
+      padding-left: 12pt;
+      line-height: 1.3;
+      break-inside: avoid;
+      font-size: 9.6pt;
+    }
+    .r-skills-grid li::before {
+      content: "\2022";
+      position: absolute;
+      left: 3pt;
+      color: currentColor;
+      font-weight: bold;
+    }
+
+    /* USA Layout (Strict single-column ATS) */
+    .page[data-resume-format="us"] {
+      --country-ink: #1F3864;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .page[data-resume-format="us"] .r-header-us {
+      margin-bottom: 7pt;
+      padding-bottom: 5pt;
+      border-bottom: 1.5pt solid var(--country-ink);
+    }
+    .page[data-resume-format="us"] .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      letter-spacing: -.02em;
+      margin-bottom: 2pt !important;
+    }
+    .page[data-resume-format="us"] .r-subtitle {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4pt;
+    }
+    .page[data-resume-format="us"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--country-ink);
+      border-bottom: 1.5pt solid var(--country-ink);
+      padding-bottom: 2pt;
+      margin-top: 10pt !important;
+      margin-bottom: 4pt !important;
+    }
+
+    /* UK Layout (Single-column, British CV) */
+    .page[data-resume-format="uk"] {
+      --country-ink: #1e3a8a;
+      font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+    }
+    .page[data-resume-format="uk"] .r-header-uk {
+      margin-bottom: 7pt;
+      padding-bottom: 6pt;
+      border-bottom: 1pt solid #cbd5e1;
+    }
+    .page[data-resume-format="uk"] .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2pt !important;
+    }
+    .page[data-resume-format="uk"] .r-subtitle {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: var(--country-ink);
+      margin-bottom: 4pt;
+    }
+    .page[data-resume-format="uk"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      border-bottom: 1pt solid #bfdbfe;
+      background: #f8fafc;
+      padding: 2.5pt 5pt;
+      border-left: 3pt solid var(--country-ink);
+      margin-top: 10pt !important;
+      margin-bottom: 5pt !important;
+    }
+
+    /* Canada Layout (Single-column, Forest Slate) */
+    .page[data-resume-format="canada"] {
+      --country-ink: #0f4c5c;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .page[data-resume-format="canada"] .r-header-canada {
+      margin-bottom: 7pt;
+      padding-bottom: 6pt;
+      border-bottom: 1.5pt solid var(--country-ink);
+    }
+    .page[data-resume-format="canada"] .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      margin-bottom: 2pt !important;
+    }
+    .page[data-resume-format="canada"] .r-subtitle {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: var(--country-ink);
+      margin-bottom: 4pt;
+    }
+    .page[data-resume-format="canada"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      border-bottom: 1pt solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin-top: 10pt !important;
+      margin-bottom: 5pt !important;
+    }
+
+    /* Australia Layout (Navy Top Banner + Single Column) */
+    .page[data-resume-format="australia"] {
+      --country-ink: #0d233a;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-banner--australia {
+      background: #0d233a !important;
+      color: #ffffff !important;
+      padding: 13pt 16pt;
+      border-radius: 3pt;
+      margin-bottom: 10pt;
+    }
+    .r-banner--australia .r-name {
+      text-align: left;
+      font-size: 20pt;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2pt !important;
+    }
+    .r-banner--australia .r-subtitle {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #93c5fd;
+      margin-bottom: 6pt;
+    }
+    .r-banner--australia .r-contact-row {
+      color: #e2e8f0;
+    }
+    .r-banner--australia .r-contact-link {
+      color: #93c5fd;
+    }
+    .page[data-resume-format="australia"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      border-bottom: 1.5pt solid var(--country-ink);
+      padding-bottom: 2.5pt;
+      margin-top: 10pt !important;
+      margin-bottom: 5pt !important;
+    }
+    .r-referees-box {
+      margin-top: 6pt;
+      font-size: 9.5pt;
+      font-style: italic;
+      color: #4b5563;
+    }
+
+    /* Germany Layout (Two-Column Sidebar Layout) */
+    .page[data-resume-format="germany"] {
+      --country-ink: #1e293b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-two-column--germany {
+      display: flex;
+      gap: 14pt;
+      align-items: stretch;
+      width: 100%;
+    }
+    .r-two-column--germany .r-col-sidebar {
+      width: 32%;
+      flex: 0 0 32%;
+      background: #f1f4f8;
+      border-right: 1px solid #d9e2ec;
+      border-radius: 3pt;
+      padding: 12pt 10pt;
+      box-sizing: border-box;
+      color: #334155;
+    }
+    .r-two-column--germany .r-col-main {
+      width: 68%;
+      flex: 1 1 68%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .r-germany-photo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8pt;
+    }
+    .r-germany-photo {
+      width: 76px;
+      height: 76px;
+      border-radius: 6px;
+    }
+    .r-two-column--germany .r-name {
+      text-align: center;
+      font-size: 14pt;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 2pt !important;
+    }
+    .r-two-column--germany .r-subtitle {
+      text-align: center;
+      font-size: 9pt;
+      color: #64748b;
+      margin-bottom: 10pt;
+    }
+    .r-sidebar-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 5pt;
+      font-size: 8.5pt;
+      line-height: 1.35;
+      margin-bottom: 12pt;
+      border-bottom: 1px solid #d8e2ec;
+      padding-bottom: 10pt;
+    }
+    .r-sidebar-heading {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin: 8pt 0 4pt;
+    }
+    .r-sidebar-lang {
+      font-size: 8.6pt;
+      line-height: 1.3;
+      margin-bottom: 3pt;
+    }
+    .r-two-column--germany .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 1pt solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin-top: 9pt !important;
+      margin-bottom: 4pt !important;
+    }
+    .r-two-column--germany .r-h:first-child {
+      margin-top: 0 !important;
+    }
+
+    /* UAE Layout (Navy Top Banner + Two-Column Body) */
+    .page[data-resume-format="uae"] {
+      --country-ink: #14243b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-banner--uae {
+      background: #14243b !important;
+      color: #ffffff !important;
+      padding: 12pt 14pt;
+      border-radius: 3pt;
+      display: flex;
+      align-items: center;
+      gap: 13pt;
+      margin-bottom: 11pt;
+    }
+    .r-uae-photo {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.85);
+    }
+    .r-banner--uae-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .r-banner--uae .r-name {
+      text-align: left;
+      font-size: 19pt;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1pt !important;
+    }
+    .r-banner--uae .r-subtitle {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #fde68a;
+      margin-bottom: 4pt;
+    }
+    .r-banner--uae .r-contact-row {
+      color: #cbd5e1;
+    }
+    .r-banner--uae .r-contact-link {
+      color: #fde68a;
+    }
+    .r-two-column--uae {
+      display: flex;
+      gap: 12pt;
+      align-items: stretch;
+      width: 100%;
+    }
+    .r-two-column--uae .r-col-sidebar {
+      width: 32%;
+      flex: 0 0 32%;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 9pt 8pt;
+      box-sizing: border-box;
+      color: #334155;
+    }
+    .r-two-column--uae .r-col-main {
+      width: 68%;
+      flex: 1 1 68%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .r-personal-info-item {
+      font-size: 8.5pt;
+      line-height: 1.35;
+      margin-bottom: 3.5pt;
+    }
+    .r-personal-info-item b {
+      color: #0f172a;
+    }
+    .r-two-column--uae .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 1pt solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin-top: 9pt !important;
+      margin-bottom: 4pt !important;
+    }
+    .r-two-column--uae .r-h:first-child {
+      margin-top: 0 !important;
+    }
+
+    /* India Layout (Photo on Right + Single Column Structured Body) */
+    .page[data-resume-format="india"] {
+      --country-ink: #1F3864;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-header-india {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12pt;
+      padding-bottom: 6pt;
+      border-bottom: 1.5pt solid var(--country-ink);
+      margin-bottom: 8pt;
+    }
+    .r-header-india-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .r-header-india .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      margin-bottom: 1pt !important;
+    }
+    .r-header-india .r-subtitle {
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--country-ink);
+      margin-bottom: 4pt;
+    }
+    .r-header-india .r-contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4pt 10pt;
+      font-size: 8.8pt;
+      color: #374151;
+    }
+    .r-india-photo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 1.5pt solid var(--country-ink);
+    }
+    .page[data-resume-format="india"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      color: var(--country-ink);
+      border-bottom: 1.5pt solid var(--country-ink);
+      padding-bottom: 2pt;
+      margin-top: 10pt !important;
+      margin-bottom: 4pt !important;
+    }
+    .r-cgpa-badge {
+      display: inline-block;
+      font-weight: 700;
+      color: #1F3864;
+      margin-left: 4pt;
+    }
+
+    /* Responsive wrap for Germany & UAE on small mobile screens */
+    @media screen and (max-width: 760px) {
+      .r-two-column--germany,
+      .r-two-column--uae {
+        flex-direction: column !important;
+      }
+      .r-two-column--germany .r-col-sidebar,
+      .r-two-column--uae .r-col-sidebar {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        margin-bottom: 12pt;
+      }
+      .r-two-column--germany .r-col-main,
+      .r-two-column--uae .r-col-main {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        padding-left: 0 !important;
+      }
+    }
+
     .r-name {
       text-align: center;
       font-weight: 700;
@@ -961,6 +1480,8 @@
         box-sizing: border-box !important;
       }
 
+      :root[data-export-mode="ats"] .profile-photo { display: none !important; }
+      .profile-header { display: block !important; }
       * {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -984,6 +1505,124 @@
       background: #ffffff !important;
       color: #333333 !important;
     }
+    /* Page breaks and export suppression */
+    .r-h, .r-proj-title, .r-tech, .r-edu-top, .r-edu-sub, .r-banner {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    :root[data-export-mode="ats"] .profile-photo,
+    :root[data-export-mode="ats"] .profile-avatar-placeholder {
+      display: none !important;
+    }
+
+    /* Country Guide Modal styling */
+    .guide-dialog {
+      border: none;
+      border-radius: 14px;
+      padding: 0;
+      background: transparent;
+      max-width: 840px;
+      width: calc(100vw - 32px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+    }
+    .guide-dialog::backdrop {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+    }
+    .guide-dialog-card {
+      background: var(--panel, #ffffff);
+      color: var(--text, #1b2030);
+      border: 1px solid var(--border, #d8dce5);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 88vh;
+    }
+    .guide-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border, #d8dce5);
+      background: var(--panel-2, #f6f7fa);
+    }
+    .guide-dialog-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .guide-dialog-title h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing: -.01em;
+    }
+    .guide-dialog-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+    }
+    .guide-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 16px;
+      border: 1px solid var(--border, #d8dce5);
+      border-radius: 8px;
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    .guide-table th, .guide-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border, #d8dce5);
+      vertical-align: top;
+      line-height: 1.35;
+    }
+    .guide-table th {
+      background: var(--panel-2, #f6f7fa);
+      font-weight: 650;
+      color: var(--muted, #667085);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .guide-table tr:last-child td {
+      border-bottom: none;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge.ok { background: var(--ok-soft, #e7f6ee); color: var(--ok, #067647); }
+    .badge.bad { background: var(--danger-soft, #fdecea); color: var(--danger, #b42318); }
+    .badge.neutral { background: var(--accent-soft, rgba(31,56,100,0.1)); color: var(--accent, #1F3864); }
+    .guide-tips h3 {
+      font-size: 14px;
+      margin: 10px 0 8px;
+      color: var(--text, #1b2030);
+      font-weight: 650;
+    }
+    .guide-tips-list {
+      padding-left: 18px;
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--muted, #475569);
+    }
+    .guide-dialog-foot {
+      padding: 11px 18px;
+      border-top: 1px solid var(--border, #d8dce5);
+      display: flex;
+      justify-content: flex-end;
+      background: var(--panel-2, #f6f7fa);
+    }
+
   </style>
 </head>
 
@@ -1055,6 +1694,42 @@
         <rect x="3" y="4" width="18" height="16" rx="2" />
         <path d="M9 4v16" />
       </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+      </symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </symbol>
+      <symbol id="i-linkedin" viewBox="0 0 24 24">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect x="2" y="9" width="4" height="12" />
+        <circle cx="4" cy="4" r="2" />
+      </symbol>
+      <symbol id="i-github" viewBox="0 0 24 24">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+      </symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
     </defs>
   </svg>
 
@@ -1071,6 +1746,12 @@
     <label class="format-picker" for="resume-format"><span>Format</span><select id="resume-format" aria-label="Resume country format">
       <option value="original">Original layout (A4)</option>
     </select></label>
+    <button class="btn" id="guide-btn" type="button" title="View International Resume Formats & ATS Guide"><svg class="i"><use href="#i-info" /></svg><span>Country Guide</span></button>
+    <button class="btn" id="photo-upload-btn" type="button" title="Add a temporary profile photo">Add photo</button>
+    <input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+    <select id="photo-crop" aria-label="Photo crop shape" title="Photo crop shape" hidden><option value="circle">Circle</option><option value="square">Square</option></select>
+    <button class="btn" id="photo-url-btn" type="button" title="Load a photo from an image URL">Image URL</button>
+    <button class="btn" id="photo-remove-btn" type="button" title="Remove temporary photo" hidden>Remove photo</button>
     <button class="btn icon" id="theme-btn" type="button" title="Toggle light / dark" aria-label="Toggle theme"><svg
         class="i">
         <use id="theme-icon" href="#i-moon" />
@@ -1078,6 +1759,7 @@
     <button class="btn" id="toggle-editor" type="button" title="Show / hide the JSON editor"><svg class="i">
         <use href="#i-panel" />
       </svg><span>Hide JSON</span></button>
+    <button class="btn" id="visual-print-btn" type="button" title="Save a vector PDF with the optional profile photo">Save Visual PDF</button>
     <button class="btn primary" id="print-btn" type="button"
       title="Opens browser print dialog — choose “Save as PDF” for an ATS-compliant vector PDF with selectable text and clickable links (Ctrl/Cmd+P)"><svg
         class="i">
@@ -1186,6 +1868,99 @@
 
   <div id="export-stage" aria-hidden="true"></div>
 
+  <!-- Country Guide & ATS Tips Modal -->
+  <dialog id="guide-modal" class="guide-dialog">
+    <div class="guide-dialog-card">
+      <div class="guide-dialog-head">
+        <div class="guide-dialog-title">
+          <svg class="i"><use href="#i-info" /></svg>
+          <h2>International Resume Formats & ATS Guide</h2>
+        </div>
+        <button class="btn icon sm" id="guide-close-btn" type="button" aria-label="Close guide"><svg class="i"><use href="#i-close" /></svg></button>
+      </div>
+      <div class="guide-dialog-body">
+        <div class="guide-table-wrap">
+          <table class="guide-table">
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Format</th>
+                <th>Target Length</th>
+                <th>Photo</th>
+                <th>Key Layout & ATS Highlights</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>🇺🇸 USA</strong></td>
+                <td>Resume</td>
+                <td>1 page</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Strict single-column ATS layout. Quantifiable achievements, labeled technical skills, no personal demographics.</td>
+              </tr>
+              <tr>
+                <td><strong>🇬🇧 UK</strong></td>
+                <td>CV</td>
+                <td>1–2 pages</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Personal Profile, British English conventions, 2-column Key Skills grid, evidence-led work experience.</td>
+              </tr>
+              <tr>
+                <td><strong>🇨🇦 Canada</strong></td>
+                <td>Resume</td>
+                <td>1–2 pages</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Professional Summary, Core Competencies 2-column grid, reverse chronological experience, volunteering valued.</td>
+              </tr>
+              <tr>
+                <td><strong>🇦🇺 Australia</strong></td>
+                <td>Resume</td>
+                <td>2 pages</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Solid Navy header banner, Career Profile, Key Capabilities grid, standalone Key Achievements & Referees notice.</td>
+              </tr>
+              <tr>
+                <td><strong>🇩🇪 Germany</strong></td>
+                <td>Lebenslauf</td>
+                <td>1–2 pages</td>
+                <td><span class="badge ok">Optional / Common</span></td>
+                <td>Two-column layout: left cool-tinted sidebar with photo, role, contact & languages; right column for experience & skills.</td>
+              </tr>
+              <tr>
+                <td><strong>🇦🇪 UAE</strong></td>
+                <td>CV</td>
+                <td>1–2 pages</td>
+                <td><span class="badge ok">Common</span></td>
+                <td>Navy top banner with circular photo, two-column body with Professional Info (Nationality, Visa, Notice Period) & Skills.</td>
+              </tr>
+              <tr>
+                <td><strong>🇮🇳 India</strong></td>
+                <td>Resume</td>
+                <td>1 page</td>
+                <td><span class="badge neutral">No / Optional</span></td>
+                <td>Header with photo on right, Career Objective, categorized Technical Skills table, Education with CGPA, Projects.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="guide-tips">
+          <h3>General ATS & Best Practice Tips</h3>
+          <ul class="guide-tips-list">
+            <li><strong>ATS-friendly:</strong> Use clean typography, standard section titles, and semantic text hierarchy so parsers read content effortlessly.</li>
+            <li><strong>Tailor to the role:</strong> Incorporate keywords from the target job posting directly into your skills and project bullets.</li>
+            <li><strong>Use action verbs & numbers:</strong> Start bullets with verbs (Built, Led, Optimized) and quantify results (e.g., 40% speedup, 10k+ users).</li>
+            <li><strong>Keep it concise:</strong> 1 page for early-career; up to 2 pages for senior roles or countries expecting 2 pages (UK, Australia).</li>
+            <li><strong>Export options:</strong> Use <em>Save Vector PDF (ATS)</em> for machine-readable text or <em>Save Visual PDF</em> for visual presentation with photo.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="guide-dialog-foot">
+        <button class="btn primary" id="guide-got-it-btn" type="button">Got it</button>
+      </div>
+    </div>
+  </dialog>
+
   <!-- ============================================================
      DEFAULT RESUME DATA  (edit here or in the JSON panel)
      Every field is optional; empty sections are hidden.
@@ -1193,6 +1968,7 @@
   <script type="application/json" id="default-data">
 {
   "name": "VIRENDRA PHIRKE",
+  "subtitle": "Software Developer | Data Analyst",
   "contact": {
     "location": "Advihir, Buldhana, Maharashtra, India",
     "email": "virendraphirke2222@gmail.com",
@@ -1204,6 +1980,11 @@
     "linkedin": "linkedin.com/in/virendra-phirke",
     "linkedinUrl": "https://linkedin.com/in/virendra-phirke"
   },
+  "personalInfo": {
+    "Nationality": "Indian",
+    "Visa Status": "Visit Visa",
+    "Notice Period": "30 Days"
+  },
   "headings": {
     "summary": "PROFESSIONAL SUMMARY",
     "skills": "TECHNICAL SKILLS",
@@ -1213,7 +1994,7 @@
     "certifications": "CERTIFICATIONS",
     "languages": "LANGUAGES"
   },
-  "summary": "Software Engineer skilled in building scalable, user-friendly applications with React.js, Node.js, and TypeScript. Experienced in end-to-end system design, with a track record of shipping production-ready web applications.",
+  "summary": "Motivated Computer Science graduate with strong analytical skills and hands-on experience in full-stack web development and data analysis. Experienced in building scalable applications with React.js, Node.js, and modern databases.",
   "skills": [
     { "label": "Programming Languages", "value": "TypeScript, JavaScript, Python, Java, C" },
     { "label": "Frontend Development", "value": "React.js, HTML5, CSS3, Vite" },
@@ -1223,51 +2004,60 @@
     { "label": "Developer Tools & Libraries", "value": "Git, GitHub, NPM, Capacitor" },
     { "label": "Soft Skills", "value": "Problem-solving, Fast Learner, Clean Code Practices" }
   ],
+  "experience": [
+    {
+      "role": "Intern – Data Analyst & Software Developer",
+      "company": "ABC Tech Solutions",
+      "location": "Pune, India",
+      "dates": "Jun 2025 – Aug 2025",
+      "bullets": [
+        "Analyzed datasets and created visual reports and dashboards using Python and Excel.",
+        "Supported data-driven decision making and automation workflows for cross-functional teams."
+      ]
+    }
+  ],
   "projects": [
     {
-      "title": "QuizMaster — Online Examination Platform",
-      "link": "quizmastor.tech",
-      "url": "https://quizmastor.tech",
-      "tech": "React.js · Node.js · PostgreSQL · JavaScript · TypeScript",
+      "title": "Smart Health & GPS Tracking System",
+      "link": "github.com/Virendra-Phirke",
+      "url": "https://github.com/Virendra-Phirke",
+      "tech": "React.js · Node.js · PostgreSQL · Maps API",
       "bullets": [
-        "Built a full-stack platform for schools and organizations to conduct secure online exams.",
-        "Implemented role-based access, authentication, and anti-cheating controls (fullscreen lock, tab-switch detection).",
-        "Designed configurable quizzes with timers, negative marking, and question randomization."
+        "Developed a system to track climbers' and outdoor field teams' location and vital metrics in real-time.",
+        "Implemented geofencing, real-time telemetry, and automated emergency SOS broadcasting."
       ]
     },
     {
-      "title": "Campus Mate — Cross-Platform Campus Management App",
-      "tech": "React · TypeScript · Supabase (PostgreSQL) · Capacitor · MapLibre · Clerk · React Query",
+      "title": "Campus Mate — Campus Management App",
+      "tech": "React.js · Firebase · Tailwind CSS · Capacitor",
       "bullets": [
-        "Built a cross-platform campus management app using Capacitor for multi-platform deployment.",
-        "Developed indoor/outdoor navigation (MapLibre) and QR-code-based attendance tracking.",
-        "Built event management and admin tools supporting multiple colleges."
+        "Built a cross-platform campus management and collaboration mobile app using Capacitor.",
+        "Developed indoor/outdoor navigation and QR-code-based attendance tracking."
       ]
     },
     {
-      "title": "ClipYard — Real-Time Clipboard & File Sharing Platform",
+      "title": "ClipYard — Real-Time Clipboard & P2P File Sharing",
       "link": "clip-yard-jet.vercel.app",
       "url": "https://clip-yard-jet.vercel.app",
-      "tech": "Next.js · React · TypeScript · Firebase · WebRTC · Tailwind CSS",
+      "tech": "Next.js · TypeScript · Firebase · WebRTC",
       "bullets": [
-        "Built a real-time clipboard sharing platform with temporary room-based sessions for seamless device-to-device text synchronization.",
-        "Implemented peer-to-peer file transfer using WebRTC with Firebase-based signaling, eliminating the need for server-side file uploads.",
-        "Secured room communication with JWT authentication, AES-256-GCM encryption, rate limiting, Firebase security rules, and OWASP security headers."
+        "Built a real-time clipboard sharing platform with temporary room-based sessions.",
+        "Implemented peer-to-peer file transfer using WebRTC with Firebase-based signaling."
       ]
     }
   ],
   "education": [
     {
-      "degree": "B.E. in Computer Science Engineering",
+      "degree": "B.E. Computer Science Engineering",
       "year": "2026",
-      "institution": "Shri Shivaji Education Society College of Engineering and Technology, Akola, Maharashtra",
-      "gradeLabel": "cgpa:",
-      "grade": "8.21"
+      "institution": "Shri Shivaji Education Society College of Engineering and Technology, Akola",
+      "gradeLabel": "CGPA:",
+      "grade": "8.2"
     }
   ],
   "certifications": [
-    "Advanced Java & SQL Certification",
-    "Full Stack Development with Python & Django"
+    "AWS Cloud Practitioner (In Progress)",
+    "Advanced Java & SQL Certification"
   ],
   "github": {
     "link": "github.com/Virendra-Phirke",
@@ -1277,8 +2067,19 @@
   "languages": [
     { "name": "English", "level": "Fluent" },
     { "name": "Hindi", "level": "Native" },
-    { "name": "Marathi", "level": "Native" }
-  ]
+    { "name": "Marathi", "level": "Native" },
+    { "name": "German", "level": "Basic" }
+  ],
+  "custom": [
+    {
+      "heading": "Key Achievements",
+      "bullets": [
+        "Solved 100+ DSA problems on LeetCode",
+        "Built 3+ full-stack production-ready applications"
+      ]
+    }
+  ],
+  "referees": "Available upon request"
 }
 </script>
 
@@ -1373,58 +2174,354 @@
         return n;
       }
 
+      /* ---------------- temporary profile photo (memory only) ---------------- */
+      const PHOTO_MAX_BYTES = 5 * 1024 * 1024;
+      let photoBlobUrl = null;
+      let photoCrop = 'circle';
+      function clearPhoto() {
+        if (photoBlobUrl) URL.revokeObjectURL(photoBlobUrl);
+        photoBlobUrl = null; $('photo-file').value = '';
+        $('photo-remove-btn').hidden = true; $('photo-crop').hidden = true;
+        if (current) render(current);
+      }
+      async function setPhotoBlob(blob) {
+        if (!blob || !['image/jpeg', 'image/png', 'image/webp'].includes(blob.type)) throw new Error('Use a JPG, PNG, or WebP image.');
+        if (blob.size > PHOTO_MAX_BYTES) throw new Error('Image must be 5 MB or smaller.');
+        const probeUrl = URL.createObjectURL(blob);
+        try {
+          const image = new Image(); image.src = probeUrl;
+          await new Promise((resolve, reject) => { image.onload = resolve; image.onerror = () => reject(new Error('Invalid image file.')); });
+          if (image.naturalWidth < 80 || image.naturalHeight < 80 || image.naturalWidth > 6000 || image.naturalHeight > 6000) throw new Error('Image dimensions must be between 80 and 6000 pixels.');
+        } catch (error) { URL.revokeObjectURL(probeUrl); throw error; }
+        if (photoBlobUrl) URL.revokeObjectURL(photoBlobUrl);
+        photoBlobUrl = probeUrl; $('photo-remove-btn').hidden = false; $('photo-crop').hidden = false;
+        if (current) render(current);
+        toast('Temporary photo added. It clears when this page is refreshed or closed.');
+      }
+      $('photo-upload-btn').addEventListener('click', () => $('photo-file').click());
+      $('photo-file').addEventListener('change', async event => {
+        const file = event.target.files && event.target.files[0]; if (!file) return;
+        try { await setPhotoBlob(file); } catch (error) { toast(error.message, 'error'); }
+      });
+      $('photo-crop').addEventListener('change', () => { photoCrop = $('photo-crop').value; if (current) render(current); });
+      $('photo-remove-btn').addEventListener('click', clearPhoto);
+      $('photo-url-btn').addEventListener('click', async () => {
+        const value = prompt('Paste a direct image URL (JPG, PNG, or WebP):'); if (!value) return;
+        try {
+          const url = new URL(value);
+          const host = url.hostname.toLowerCase();
+          const privateHost = host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host) || host === '::1' || host.startsWith('fc') || host.startsWith('fd') || host.startsWith('fe80:');
+          if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || privateHost) throw new Error('Use a public HTTP or HTTPS image URL.');
+          const response = await fetch(url.href, { mode: 'cors', credentials: 'omit', redirect: 'follow' });
+          if (!response.ok) throw new Error('Image fetch failed (' + response.status + ').');
+          const finalUrl = new URL(response.url || url.href);
+          if (finalUrl.hostname === 'localhost' || finalUrl.hostname.endsWith('.local') || /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(finalUrl.hostname)) throw new Error('Redirect to a local address was blocked.');
+          const type = (response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+          const length = Number(response.headers.get('content-length') || 0);
+          if (!['image/jpeg', 'image/png', 'image/webp'].includes(type)) throw new Error('URL must return a JPG, PNG, or WebP image.');
+          if (length > PHOTO_MAX_BYTES) throw new Error('Image must be 5 MB or smaller.');
+          const blob = await response.blob(); await setPhotoBlob(blob);
+        } catch (error) { toast(error.message || 'The image host must allow browser CORS access.', 'error'); }
+      });
+      window.addEventListener('pagehide', () => { if (photoBlobUrl) URL.revokeObjectURL(photoBlobUrl); photoBlobUrl = null; });
+
       /* ---------------- render ---------------- */
       const SECTION_ORDER = ['summary', 'skills', 'experience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom'];
-      const KNOWN_KEYS = new Set(['name', 'contact', 'headings', 'order', 'summary', 'skills', 'experience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom']);
+      const KNOWN_KEYS = new Set(['name', 'subtitle', 'contact', 'personalInfo', 'referees', 'headings', 'order', 'summary', 'skills', 'experience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom']);
       const asList = (v) => Array.isArray(v) ? v.filter(x => x != null && x !== '') : (v == null || v === '' ? [] : [v]);
       const asText = (v, sep) => Array.isArray(v) ? v.join(sep == null ? ', ' : sep) : str(v);
       const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
+
+      function createContactItem(iconId, text, url) {
+        if (!text) return null;
+        const item = el('span', 'r-contact-item');
+        if (iconId) {
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('class', 'r-icon');
+          const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+          use.setAttribute('href', '#' + iconId);
+          svg.appendChild(use);
+          item.appendChild(svg);
+        }
+        if (url) item.appendChild(linkNode(str(text), url, 'r-contact-link'));
+        else item.appendChild(document.createTextNode(str(text)));
+        return item;
+      }
+
+      function renderPhotoOrAvatar(shape, customClass) {
+        if (photoBlobUrl) {
+          const img = el('img', 'profile-photo ' + shape + (customClass ? ' ' + customClass : ''));
+          img.src = photoBlobUrl;
+          img.alt = 'Profile photo';
+          return img;
+        }
+        const placeholder = el('div', 'profile-avatar-placeholder ' + shape + (customClass ? ' ' + customClass : ''));
+        placeholder.title = 'Click "Add photo" in toolbar to upload photo';
+        placeholder.onclick = () => $('photo-file').click();
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z');
+        svg.appendChild(path);
+        placeholder.appendChild(svg);
+        return placeholder;
+      }
+
+      function getFlatSkills(skills) {
+        const list = [];
+        asList(skills).forEach(s => {
+          if (isObj(s) && s.value) {
+            str(s.value).split(/[,·]+/).map(x => x.trim()).filter(Boolean).forEach(x => list.push(x));
+          } else if (isObj(s) && s.name) {
+            list.push(str(s.name));
+          } else if (s != null && s !== '') {
+            str(s).split(/[,·]+/).map(x => x.trim()).filter(Boolean).forEach(x => list.push(x));
+          }
+        });
+        return list;
+      }
 
       function render(sourceData) {
         const presentation = activeFormatId === 'original' ? { data: sourceData } : resolveResumePresentation(sourceData, activeFormatId);
         const d = presentation.data;
         const H = Object.assign({}, DEFAULT_HEADINGS, isObj(d.headings) ? d.headings : {});
         const root = el('div', 'content');
-        const heading = (title) => add(root, el('div', 'r-h', title));
+        let sectionRoot = root;
+        const heading = (title) => add(sectionRoot, el('div', 'r-h', title));
         const bullets = (items, cls) => {
           const list = asList(items); if (!list.length) return;
           const ul = el('ul', 'r-ul' + (cls ? ' ' + cls : ''));
-          list.forEach(b => add(ul, el('li', '', str(b)))); add(root, ul);
+          list.forEach(b => add(ul, el('li', '', str(b)))); add(sectionRoot, ul);
         };
-        const rows = (items) => asList(items).forEach(s => {          // "Label: value" rows (skills style)
+        const rows = (items) => asList(items).forEach(s => {
           const row = el('div', 'r-skill');
           if (isObj(s) && s.label) add(row, el('b', '', str(s.label).replace(/:\s*$/, '') + ':'), ' ' + asText(s.value));
           else add(row, isObj(s) ? asText(s.value) : str(s));
-          add(root, row);
+          add(sectionRoot, row);
         });
-        const titleLine = (left, right, cls) => {                      // bold left + right-aligned date (Word right tab @ 9026tw)
+        const titleLine = (left, right, cls) => {
           const top = el('div', 'r-edu-top' + (cls ? ' ' + cls : ''));
-          add(top, el('span', 'deg', left), el('span', '', right)); add(root, top);
+          add(top, el('span', 'deg', left), el('span', '', right)); add(sectionRoot, top);
         };
 
-        /* ----- header ----- */
-        if (d.name) add(root, el('div', 'r-name', d.name));
         const c = isObj(d.contact) ? d.contact : {};
-        const parts = [];
-        ['location', 'email', 'phone'].forEach(k => c[k] && parts.push(document.createTextNode(str(c[k]))));
-        [['website', 'websiteUrl'], ['linkedin', 'linkedinUrl'], ['github', 'githubUrl'], ['portfolio', 'portfolioUrl']]
-          .forEach(([k, u]) => c[k] && parts.push(linkNode(str(c[k]), c[u], 'blue')));
-        asList(c.extra).forEach(x => parts.push(document.createTextNode(str(x))));
-        if (parts.length) {
-          const line = el('div', 'r-contact');
-          parts.forEach((pt, i) => { if (i) line.appendChild(document.createTextNode('   |   ')); line.appendChild(pt); });
-          add(root, line);
+
+        /* ----- Country Header Construction ----- */
+        if (activeFormatId === 'original') {
+          const hasPhoto = !!photoBlobUrl;
+          const header = el('div', hasPhoto ? 'profile-header' : 'profile-header-main');
+          const headerMain = el('div', hasPhoto ? 'profile-header-main' : '');
+          if (d.name) add(headerMain, el('div', 'r-name', d.name));
+          const parts = [];
+          ['location', 'email', 'phone'].forEach(k => c[k] && parts.push(document.createTextNode(str(c[k]))));
+          [['website', 'websiteUrl'], ['linkedin', 'linkedinUrl'], ['github', 'githubUrl'], ['portfolio', 'portfolioUrl']]
+            .forEach(([k, u]) => c[k] && parts.push(linkNode(str(c[k]), c[u], 'blue')));
+          asList(c.extra).forEach(x => parts.push(document.createTextNode(str(x))));
+          if (parts.length) {
+            const line = el('div', 'r-contact');
+            parts.forEach((pt, i) => { if (i) line.appendChild(document.createTextNode('   |   ')); line.appendChild(pt); });
+            add(headerMain, line);
+          }
+          if (hasPhoto) {
+            const photo = el('img', 'profile-photo ' + photoCrop); photo.src = photoBlobUrl; photo.alt = 'Profile photo';
+            add(header, photo, headerMain); add(root, header);
+          } else add(root, headerMain);
+        } else if (activeFormatId === 'us') {
+          const header = el('div', 'r-header-us');
+          if (d.name) add(header, el('div', 'r-name', d.name));
+          if (d.subtitle) add(header, el('div', 'r-subtitle', d.subtitle));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(header, row);
+          add(root, header);
+        } else if (activeFormatId === 'uk') {
+          const header = el('div', 'r-header-uk');
+          if (d.name) add(header, el('div', 'r-name', d.name));
+          add(header, el('div', 'r-subtitle', d.subtitle || 'Data Analyst & Software Developer'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(header, row);
+          add(root, header);
+        } else if (activeFormatId === 'canada') {
+          const header = el('div', 'r-header-canada');
+          if (d.name) add(header, el('div', 'r-name', d.name));
+          add(header, el('div', 'r-subtitle', d.subtitle || 'Data Analyst'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(header, row);
+          add(root, header);
+        } else if (activeFormatId === 'australia') {
+          const banner = el('div', 'r-banner--australia');
+          if (d.name) add(banner, el('div', 'r-name', d.name));
+          add(banner, el('div', 'r-subtitle', d.subtitle || 'Software Developer & Data Analyst'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(banner, row);
+          add(root, banner);
+        } else if (activeFormatId === 'uae') {
+          const banner = el('div', 'r-banner--uae');
+          add(banner, renderPhotoOrAvatar('circle', 'r-uae-photo'));
+          const bannerInfo = el('div', 'r-banner--uae-info');
+          if (d.name) add(bannerInfo, el('div', 'r-name', d.name));
+          add(bannerInfo, el('div', 'r-subtitle', d.subtitle || 'Data Analyst & Software Developer'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(bannerInfo, row);
+          add(banner, bannerInfo);
+          add(root, banner);
+        } else if (activeFormatId === 'india') {
+          const header = el('div', 'r-header-india');
+          const headerMain = el('div', 'r-header-india-main');
+          if (d.name) add(headerMain, el('div', 'r-name', d.name));
+          add(headerMain, el('div', 'r-subtitle', d.subtitle || 'Software Developer | Data Analyst'));
+          const row1 = el('div', 'r-contact-row');
+          add(row1,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone)
+          );
+          const row2 = el('div', 'r-contact-row');
+          row2.style.marginTop = '2.5pt';
+          add(row2,
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl)
+          );
+          add(headerMain, row1, row2);
+          add(header, headerMain, renderPhotoOrAvatar('circle', 'r-india-photo'));
+          add(root, header);
         }
+
+        /* ----- Body Layout: Two-Column for Germany and UAE, Single-Column for others ----- */
+        let mainCol = root;
+        if (activeFormatId === 'germany') {
+          const twoCol = el('div', 'r-two-column--germany');
+          const sidebar = el('aside', 'r-col-sidebar');
+          mainCol = el('div', 'r-col-main');
+
+          const photoWrap = el('div', 'r-germany-photo-wrap');
+          add(photoWrap, renderPhotoOrAvatar('square', 'r-germany-photo'));
+          add(sidebar, photoWrap);
+
+          if (d.name) add(sidebar, el('div', 'r-name', d.name));
+          add(sidebar, el('div', 'r-subtitle', d.subtitle || 'Software Developer'));
+
+          const sideContact = el('div', 'r-sidebar-contact');
+          add(sideContact,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(sidebar, sideContact);
+
+          if (asList(d.languages).length) {
+            add(sidebar, el('div', 'r-sidebar-heading', 'Languages'));
+            asList(d.languages).forEach(l => {
+              const item = el('div', 'r-sidebar-lang');
+              if (isObj(l)) add(item, el('b', '', l.name), l.level ? ' (' + l.level + ')' : '');
+              else add(item, el('b', '', str(l)));
+              add(sidebar, item);
+            });
+          }
+
+          add(twoCol, sidebar, mainCol);
+          add(root, twoCol);
+        } else if (activeFormatId === 'uae') {
+          const twoCol = el('div', 'r-two-column--uae');
+          const sidebar = el('aside', 'r-col-sidebar');
+          mainCol = el('div', 'r-col-main');
+
+          const piCard = el('div', 'r-personal-info-card');
+          add(piCard, el('div', 'r-sidebar-heading', 'Professional Information'));
+          const piData = d.personalInfo || {
+            'Nationality': 'Indian',
+            'Visa Status': 'Visit Visa',
+            'Notice Period': '30 Days'
+          };
+          Object.entries(piData).forEach(([k, v]) => {
+            const item = el('div', 'r-personal-info-item');
+            add(item, el('b', '', k + ': '), str(v));
+            add(piCard, item);
+          });
+          add(sidebar, piCard);
+
+          if (asList(d.skills).length) {
+            add(sidebar, el('div', 'r-sidebar-heading', 'Skills'));
+            const skillsUl = el('ul', 'r-ul');
+            getFlatSkills(d.skills).forEach(sk => add(skillsUl, el('li', '', sk)));
+            add(sidebar, skillsUl);
+          }
+
+          if (asList(d.languages).length) {
+            add(sidebar, el('div', 'r-sidebar-heading', 'Languages'));
+            asList(d.languages).forEach(l => {
+              const item = el('div', 'r-sidebar-lang');
+              if (isObj(l)) add(item, el('b', '', l.name), l.level ? ' (' + l.level + ')' : '');
+              else add(item, el('b', '', str(l)));
+              add(sidebar, item);
+            });
+          }
+
+          add(twoCol, sidebar, mainCol);
+          add(root, twoCol);
+        }
+
+        sectionRoot = mainCol;
 
         /* ----- sections ----- */
         const S = {
           summary() {
             if (!d.summary) return;
-            heading(H.summary); add(root, el('div', 'r-summary', asText(d.summary, ' ')));
+            heading(H.summary); add(sectionRoot, el('div', 'r-summary', asText(d.summary, ' ')));
           },
           skills() {
+            if (activeFormatId === 'uae') return; // rendered in UAE sidebar
             if (!asList(d.skills).length) return;
-            heading(H.skills); rows(d.skills);
+            heading(H.skills);
+            if (activeFormatId === 'uk' || activeFormatId === 'canada' || activeFormatId === 'australia') {
+              const grid = el('ul', 'r-skills-grid');
+              getFlatSkills(d.skills).forEach(sk => add(grid, el('li', '', sk)));
+              add(sectionRoot, grid);
+            } else {
+              rows(d.skills);
+            }
           },
           experience() {
             const items = asList(d.experience).filter(isObj); if (!items.length) return;
@@ -1433,7 +2530,7 @@
               if (!isObj(x)) return;
               titleLine(str(x.role || x.title), str(x.dates || x.period), 'exp');
               const sub = [x.company, x.location].filter(Boolean).join(', ');
-              if (sub) add(root, el('div', 'r-edu-sub exp', sub));
+              if (sub) add(sectionRoot, el('div', 'r-edu-sub exp', sub));
               bullets(x.bullets);
             });
           },
@@ -1445,8 +2542,8 @@
               const t = el('div', 'r-proj-title');
               add(t, str(p.title));
               if (p.link) add(t, '   ', linkNode(str(p.link), p.url, 'link'));
-              add(root, t);
-              if (p.tech) add(root, el('div', 'r-tech', asText(p.tech, ' · ')));
+              add(sectionRoot, t);
+              if (p.tech) add(sectionRoot, el('div', 'r-tech', asText(p.tech, ' · ')));
               bullets(p.bullets);
             });
           },
@@ -1460,11 +2557,11 @@
                 const sub = el('div', 'r-edu-sub');
                 add(sub, el('span', '', str(e.institution)));
                 if (e.grade) {
-                  const g = el('span', '');
+                  const g = el('span', activeFormatId === 'india' ? 'r-cgpa-badge' : '');
                   add(g, el('b', '', str(e.gradeLabel == null ? 'CGPA: ' : e.gradeLabel + ' ')), str(e.grade));
                   add(sub, g);
                 }
-                add(root, sub);
+                add(sectionRoot, sub);
               }
             });
           },
@@ -1479,9 +2576,10 @@
             const row = el('div', 'r-github');
             if (g.link) add(row, linkNode(str(g.link), g.url, 'gh'));
             if (g.text) add(row, (g.link ? '  —  ' : '') + str(g.text));
-            add(root, row);
+            add(sectionRoot, row);
           },
           languages() {
+            if (activeFormatId === 'germany' || activeFormatId === 'uae') return; // rendered in sidebar
             if (!asList(d.languages).length) return;
             heading(H.languages);
             const row = el('div', 'r-lang');
@@ -1490,13 +2588,13 @@
               if (isObj(l)) add(row, el('b', '', l.name), l.level ? ' (' + l.level + ')' : '');
               else add(row, el('b', '', str(l)));
             });
-            add(root, row);
+            add(sectionRoot, row);
           },
-          custom() {                                                  // any extra sections: Achievements, Awards, Volunteering, …
+          custom() {
             asList(d.custom).forEach(sec => {
               if (!isObj(sec)) return;
               heading(str(sec.heading || sec.title || ''));
-              if (sec.text) add(root, el('div', 'r-summary', asText(sec.text, ' ')));
+              if (sec.text) add(sectionRoot, el('div', 'r-summary', asText(sec.text, ' ')));
               if (sec.rows) rows(sec.rows);
               bullets(sec.bullets);
             });
@@ -1507,6 +2605,11 @@
         if (!order.length) order = SECTION_ORDER;
         else SECTION_ORDER.forEach(k => { if (!order.includes(k) && k === 'custom') order.push(k); });
         order.forEach(k => S[k]());
+
+        if (activeFormatId === 'australia') {
+          heading('Referees');
+          add(sectionRoot, el('div', 'r-referees-box', str(d.referees || 'Available upon request')));
+        }
 
         resumeEl.replaceChildren(root);
       }
@@ -1720,18 +2823,22 @@
       window.addEventListener('beforeprint', prepareLightExport);
       window.addEventListener('afterprint', cleanupLightExport);
 
-      $('print-btn').onclick = () => {
+      function openPrintDialog(mode) {
         const old = document.title;
-        document.title = fileName().replace(/\.pdf$/, '');
+        document.title = fileName().replace(/\.pdf$/, '') + (mode === 'visual' ? '_Visual' : '_ATS');
+        document.documentElement.dataset.exportMode = mode;
         prepareLightExport();
         setTimeout(() => {
           window.print();
           setTimeout(() => {
             document.title = old;
+            delete document.documentElement.dataset.exportMode;
             cleanupLightExport();
           }, 500);
         }, 50);
-      };
+      }
+      $('print-btn').onclick = () => openPrintDialog('ats');
+      $('visual-print-btn').onclick = () => openPrintDialog('visual');
 
       $('download-btn').onclick = async function () {
         const btn = this;
@@ -1766,6 +2873,15 @@
       };
 
       /* ---------------- UI behaviours ---------------- */
+      // guide modal
+      const guideModal = $('guide-modal');
+      if (guideModal && $('guide-btn')) {
+        $('guide-btn').onclick = () => guideModal.showModal();
+        $('guide-close-btn').onclick = () => guideModal.close();
+        $('guide-got-it-btn').onclick = () => guideModal.close();
+        guideModal.addEventListener('click', (e) => { if (e.target === guideModal) guideModal.close(); });
+      }
+
       function closeMenus() { document.querySelectorAll('details.menu[open]').forEach(d => d.removeAttribute('open')); }
       document.addEventListener('click', (e) => { if (!e.target.closest('details.menu')) closeMenus(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenus(); });

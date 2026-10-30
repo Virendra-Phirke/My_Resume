@@ -17,9 +17,10 @@ const australia = {
     margins: "15mm 18mm 15mm 18mm"
   },
   layout: {
-    type: "single-column",
+    type: "banner-single-column",
+    bannerStyle: "dark-navy",
     photoPlacement: "none",
-    headerStyle: "name-right-contact-right"
+    skillsStyle: "two-column-bullets"
   },
   sections: {
     order: ["summary", "skills", "experience", "education", "projects", "custom", "certifications", "languages"],

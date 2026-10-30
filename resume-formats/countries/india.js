@@ -19,12 +19,13 @@ const india = {
     margins: "15mm 18mm 15mm 18mm"
   },
   layout: {
-    type: "single-column",
-    photoPlacement: "none",
-    headerStyle: "centered-name-contact"
+    type: "header-photo-right-single-column",
+    photoPlacement: "header-right",
+    headerStyle: "name-left-photo-right",
+    skillsStyle: "labeled-rows"
   },
   sections: {
-    order: ["summary", "skills", "projects", "experience", "education", "certifications", "languages"],
+    order: ["summary", "skills", "education", "projects", "certifications", "languages"],
     headings: {
       summary: "Career Objective",
       skills: "Technical Skills",

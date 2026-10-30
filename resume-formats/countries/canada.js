@@ -22,7 +22,7 @@ const canada = {
     headerStyle: "centered-name-contact"
   },
   sections: {
-    order: ["summary", "skills", "experience", "projects", "education", "certifications", "languages"],
+    order: ["summary", "skills", "experience", "projects", "education", "custom"],
     headings: {
       summary: "Professional Summary",
       skills: "Core Competencies",
@@ -31,7 +31,8 @@ const canada = {
       education: "Education",
       certifications: "Certifications",
       languages: "Languages",
-      github: "GitHub"
+      github: "GitHub",
+      custom: "Volunteer Experience"
     },
     skillsStyle: "two-column-bullets",
     experienceChronology: "reverse"

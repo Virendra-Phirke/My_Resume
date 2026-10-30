@@ -1,3 +1,4 @@
+
 /**
  * UAE – CV
  * Layout: 1–2 pages · Professional photo common · Personal info block visible
@@ -18,9 +19,12 @@ const uae = {
     margins: "15mm 18mm 15mm 18mm"
   },
   layout: {
-    type: "single-column-photo-header",
-    photoPlacement: "header-right",
-    headerStyle: "name-left-photo-right-contact-row"
+    type: "banner-two-column",
+    bannerStyle: "dark-navy",
+    photoPlacement: "banner-left",
+    sidebarWidth: "32%",
+    sidebarSections: ["personalInfo", "skills", "languages"],
+    mainSections: ["summary", "experience", "education", "projects", "certifications"]
   },
   sections: {
     order: ["summary", "custom", "skills", "experience", "education", "projects", "certifications", "languages"],
@@ -41,8 +45,8 @@ const uae = {
   guidance: {
     length: "1–2 pages · Professional photo common",
     targetLength: 2,
-    photo: "common",
-    photoGuidance: "Professional headshot — formal attire, plain background. Include in top-right corner of the header. Widely expected in the UAE market.",
+    photo: "optional",
+    photoGuidance: "Optional professional headshot. Use only when appropriate for the employer or application instructions; omit from ATS export.",
     personalInfoBlock: {
       label: "Professional Information",
       fields: ["Nationality", "Visa Status", "Notice Period"]

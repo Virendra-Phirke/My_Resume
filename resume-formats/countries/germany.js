@@ -1,3 +1,4 @@
+
 /**
  * Germany – Lebenslauf (CV)
  * Layout: 1–2 pages · German or English · Professional photo common (optional) ·
@@ -20,11 +21,11 @@ const germany = {
   },
   layout: {
     type: "two-column-sidebar",
-    photoPlacement: "sidebar-top-left",
-    headerStyle: "name-in-sidebar",
-    sidebarWidth: "35%",
-    sidebarSections: ["photo", "contact", "languages", "skills"],
-    mainSections: ["summary", "experience", "education", "projects", "certifications"]
+    photoPlacement: "sidebar-top",
+    headerStyle: "sidebar",
+    sidebarWidth: "33%",
+    sidebarSections: ["photo", "name", "contact", "languages"],
+    mainSections: ["summary", "experience", "education", "skills", "certifications", "projects"]
   },
   sections: {
     order: ["summary", "experience", "education", "skills", "projects", "certifications", "languages"],
