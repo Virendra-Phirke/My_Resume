@@ -31,6 +31,23 @@ export function resolveResumePresentation(resumeData, formatId) {
     ? resumeData
     : {};
   const format = getResumeFormat(formatId);
+  const baselineHeadings = {
+    summary: "PROFESSIONAL SUMMARY",
+    skills: "TECHNICAL SKILLS",
+    experience: "WORK EXPERIENCE",
+    projects: "PROJECTS",
+    education: "EDUCATION",
+    certifications: "CERTIFICATIONS",
+    github: "GITHUB PROFILE",
+    languages: "LANGUAGES"
+  };
+  const suppliedHeadings = source.headings && typeof source.headings === "object" && !Array.isArray(source.headings)
+    ? source.headings
+    : {};
+  const customHeadings = Object.fromEntries(
+    Object.entries(suppliedHeadings).filter(([key, value]) => baselineHeadings[key] == null || value !== baselineHeadings[key])
+  );
+
   return {
     format,
     data: {
@@ -40,9 +57,7 @@ export function resolveResumePresentation(resumeData, formatId) {
         : [...format.sections.order],
       headings: {
         ...format.sections.headings,
-        ...(source.headings && typeof source.headings === "object" && !Array.isArray(source.headings)
-          ? source.headings
-          : {})
+        ...customHeadings
       }
     }
   };

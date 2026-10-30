@@ -147,6 +147,27 @@
       text-overflow: ellipsis;
     }
 
+    .format-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .format-picker select {
+      max-width: 190px;
+      min-width: 145px;
+      padding: 8px 28px 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--panel);
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+    }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -651,6 +672,16 @@
     }
 
     @media (max-width:520px) {
+      .format-picker > span {
+        display: none;
+      }
+
+      .format-picker select {
+        min-width: 112px;
+        max-width: 135px;
+        padding: 8px 5px;
+      }
+
       #download-label {
         display: none;
       }
@@ -665,11 +696,11 @@
      A4 · margins T43.15pt R57.6pt B39.6pt L57.6pt · Calibri 10pt #333
      ============================================================ */
     .page {
-      width: 210mm;
-      min-height: 297mm;
+      width: var(--resume-page-width, 210mm);
+      min-height: var(--resume-page-height, 297mm);
       background: #fff;
       color: #333;
-      padding: 43.15pt 57.6pt 39.6pt 57.6pt;
+      padding: var(--resume-page-padding, 43.15pt 57.6pt 39.6pt 57.6pt);
       font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
       font-size: 10pt;
       line-height: 1.2207;
@@ -855,9 +886,9 @@
 
     /* ---------- Print / "Save as PDF" : real vector text, links stay clickable ---------- */
     @page {
-      size: A4;
+      size: A4 portrait;
       margin: 0;
-      /* Suppresses browser header (date/timestamp/title) and footer (URL/pages) */
+      /* Suppresses browser header (date/timestamp/title) and footer (URL/pages). */
     }
 
     @media print {
@@ -915,9 +946,9 @@
       }
 
       .page {
-        width: 210mm !important;
-        min-height: 297mm !important;
-        padding: 43.15pt 57.6pt 39.6pt 57.6pt !important;
+        width: var(--resume-page-width, 210mm) !important;
+        min-height: var(--resume-page-height, 297mm) !important;
+        padding: var(--resume-page-padding, 43.15pt 57.6pt 39.6pt 57.6pt) !important;
         margin: 0 auto !important;
         box-shadow: none !important;
         background: #ffffff !important;
@@ -1032,6 +1063,9 @@
       </div>
     </div>
     <span id="pill-wrap"><span class="pill" id="pill"><span class="txt" id="pill-text">Ready</span></span></span>
+    <label class="format-picker" for="resume-format"><span>Format</span><select id="resume-format" aria-label="Resume country format">
+      <option value="original">Original layout (A4)</option>
+    </select></label>
     <button class="btn icon" id="theme-btn" type="button" title="Toggle light / dark" aria-label="Toggle theme"><svg
         class="i">
         <use id="theme-icon" href="#i-moon" />
@@ -1243,7 +1277,10 @@
 }
 </script>
 
-  <script>
+  <script type="module">
+    import { RESUME_FORMATS } from './resume-formats/registry.js';
+    import { resolveResumePresentation } from './resume-formats/shared/normalize-profile.js';
+
     (function () {
       'use strict';
 
@@ -1253,10 +1290,59 @@
         certifications: 'CERTIFICATIONS', github: 'GITHUB PROFILE', languages: 'LANGUAGES'
       };
       const STORE_KEY = 'resume-json-v2';
+      const FORMAT_STORE_KEY = 'resume-format-v1';
+      const ORIGINAL_PAGE = { size: 'A4', width: '210mm', height: '297mm', margins: '43.15pt 57.6pt 39.6pt 57.6pt' };
 
       const $ = (id) => document.getElementById(id);
       const input = $('json-input'), statusEl = $('status'), resumeEl = $('resume');
-      const PAGE_PT = 759.1;   // usable height of one A4 page in pt (841.89 − margins)
+      const formatSelect = $('resume-format');
+      let activeFormatId = 'original';
+      let activePage = { size: 'A4', widthPt: 595.28, heightPt: 841.89, marginsPt: [43.15, 57.6, 39.6, 57.6] };
+      const PAGE_PT = () => Math.max(1, activePage.heightPt - activePage.marginsPt[0] - activePage.marginsPt[2]);
+
+      /* ---------------- country format and page metrics ---------------- */
+      function lengthToPt(value) {
+        const match = String(value).trim().match(/^([0-9.]+)(pt|mm|cm|in|px)$/i);
+        if (!match) throw new Error('Unsupported page measurement: ' + value);
+        const n = Number(match[1]), unit = match[2].toLowerCase();
+        return unit === 'pt' ? n : unit === 'in' ? n * 72 : unit === 'cm' ? n * 72 / 2.54 : unit === 'mm' ? n * 72 / 25.4 : n * 0.75;
+      }
+      function parseMargins(value) {
+        const parts = String(value).trim().split(/\s+/).map(lengthToPt);
+        if (parts.length === 1) return [parts[0], parts[0], parts[0], parts[0]];
+        if (parts.length === 2) return [parts[0], parts[1], parts[0], parts[1]];
+        if (parts.length === 3) return [parts[0], parts[1], parts[2], parts[1]];
+        if (parts.length === 4) return parts;
+        throw new Error('Page margins must use one to four CSS lengths.');
+      }
+      function setActiveFormat(id, { persist = true, rerender = true } = {}) {
+        const validId = id === 'original' || Object.prototype.hasOwnProperty.call(RESUME_FORMATS, id) ? id : 'original';
+        activeFormatId = validId;
+        const profile = validId === 'original' ? null : RESUME_FORMATS[validId];
+        const page = profile ? profile.page : ORIGINAL_PAGE;
+        const margins = parseMargins(page.margins);
+        activePage = { size: page.size, widthPt: lengthToPt(page.width), heightPt: lengthToPt(page.height), marginsPt: margins };
+        document.documentElement.style.setProperty('--resume-page-width', page.width);
+        document.documentElement.style.setProperty('--resume-page-height', page.height);
+        document.documentElement.style.setProperty('--resume-page-padding', page.margins);
+        resumeEl.dataset.resumeFormat = validId;
+        let pageRule = $('dynamic-page-rule');
+        if (!pageRule) { pageRule = document.createElement('style'); pageRule.id = 'dynamic-page-rule'; document.head.appendChild(pageRule); }
+        pageRule.textContent = '@page { size: ' + page.size + ' portrait; margin: 0; }';
+        formatSelect.value = validId;
+        if (persist) { try { localStorage.setItem(FORMAT_STORE_KEY, validId); } catch (_) { } }
+        if (rerender && current) { render(current); fit(); }
+      }
+      Object.values(RESUME_FORMATS).forEach(profile => {
+        const option = document.createElement('option');
+        option.value = profile.id;
+        option.textContent = profile.label + ' — ' + profile.documentName;
+        formatSelect.appendChild(option);
+      });
+      formatSelect.addEventListener('change', () => {
+        try { setActiveFormat(formatSelect.value); toast('Applied ' + (RESUME_FORMATS[activeFormatId]?.label || 'original') + ' resume format.'); }
+        catch (err) { toast('Could not apply format: ' + err.message, 'error'); setActiveFormat('original'); }
+      });
 
       /* ---------------- tiny DOM helpers (textContent only => no HTML injection) ---------------- */
       function el(tag, cls, text) {
@@ -1289,7 +1375,9 @@
       const asText = (v, sep) => Array.isArray(v) ? v.join(sep == null ? ', ' : sep) : str(v);
       const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
 
-      function render(d) {
+      function render(sourceData) {
+        const presentation = activeFormatId === 'original' ? { data: sourceData } : resolveResumePresentation(sourceData, activeFormatId);
+        const d = presentation.data;
         const H = Object.assign({}, DEFAULT_HEADINGS, isObj(d.headings) ? d.headings : {});
         const root = el('div', 'content');
         const heading = (title) => add(root, el('div', 'r-h', title));
@@ -1310,8 +1398,8 @@
         };
 
         /* ----- header ----- */
-        if (d.name) add(root, el('div', 'r-name', d.name));
-        const c = isObj(d.contact) ? d.contact : {};
+        if (viewData.name) add(root, el('div', 'r-name', viewData.name));
+        const c = isObj(viewData.contact) ? viewData.contact : {};
         const parts = [];
         ['location', 'email', 'phone'].forEach(k => c[k] && parts.push(document.createTextNode(str(c[k]))));
         [['website', 'websiteUrl'], ['linkedin', 'linkedinUrl'], ['github', 'githubUrl'], ['portfolio', 'portfolioUrl']]
@@ -1462,7 +1550,7 @@
         }
         current = data;
         const warns = lint(data);
-        const pages = Math.max(1, Math.ceil(resumeEl.querySelector('.content').offsetHeight * 0.75 / 759.1));
+        const pages = Math.max(1, Math.ceil(resumeEl.querySelector('.content').offsetHeight * 0.75 / PAGE_PT()));
         setStatus(warns.length ? '⚠ ' + warns.join('; ') : '✓ Valid JSON — resume updated', warns.length ? 'warn' : 'ok');
         setPill(warns.length ? 'warn' : 'ok', pages + ' page' + (pages > 1 ? 's' : '') + (warns.length ? ' · ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') : ''));
         lastPages = pages;
@@ -1571,9 +1659,10 @@
       function drawGuides() {
         const g = $('guides'); g.replaceChildren();
         const contentH = resumeEl.querySelector('.content') ? resumeEl.querySelector('.content').offsetHeight : 0;
-        const pages = Math.ceil(contentH * 0.75 / PAGE_PT);
+        const pageHeight = PAGE_PT();
+        const pages = Math.ceil(contentH * 0.75 / pageHeight);
         for (let k = 1; k < pages; k++) {
-          const line = el('div', 'guide'); line.style.top = (43.15 + k * PAGE_PT) + 'pt'; add(line, el('span', '', 'Page ' + (k + 1)));
+          const line = el('div', 'guide'); line.style.top = (activePage.marginsPt[0] + k * pageHeight) + 'pt'; add(line, el('span', '', 'Page ' + (k + 1)));
           g.appendChild(line);
         }
       }
@@ -1607,7 +1696,7 @@
         return libPromise;
       }
       (window.requestIdleCallback || ((f) => setTimeout(f, 2500)))(() => loadLib(), { timeout: 4000 });
-      const fileName = () => (str(current && current.name).trim().replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'Resume') + '_Resume.pdf';
+      const fileName = () => (str(current && current.name).trim().replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'Resume') + (activeFormatId === 'original' ? '' : '_' + activeFormatId.toUpperCase()) + '_Resume.pdf';
 
       /* ---------------- Light-theme Print & PDF Export Guarantees ---------------- */
       let printThemeState = null;
@@ -1649,15 +1738,18 @@
         }
         prepareLightExport();
         const stage = $('export-stage'); stage.replaceChildren();
-        const clone = resumeEl.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('export'); stage.appendChild(clone);
+        const clone = resumeEl.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('export');
+        clone.style.width = (activePage.widthPt - activePage.marginsPt[1] - activePage.marginsPt[3]) + 'pt';
+        clone.style.minHeight = '0';
+        stage.appendChild(clone);
         try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (_) { }
         try {
           await window.html2pdf().set({
-            margin: [43.15, 57.6, 39.6, 57.6],                 // pt – identical to the Word page margins
+            margin: activePage.marginsPt,
             filename: fileName(),
             image: { type: 'png' },
             html2canvas: { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
-            jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait', compress: true },
+            jsPDF: { unit: 'pt', format: activePage.size.toLowerCase(), orientation: 'portrait', compress: true },
             pagebreak: { mode: ['css'], avoid: ['li', '.r-proj-title', '.r-tech', '.r-h', '.r-edu-top', '.r-edu-sub', '.r-skill'] }
           }).from(clone).save();
         } catch (err) {
@@ -1759,6 +1851,11 @@
       });
 
       /* ---------------- init ---------------- */
+      // Restore the format independently from the resume JSON.
+      let savedFormat = 'original';
+      try { savedFormat = localStorage.getItem(FORMAT_STORE_KEY) || 'original'; } catch (_) { }
+      setActiveFormat(savedFormat, { persist: false, rerender: false });
+
       // Auto-detect when default-data in HTML file is updated on disk:
       const dataSignature = 'sig_' + DEFAULT_JSON.length + '_' + (DEFAULT_JSON.slice(0, 30) + DEFAULT_JSON.slice(-30)).replace(/\s+/g, '');
       const lastSignature = localStorage.getItem('resume-default-sig');
