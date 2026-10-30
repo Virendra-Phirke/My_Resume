@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -145,6 +150,27 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .format-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .format-picker select {
+      max-width: 190px;
+      min-width: 145px;
+      padding: 8px 28px 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--panel);
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
     }
 
     .pill {
@@ -642,7 +668,12 @@
       }
 
       .toolbar {
+        flex-wrap: wrap;
         padding: 9px 12px;
+      }
+
+      .brand {
+        flex: 1 1 100%;
       }
 
       .zoombar {
@@ -651,6 +682,16 @@
     }
 
     @media (max-width:520px) {
+      .format-picker > span {
+        display: none;
+      }
+
+      .format-picker select {
+        min-width: 112px;
+        max-width: 135px;
+        padding: 8px 5px;
+      }
+
       #download-label {
         display: none;
       }
@@ -665,11 +706,11 @@
      A4 · margins T43.15pt R57.6pt B39.6pt L57.6pt · Calibri 10pt #333
      ============================================================ */
     .page {
-      width: 210mm;
-      min-height: 297mm;
+      width: var(--resume-page-width, 210mm);
+      min-height: var(--resume-page-height, 297mm);
       background: #fff;
       color: #333;
-      padding: 43.15pt 57.6pt 39.6pt 57.6pt;
+      padding: var(--resume-page-padding, 43.15pt 57.6pt 39.6pt 57.6pt);
       font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
       font-size: 10pt;
       line-height: 1.2207;
@@ -689,6 +730,520 @@
     .page a {
       color: inherit;
       text-decoration: none;
+    }
+
+    /* ============================================================
+     COUNTRY-SPECIFIC RESUME LAYOUTS & ATS DESIGN (Exact Reference)
+     ============================================================ */
+
+    /* Typography defaults for non-original layouts */
+    .page[data-resume-format]:not([data-resume-format="original"]) {
+      font-family: Arial, Helvetica, -apple-system, sans-serif;
+      font-size: 10pt;
+      line-height: 1.28;
+      color: #1f2937;
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Common contact item with SVG icon */
+    .r-contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4pt 10pt;
+      font-size: 8.8pt;
+      line-height: 1.35;
+      color: #374151;
+    }
+    .r-contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3.5pt;
+      white-space: nowrap;
+    }
+    .r-icon {
+      width: 10.5pt;
+      height: 10.5pt;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: none;
+      vertical-align: middle;
+      opacity: .85;
+    }
+    .r-contact-link {
+      color: inherit;
+      text-decoration: none;
+    }
+    .r-contact-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Avatar placeholder silhouette */
+    .profile-avatar-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      color: #94a3b8;
+      flex: none;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .profile-avatar-placeholder svg {
+      width: 65%;
+      height: 65%;
+      fill: currentColor;
+    }
+    .profile-avatar-placeholder.circle,
+    .profile-photo.circle {
+      border-radius: 50%;
+    }
+    .profile-avatar-placeholder.square,
+    .profile-photo.square {
+      border-radius: 6px;
+    }
+    .profile-photo {
+      object-fit: cover;
+      flex: none;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* Multi-column bullet skills grid (UK, Canada, Australia) */
+    .r-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2pt 14pt;
+      list-style: none;
+      padding: 0;
+      margin: 2pt 0 4pt 0;
+    }
+    .r-skills-grid li {
+      position: relative;
+      padding-left: 12pt;
+      line-height: 1.3;
+      break-inside: avoid;
+      font-size: 9.6pt;
+    }
+    .r-skills-grid li::before {
+      content: "\2022";
+      position: absolute;
+      left: 3pt;
+      color: currentColor;
+      font-weight: bold;
+    }
+
+    /* USA Layout (Strict single-column ATS) */
+    .page[data-resume-format="us"] {
+      --country-ink: #1F3864;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .page[data-resume-format="us"] .r-header-us {
+      margin-bottom: 7pt;
+      padding-bottom: 5pt;
+      border-bottom: 1.5pt solid var(--country-ink);
+    }
+    .page[data-resume-format="us"] .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      letter-spacing: -.02em;
+      margin-bottom: 2pt !important;
+    }
+    .page[data-resume-format="us"] .r-subtitle {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4pt;
+    }
+    .page[data-resume-format="us"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--country-ink);
+      border-bottom: 1.5pt solid var(--country-ink);
+      padding-bottom: 2pt;
+      margin-top: 10pt !important;
+      margin-bottom: 4pt !important;
+    }
+
+    /* UK Layout (Single-column, British CV) */
+    .page[data-resume-format="uk"] {
+      --country-ink: #1e3a8a;
+      font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+    }
+    .page[data-resume-format="uk"] .r-header-uk {
+      margin-bottom: 7pt;
+      padding-bottom: 6pt;
+      border-bottom: 1pt solid #cbd5e1;
+    }
+    .page[data-resume-format="uk"] .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2pt !important;
+    }
+    .page[data-resume-format="uk"] .r-subtitle {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: var(--country-ink);
+      margin-bottom: 4pt;
+    }
+    .page[data-resume-format="uk"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      border-bottom: 1pt solid #bfdbfe;
+      background: #f8fafc;
+      padding: 2.5pt 5pt;
+      border-left: 3pt solid var(--country-ink);
+      margin-top: 10pt !important;
+      margin-bottom: 5pt !important;
+    }
+
+    /* Canada Layout (Single-column, Forest Slate) */
+    .page[data-resume-format="canada"] {
+      --country-ink: #0f4c5c;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .page[data-resume-format="canada"] .r-header-canada {
+      margin-bottom: 7pt;
+      padding-bottom: 6pt;
+      border-bottom: 1.5pt solid var(--country-ink);
+    }
+    .page[data-resume-format="canada"] .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      margin-bottom: 2pt !important;
+    }
+    .page[data-resume-format="canada"] .r-subtitle {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: var(--country-ink);
+      margin-bottom: 4pt;
+    }
+    .page[data-resume-format="canada"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      border-bottom: 1pt solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin-top: 10pt !important;
+      margin-bottom: 5pt !important;
+    }
+
+    /* Australia Layout (Navy Top Banner + Single Column) */
+    .page[data-resume-format="australia"] {
+      --country-ink: #0d233a;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-banner--australia {
+      background: #0d233a !important;
+      color: #ffffff !important;
+      padding: 13pt 16pt;
+      border-radius: 3pt;
+      margin-bottom: 10pt;
+    }
+    .r-banner--australia .r-name {
+      text-align: left;
+      font-size: 20pt;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2pt !important;
+    }
+    .r-banner--australia .r-subtitle {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #93c5fd;
+      margin-bottom: 6pt;
+    }
+    .r-banner--australia .r-contact-row {
+      color: #e2e8f0;
+    }
+    .r-banner--australia .r-contact-link {
+      color: #93c5fd;
+    }
+    .page[data-resume-format="australia"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      border-bottom: 1.5pt solid var(--country-ink);
+      padding-bottom: 2.5pt;
+      margin-top: 10pt !important;
+      margin-bottom: 5pt !important;
+    }
+    .r-referees-box {
+      margin-top: 6pt;
+      font-size: 9.5pt;
+      font-style: italic;
+      color: #4b5563;
+    }
+
+    /* Germany Layout (Two-Column Sidebar Layout) */
+    .page[data-resume-format="germany"] {
+      --country-ink: #1e293b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-two-column--germany {
+      display: flex;
+      gap: 14pt;
+      align-items: stretch;
+      width: 100%;
+    }
+    .r-two-column--germany .r-col-sidebar {
+      width: 32%;
+      flex: 0 0 32%;
+      background: #f1f4f8;
+      border-right: 1px solid #d9e2ec;
+      border-radius: 3pt;
+      padding: 12pt 10pt;
+      box-sizing: border-box;
+      color: #334155;
+    }
+    .r-two-column--germany .r-col-main {
+      width: 68%;
+      flex: 1 1 68%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .r-germany-photo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8pt;
+    }
+    .r-germany-photo {
+      width: 76px;
+      height: 76px;
+      border-radius: 6px;
+    }
+    .r-two-column--germany .r-name {
+      text-align: center;
+      font-size: 14pt;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 2pt !important;
+    }
+    .r-two-column--germany .r-subtitle {
+      text-align: center;
+      font-size: 9pt;
+      color: #64748b;
+      margin-bottom: 10pt;
+    }
+    .r-sidebar-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 5pt;
+      font-size: 8.5pt;
+      line-height: 1.35;
+      margin-bottom: 12pt;
+      border-bottom: 1px solid #d8e2ec;
+      padding-bottom: 10pt;
+    }
+    .r-sidebar-heading {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin: 8pt 0 4pt;
+    }
+    .r-sidebar-lang {
+      font-size: 8.6pt;
+      line-height: 1.3;
+      margin-bottom: 3pt;
+    }
+    .r-two-column--germany .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 1pt solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin-top: 9pt !important;
+      margin-bottom: 4pt !important;
+    }
+    .r-two-column--germany .r-h:first-child {
+      margin-top: 0 !important;
+    }
+
+    /* UAE Layout (Navy Top Banner + Two-Column Body) */
+    .page[data-resume-format="uae"] {
+      --country-ink: #14243b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-banner--uae {
+      background: #14243b !important;
+      color: #ffffff !important;
+      padding: 12pt 14pt;
+      border-radius: 3pt;
+      display: flex;
+      align-items: center;
+      gap: 13pt;
+      margin-bottom: 11pt;
+    }
+    .r-uae-photo {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.85);
+    }
+    .r-banner--uae-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .r-banner--uae .r-name {
+      text-align: left;
+      font-size: 19pt;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1pt !important;
+    }
+    .r-banner--uae .r-subtitle {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #fde68a;
+      margin-bottom: 4pt;
+    }
+    .r-banner--uae .r-contact-row {
+      color: #cbd5e1;
+    }
+    .r-banner--uae .r-contact-link {
+      color: #fde68a;
+    }
+    .r-two-column--uae {
+      display: flex;
+      gap: 12pt;
+      align-items: stretch;
+      width: 100%;
+    }
+    .r-two-column--uae .r-col-sidebar {
+      width: 32%;
+      flex: 0 0 32%;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 9pt 8pt;
+      box-sizing: border-box;
+      color: #334155;
+    }
+    .r-two-column--uae .r-col-main {
+      width: 68%;
+      flex: 1 1 68%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .r-personal-info-item {
+      font-size: 8.5pt;
+      line-height: 1.35;
+      margin-bottom: 3.5pt;
+    }
+    .r-personal-info-item b {
+      color: #0f172a;
+    }
+    .r-two-column--uae .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 1pt solid #cbd5e1;
+      padding-bottom: 2pt;
+      margin-top: 9pt !important;
+      margin-bottom: 4pt !important;
+    }
+    .r-two-column--uae .r-h:first-child {
+      margin-top: 0 !important;
+    }
+
+    /* India Layout (Photo on Right + Single Column Structured Body) */
+    .page[data-resume-format="india"] {
+      --country-ink: #1F3864;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .r-header-india {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12pt;
+      padding-bottom: 6pt;
+      border-bottom: 1.5pt solid var(--country-ink);
+      margin-bottom: 8pt;
+    }
+    .r-header-india-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .r-header-india .r-name {
+      text-align: left;
+      font-size: 21pt;
+      font-weight: 700;
+      color: var(--country-ink);
+      margin-bottom: 1pt !important;
+    }
+    .r-header-india .r-subtitle {
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--country-ink);
+      margin-bottom: 4pt;
+    }
+    .r-header-india .r-contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4pt 10pt;
+      font-size: 8.8pt;
+      color: #374151;
+    }
+    .r-india-photo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 1.5pt solid var(--country-ink);
+    }
+    .page[data-resume-format="india"] .r-h {
+      font-size: 10.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      color: var(--country-ink);
+      border-bottom: 1.5pt solid var(--country-ink);
+      padding-bottom: 2pt;
+      margin-top: 10pt !important;
+      margin-bottom: 4pt !important;
+    }
+    .r-cgpa-badge {
+      display: inline-block;
+      font-weight: 700;
+      color: #1F3864;
+      margin-left: 4pt;
+    }
+
+    /* Responsive wrap for Germany & UAE on small mobile screens */
+    @media screen and (max-width: 760px) {
+      .r-two-column--germany,
+      .r-two-column--uae {
+        flex-direction: column !important;
+      }
+      .r-two-column--germany .r-col-sidebar,
+      .r-two-column--uae .r-col-sidebar {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        margin-bottom: 12pt;
+      }
+      .r-two-column--germany .r-col-main,
+      .r-two-column--uae .r-col-main {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        padding-left: 0 !important;
+      }
     }
 
     .r-name {
@@ -806,11 +1361,17 @@
     }
 
     .r-edu-top {
-      width: 451.3pt;
+      width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       margin-bottom: .5pt !important;
       break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .page[data-resume-format="original"] .r-edu-top {
+      width: 451.3pt;
     }
 
     /* right tab @ 9026tw */
@@ -820,17 +1381,72 @@
     }
 
     .r-edu-sub {
-      width: 451.3pt;
+      width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-style: italic;
       margin-bottom: 2pt !important;
       break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .page[data-resume-format="original"] .r-edu-sub {
+      width: 451.3pt;
     }
 
     .r-edu-sub b {
       font-weight: 700;
       color: #000;
+    }
+
+    /* Semantic Block Containers with Strict Page-Break Protection */
+    .r-section-block {
+      margin-bottom: 3pt;
+      break-inside: auto;
+    }
+
+    .r-item-block,
+    .r-proj-item,
+    .r-exp-item,
+    .r-edu-item,
+    .r-cert-block,
+    .r-skills-block,
+    .r-lang-block,
+    .r-custom-block,
+    .r-personal-info-card {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+
+    .r-proj-item {
+      margin-bottom: 6pt;
+    }
+
+    .r-proj-item:last-child {
+      margin-bottom: 1.5pt;
+    }
+
+    .r-exp-item {
+      margin-bottom: 6pt;
+    }
+
+    .r-exp-item:last-child {
+      margin-bottom: 1.5pt;
+    }
+
+    .r-edu-item {
+      margin-bottom: 5pt;
+    }
+
+    .r-edu-item:last-child {
+      margin-bottom: 1.5pt;
+    }
+
+    .r-h + .r-item-block,
+    .r-h + .r-summary {
+      break-before: avoid !important;
+      page-break-before: avoid !important;
     }
 
     .r-github {
@@ -855,9 +1471,9 @@
 
     /* ---------- Print / "Save as PDF" : real vector text, links stay clickable ---------- */
     @page {
-      size: A4;
+      size: A4 portrait;
       margin: 0;
-      /* Suppresses browser header (date/timestamp/title) and footer (URL/pages) */
+      /* Suppresses browser header (date/timestamp/title) and footer (URL/pages). */
     }
 
     @media print {
@@ -915,9 +1531,9 @@
       }
 
       .page {
-        width: 210mm !important;
-        min-height: 297mm !important;
-        padding: 43.15pt 57.6pt 39.6pt 57.6pt !important;
+        width: var(--resume-page-width, 210mm) !important;
+        min-height: var(--resume-page-height, 297mm) !important;
+        padding: var(--resume-page-padding, 43.15pt 57.6pt 39.6pt 57.6pt) !important;
         margin: 0 auto !important;
         box-shadow: none !important;
         background: #ffffff !important;
@@ -925,6 +1541,8 @@
         box-sizing: border-box !important;
       }
 
+      :root[data-export-mode="ats"] .profile-photo { display: none !important; }
+      .profile-header { display: block !important; }
       * {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -948,6 +1566,128 @@
       background: #ffffff !important;
       color: #333333 !important;
     }
+    /* Page breaks and export suppression */
+    .r-h, .r-proj-title, .r-tech, .r-edu-top, .r-edu-sub, .r-banner, .r-banner--australia, .r-banner--uae, .r-header-india, .profile-header {
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+    }
+    .r-item-block, .r-proj-item, .r-exp-item, .r-edu-item, .r-cert-block, .r-skills-block, .r-personal-info-card {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    :root[data-export-mode="ats"] .profile-photo,
+    :root[data-export-mode="ats"] .profile-avatar-placeholder {
+      display: none !important;
+    }
+
+    /* Country Guide Modal styling */
+    .guide-dialog {
+      border: none;
+      border-radius: 14px;
+      padding: 0;
+      background: transparent;
+      max-width: 840px;
+      width: calc(100vw - 32px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+    }
+    .guide-dialog::backdrop {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+    }
+    .guide-dialog-card {
+      background: var(--panel, #ffffff);
+      color: var(--text, #1b2030);
+      border: 1px solid var(--border, #d8dce5);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 88vh;
+    }
+    .guide-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border, #d8dce5);
+      background: var(--panel-2, #f6f7fa);
+    }
+    .guide-dialog-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .guide-dialog-title h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing: -.01em;
+    }
+    .guide-dialog-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+    }
+    .guide-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 16px;
+      border: 1px solid var(--border, #d8dce5);
+      border-radius: 8px;
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    .guide-table th, .guide-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border, #d8dce5);
+      vertical-align: top;
+      line-height: 1.35;
+    }
+    .guide-table th {
+      background: var(--panel-2, #f6f7fa);
+      font-weight: 650;
+      color: var(--muted, #667085);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .guide-table tr:last-child td {
+      border-bottom: none;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge.ok { background: var(--ok-soft, #e7f6ee); color: var(--ok, #067647); }
+    .badge.bad { background: var(--danger-soft, #fdecea); color: var(--danger, #b42318); }
+    .badge.neutral { background: var(--accent-soft, rgba(31,56,100,0.1)); color: var(--accent, #1F3864); }
+    .guide-tips h3 {
+      font-size: 14px;
+      margin: 10px 0 8px;
+      color: var(--text, #1b2030);
+      font-weight: 650;
+    }
+    .guide-tips-list {
+      padding-left: 18px;
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--muted, #475569);
+    }
+    .guide-dialog-foot {
+      padding: 11px 18px;
+      border-top: 1px solid var(--border, #d8dce5);
+      display: flex;
+      justify-content: flex-end;
+      background: var(--panel-2, #f6f7fa);
+    }
+
   </style>
 </head>
 
@@ -1019,6 +1759,42 @@
         <rect x="3" y="4" width="18" height="16" rx="2" />
         <path d="M9 4v16" />
       </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+      </symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </symbol>
+      <symbol id="i-linkedin" viewBox="0 0 24 24">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect x="2" y="9" width="4" height="12" />
+        <circle cx="4" cy="4" r="2" />
+      </symbol>
+      <symbol id="i-github" viewBox="0 0 24 24">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+      </symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12" />
+      </symbol>
     </defs>
   </svg>
 
@@ -1032,6 +1808,15 @@
       </div>
     </div>
     <span id="pill-wrap"><span class="pill" id="pill"><span class="txt" id="pill-text">Ready</span></span></span>
+    <label class="format-picker" for="resume-format"><span>Format</span><select id="resume-format" aria-label="Resume country format">
+      <option value="original">Original layout (A4)</option>
+    </select></label>
+    <button class="btn" id="guide-btn" type="button" title="View International Resume Formats & ATS Guide"><svg class="i"><use href="#i-info" /></svg><span>Country Guide</span></button>
+    <button class="btn" id="photo-upload-btn" type="button" title="Add a temporary profile photo">Add photo</button>
+    <input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+    <select id="photo-crop" aria-label="Photo crop shape" title="Photo crop shape" hidden><option value="circle">Circle</option><option value="square">Square</option></select>
+    <button class="btn" id="photo-url-btn" type="button" title="Load a photo from an image URL">Image URL</button>
+    <button class="btn" id="photo-remove-btn" type="button" title="Remove temporary photo" hidden>Remove photo</button>
     <button class="btn icon" id="theme-btn" type="button" title="Toggle light / dark" aria-label="Toggle theme"><svg
         class="i">
         <use id="theme-icon" href="#i-moon" />
@@ -1039,6 +1824,7 @@
     <button class="btn" id="toggle-editor" type="button" title="Show / hide the JSON editor"><svg class="i">
         <use href="#i-panel" />
       </svg><span>Hide JSON</span></button>
+    <button class="btn" id="visual-print-btn" type="button" title="Save a vector PDF with the optional profile photo">Save Visual PDF</button>
     <button class="btn primary" id="print-btn" type="button"
       title="Opens browser print dialog — choose “Save as PDF” for an ATS-compliant vector PDF with selectable text and clickable links (Ctrl/Cmd+P)"><svg
         class="i">
@@ -1147,6 +1933,99 @@
 
   <div id="export-stage" aria-hidden="true"></div>
 
+  <!-- Country Guide & ATS Tips Modal -->
+  <dialog id="guide-modal" class="guide-dialog">
+    <div class="guide-dialog-card">
+      <div class="guide-dialog-head">
+        <div class="guide-dialog-title">
+          <svg class="i"><use href="#i-info" /></svg>
+          <h2>International Resume Formats & ATS Guide</h2>
+        </div>
+        <button class="btn icon sm" id="guide-close-btn" type="button" aria-label="Close guide"><svg class="i"><use href="#i-close" /></svg></button>
+      </div>
+      <div class="guide-dialog-body">
+        <div class="guide-table-wrap">
+          <table class="guide-table">
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Format</th>
+                <th>Target Length</th>
+                <th>Photo</th>
+                <th>Key Layout & ATS Highlights</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>🇺🇸 USA</strong></td>
+                <td>Resume</td>
+                <td>1 page</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Strict single-column ATS layout. Quantifiable achievements, labeled technical skills, no personal demographics.</td>
+              </tr>
+              <tr>
+                <td><strong>🇬🇧 UK</strong></td>
+                <td>CV</td>
+                <td>1–2 pages</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Personal Profile, British English conventions, 2-column Key Skills grid, evidence-led work experience.</td>
+              </tr>
+              <tr>
+                <td><strong>🇨🇦 Canada</strong></td>
+                <td>Resume</td>
+                <td>1–2 pages</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Professional Summary, Core Competencies 2-column grid, reverse chronological experience, volunteering valued.</td>
+              </tr>
+              <tr>
+                <td><strong>🇦🇺 Australia</strong></td>
+                <td>Resume</td>
+                <td>2 pages</td>
+                <td><span class="badge bad">No</span></td>
+                <td>Solid Navy header banner, Career Profile, Key Capabilities grid, standalone Key Achievements & Referees notice.</td>
+              </tr>
+              <tr>
+                <td><strong>🇩🇪 Germany</strong></td>
+                <td>Lebenslauf</td>
+                <td>1–2 pages</td>
+                <td><span class="badge ok">Optional / Common</span></td>
+                <td>Two-column layout: left cool-tinted sidebar with photo, role, contact & languages; right column for experience & skills.</td>
+              </tr>
+              <tr>
+                <td><strong>🇦🇪 UAE</strong></td>
+                <td>CV</td>
+                <td>1–2 pages</td>
+                <td><span class="badge ok">Common</span></td>
+                <td>Navy top banner with circular photo, two-column body with Professional Info (Nationality, Visa, Notice Period) & Skills.</td>
+              </tr>
+              <tr>
+                <td><strong>🇮🇳 India</strong></td>
+                <td>Resume</td>
+                <td>1 page</td>
+                <td><span class="badge neutral">No / Optional</span></td>
+                <td>Header with photo on right, Career Objective, categorized Technical Skills table, Education with CGPA, Projects.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="guide-tips">
+          <h3>General ATS & Best Practice Tips</h3>
+          <ul class="guide-tips-list">
+            <li><strong>ATS-friendly:</strong> Use clean typography, standard section titles, and semantic text hierarchy so parsers read content effortlessly.</li>
+            <li><strong>Tailor to the role:</strong> Incorporate keywords from the target job posting directly into your skills and project bullets.</li>
+            <li><strong>Use action verbs & numbers:</strong> Start bullets with verbs (Built, Led, Optimized) and quantify results (e.g., 40% speedup, 10k+ users).</li>
+            <li><strong>Keep it concise:</strong> 1 page for early-career; up to 2 pages for senior roles or countries expecting 2 pages (UK, Australia).</li>
+            <li><strong>Export options:</strong> Use <em>Save Vector PDF (ATS)</em> for machine-readable text or <em>Save Visual PDF</em> for visual presentation with photo.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="guide-dialog-foot">
+        <button class="btn primary" id="guide-got-it-btn" type="button">Got it</button>
+      </div>
+    </div>
+  </dialog>
+
   <!-- ============================================================
      DEFAULT RESUME DATA  (edit here or in the JSON panel)
      Every field is optional; empty sections are hidden.
@@ -1154,6 +2033,7 @@
   <script type="application/json" id="default-data">
 {
   "name": "VIRENDRA PHIRKE",
+  "subtitle": "Software Developer | Full Stack & Data Analyst",
   "contact": {
     "location": "Advihir, Buldhana, Maharashtra, India",
     "email": "virendraphirke2222@gmail.com",
@@ -1164,6 +2044,11 @@
     "githubUrl": "https://github.com/Virendra-Phirke",
     "linkedin": "linkedin.com/in/virendra-phirke",
     "linkedinUrl": "https://linkedin.com/in/virendra-phirke"
+  },
+  "personalInfo": {
+    "Nationality": "Indian",
+    "Visa Status": "Available for Relocation / Visit Visa",
+    "Notice Period": "Immediate / 30 Days"
   },
   "headings": {
     "summary": "PROFESSIONAL SUMMARY",
@@ -1177,12 +2062,24 @@
   "summary": "Software Engineer skilled in building scalable, user-friendly applications with React.js, Node.js, and TypeScript. Experienced in end-to-end system design, with a track record of shipping production-ready web applications.",
   "skills": [
     { "label": "Programming Languages", "value": "TypeScript, JavaScript, Python, Java, C" },
-    { "label": "Frontend Development", "value": "React.js, HTML5, CSS3, Vite" },
-    { "label": "Backend & APIs", "value": "Node.js, REST APIs" },
-    { "label": "Databases & Caching", "value": "PostgreSQL, MySQL, Redis" },
-    { "label": "Cloud & Infrastructure", "value": "Supabase, Firebase, Vercel, Docker" },
+    { "label": "Frontend Development", "value": "React.js, HTML5, CSS3, Vite, Tailwind CSS" },
+    { "label": "Backend & APIs", "value": "Node.js, Express.js, REST APIs, WebRTC" },
+    { "label": "Databases & Caching", "value": "PostgreSQL, MySQL, Redis, Supabase" },
+    { "label": "Cloud & Infrastructure", "value": "Firebase, Vercel, Docker" },
     { "label": "Developer Tools & Libraries", "value": "Git, GitHub, NPM, Capacitor" },
     { "label": "Soft Skills", "value": "Problem-solving, Fast Learner, Clean Code Practices" }
+  ],
+  "experience": [
+    {
+      "role": "Software Developer Intern",
+      "company": "ABC Tech Solutions",
+      "location": "Pune, India",
+      "dates": "Jun 2025 – Aug 2025",
+      "bullets": [
+        "Analyzed datasets and created visual reports and dashboards using Python and Excel.",
+        "Supported data-driven decision making and automation workflows for cross-functional teams."
+      ]
+    }
   ],
   "projects": [
     {
@@ -1227,6 +2124,7 @@
     }
   ],
   "certifications": [
+    "AWS Cloud Practitioner (In Progress)",
     "Advanced Java & SQL Certification",
     "Full Stack Development with Python & Django"
   ],
@@ -1238,12 +2136,26 @@
   "languages": [
     { "name": "English", "level": "Fluent" },
     { "name": "Hindi", "level": "Native" },
-    { "name": "Marathi", "level": "Native" }
-  ]
+    { "name": "Marathi", "level": "Native" },
+    { "name": "German", "level": "Basic" }
+  ],
+  "custom": [
+    {
+      "heading": "Key Achievements",
+      "bullets": [
+        "Solved 100+ DSA problems on LeetCode",
+        "Built 3+ full-stack production-ready applications"
+      ]
+    }
+  ],
+  "referees": "Available upon request"
 }
 </script>
 
-  <script>
+  <script type="module">
+    import { RESUME_FORMATS } from './resume-formats/registry.js';
+    import { resolveResumePresentation } from './resume-formats/shared/normalize-profile.js';
+
     (function () {
       'use strict';
 
@@ -1253,10 +2165,59 @@
         certifications: 'CERTIFICATIONS', github: 'GITHUB PROFILE', languages: 'LANGUAGES'
       };
       const STORE_KEY = 'resume-json-v2';
+      const FORMAT_STORE_KEY = 'resume-format-v1';
+      const ORIGINAL_PAGE = { size: 'A4', width: '210mm', height: '297mm', margins: '43.15pt 57.6pt 39.6pt 57.6pt' };
 
       const $ = (id) => document.getElementById(id);
       const input = $('json-input'), statusEl = $('status'), resumeEl = $('resume');
-      const PAGE_PT = 759.1;   // usable height of one A4 page in pt (841.89 − margins)
+      const formatSelect = $('resume-format');
+      let activeFormatId = 'original';
+      let activePage = { size: 'A4', widthPt: 595.28, heightPt: 841.89, marginsPt: [43.15, 57.6, 39.6, 57.6] };
+      const PAGE_PT = () => Math.max(1, activePage.heightPt - activePage.marginsPt[0] - activePage.marginsPt[2]);
+
+      /* ---------------- country format and page metrics ---------------- */
+      function lengthToPt(value) {
+        const match = String(value).trim().match(/^([0-9.]+)(pt|mm|cm|in|px)$/i);
+        if (!match) throw new Error('Unsupported page measurement: ' + value);
+        const n = Number(match[1]), unit = match[2].toLowerCase();
+        return unit === 'pt' ? n : unit === 'in' ? n * 72 : unit === 'cm' ? n * 72 / 2.54 : unit === 'mm' ? n * 72 / 25.4 : n * 0.75;
+      }
+      function parseMargins(value) {
+        const parts = String(value).trim().split(/\s+/).map(lengthToPt);
+        if (parts.length === 1) return [parts[0], parts[0], parts[0], parts[0]];
+        if (parts.length === 2) return [parts[0], parts[1], parts[0], parts[1]];
+        if (parts.length === 3) return [parts[0], parts[1], parts[2], parts[1]];
+        if (parts.length === 4) return parts;
+        throw new Error('Page margins must use one to four CSS lengths.');
+      }
+      function setActiveFormat(id, { persist = true, rerender = true } = {}) {
+        const validId = id === 'original' || Object.prototype.hasOwnProperty.call(RESUME_FORMATS, id) ? id : 'original';
+        activeFormatId = validId;
+        const profile = validId === 'original' ? null : RESUME_FORMATS[validId];
+        const page = profile ? profile.page : ORIGINAL_PAGE;
+        const margins = parseMargins(page.margins);
+        activePage = { size: page.size, widthPt: lengthToPt(page.width), heightPt: lengthToPt(page.height), marginsPt: margins };
+        document.documentElement.style.setProperty('--resume-page-width', page.width);
+        document.documentElement.style.setProperty('--resume-page-height', page.height);
+        document.documentElement.style.setProperty('--resume-page-padding', page.margins);
+        resumeEl.dataset.resumeFormat = validId;
+        let pageRule = $('dynamic-page-rule');
+        if (!pageRule) { pageRule = document.createElement('style'); pageRule.id = 'dynamic-page-rule'; document.head.appendChild(pageRule); }
+        pageRule.textContent = '@page { size: ' + page.size + ' portrait; margin: 0; }';
+        formatSelect.value = validId;
+        if (persist) { try { localStorage.setItem(FORMAT_STORE_KEY, validId); } catch (_) { } }
+        if (rerender && current) { render(current); fit(); }
+      }
+      Object.values(RESUME_FORMATS).forEach(profile => {
+        const option = document.createElement('option');
+        option.value = profile.id;
+        option.textContent = profile.label + ' — ' + profile.documentName;
+        formatSelect.appendChild(option);
+      });
+      formatSelect.addEventListener('change', () => {
+        try { setActiveFormat(formatSelect.value); toast('Applied ' + (RESUME_FORMATS[activeFormatId]?.label || 'original') + ' resume format.'); }
+        catch (err) { toast('Could not apply format: ' + err.message, 'error'); setActiveFormat('original'); }
+      });
 
       /* ---------------- tiny DOM helpers (textContent only => no HTML injection) ---------------- */
       function el(tag, cls, text) {
@@ -1282,130 +2243,545 @@
         return n;
       }
 
+      /* ---------------- temporary profile photo (memory only) ---------------- */
+      const PHOTO_MAX_BYTES = 5 * 1024 * 1024;
+      let photoBlobUrl = null;
+      let photoCrop = 'circle';
+      function clearPhoto() {
+        if (photoBlobUrl) URL.revokeObjectURL(photoBlobUrl);
+        photoBlobUrl = null; $('photo-file').value = '';
+        $('photo-remove-btn').hidden = true; $('photo-crop').hidden = true;
+        if (current) render(current);
+      }
+      async function setPhotoBlob(blob) {
+        if (!blob || !['image/jpeg', 'image/png', 'image/webp'].includes(blob.type)) throw new Error('Use a JPG, PNG, or WebP image.');
+        if (blob.size > PHOTO_MAX_BYTES) throw new Error('Image must be 5 MB or smaller.');
+        const probeUrl = URL.createObjectURL(blob);
+        try {
+          const image = new Image(); image.src = probeUrl;
+          await new Promise((resolve, reject) => { image.onload = resolve; image.onerror = () => reject(new Error('Invalid image file.')); });
+          if (image.naturalWidth < 80 || image.naturalHeight < 80 || image.naturalWidth > 6000 || image.naturalHeight > 6000) throw new Error('Image dimensions must be between 80 and 6000 pixels.');
+        } catch (error) { URL.revokeObjectURL(probeUrl); throw error; }
+        if (photoBlobUrl) URL.revokeObjectURL(photoBlobUrl);
+        photoBlobUrl = probeUrl; $('photo-remove-btn').hidden = false; $('photo-crop').hidden = false;
+        if (current) render(current);
+        toast('Temporary photo added. It clears when this page is refreshed or closed.');
+      }
+      $('photo-upload-btn').addEventListener('click', () => $('photo-file').click());
+      $('photo-file').addEventListener('change', async event => {
+        const file = event.target.files && event.target.files[0]; if (!file) return;
+        try { await setPhotoBlob(file); } catch (error) { toast(error.message, 'error'); }
+      });
+      $('photo-crop').addEventListener('change', () => { photoCrop = $('photo-crop').value; if (current) render(current); });
+      $('photo-remove-btn').addEventListener('click', clearPhoto);
+      $('photo-url-btn').addEventListener('click', async () => {
+        const value = prompt('Paste a direct image URL (JPG, PNG, or WebP):'); if (!value) return;
+        try {
+          const url = new URL(value);
+          const host = url.hostname.toLowerCase();
+          const privateHost = host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(host) || /^172\.(1[6-9]|2\d|3[01])\./.test(host) || host === '::1' || host.startsWith('fc') || host.startsWith('fd') || host.startsWith('fe80:');
+          if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || privateHost) throw new Error('Use a public HTTP or HTTPS image URL.');
+          const response = await fetch(url.href, { mode: 'cors', credentials: 'omit', redirect: 'follow' });
+          if (!response.ok) throw new Error('Image fetch failed (' + response.status + ').');
+          const finalUrl = new URL(response.url || url.href);
+          if (finalUrl.hostname === 'localhost' || finalUrl.hostname.endsWith('.local') || /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(finalUrl.hostname)) throw new Error('Redirect to a local address was blocked.');
+          const type = (response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+          const length = Number(response.headers.get('content-length') || 0);
+          if (!['image/jpeg', 'image/png', 'image/webp'].includes(type)) throw new Error('URL must return a JPG, PNG, or WebP image.');
+          if (length > PHOTO_MAX_BYTES) throw new Error('Image must be 5 MB or smaller.');
+          const blob = await response.blob(); await setPhotoBlob(blob);
+        } catch (error) { toast(error.message || 'The image host must allow browser CORS access.', 'error'); }
+      });
+      window.addEventListener('pagehide', () => { if (photoBlobUrl) URL.revokeObjectURL(photoBlobUrl); photoBlobUrl = null; });
+
       /* ---------------- render ---------------- */
       const SECTION_ORDER = ['summary', 'skills', 'experience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom'];
-      const KNOWN_KEYS = new Set(['name', 'contact', 'headings', 'order', 'summary', 'skills', 'experience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom']);
+      const KNOWN_KEYS = new Set(['name', 'subtitle', 'contact', 'personalInfo', 'referees', 'headings', 'order', 'summary', 'profile', 'skills', 'technicalSkills', 'experience', 'workExperience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom', 'achievements']);
       const asList = (v) => Array.isArray(v) ? v.filter(x => x != null && x !== '') : (v == null || v === '' ? [] : [v]);
       const asText = (v, sep) => Array.isArray(v) ? v.join(sep == null ? ', ' : sep) : str(v);
       const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
 
-      function render(d) {
+      function createContactItem(iconId, text, url) {
+        if (!text) return null;
+        const item = el('span', 'r-contact-item');
+        if (iconId) {
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('class', 'r-icon');
+          const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+          use.setAttribute('href', '#' + iconId);
+          svg.appendChild(use);
+          item.appendChild(svg);
+        }
+        if (url) item.appendChild(linkNode(str(text), url, 'r-contact-link'));
+        else item.appendChild(document.createTextNode(str(text)));
+        return item;
+      }
+
+      function renderPhotoOrAvatar(shape, customClass) {
+        if (photoBlobUrl) {
+          const img = el('img', 'profile-photo ' + shape + (customClass ? ' ' + customClass : ''));
+          img.src = photoBlobUrl;
+          img.alt = 'Profile photo';
+          return img;
+        }
+        const placeholder = el('div', 'profile-avatar-placeholder ' + shape + (customClass ? ' ' + customClass : ''));
+        placeholder.title = 'Click "Add photo" in toolbar to upload photo';
+        placeholder.onclick = () => $('photo-file').click();
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z');
+        svg.appendChild(path);
+        placeholder.appendChild(svg);
+        return placeholder;
+      }
+
+      function getFlatSkills(skills) {
+        const list = [];
+        asList(skills).forEach(s => {
+          if (isObj(s) && s.value) {
+            str(s.value).split(/[,·]+/).map(x => x.trim()).filter(Boolean).forEach(x => list.push(x));
+          } else if (isObj(s) && s.name) {
+            list.push(str(s.name));
+          } else if (s != null && s !== '') {
+            str(s).split(/[,·]+/).map(x => x.trim()).filter(Boolean).forEach(x => list.push(x));
+          }
+        });
+        return list;
+      }
+
+      function render(sourceData) {
+        const presentation = activeFormatId === 'original' ? { data: sourceData } : resolveResumePresentation(sourceData, activeFormatId);
+        const d = presentation.data;
         const H = Object.assign({}, DEFAULT_HEADINGS, isObj(d.headings) ? d.headings : {});
         const root = el('div', 'content');
-        const heading = (title) => add(root, el('div', 'r-h', title));
+        let sectionRoot = root;
+        const heading = (title) => add(sectionRoot, el('div', 'r-h', title));
         const bullets = (items, cls) => {
           const list = asList(items); if (!list.length) return;
           const ul = el('ul', 'r-ul' + (cls ? ' ' + cls : ''));
-          list.forEach(b => add(ul, el('li', '', str(b)))); add(root, ul);
+          list.forEach(b => add(ul, el('li', '', str(b)))); add(sectionRoot, ul);
         };
-        const rows = (items) => asList(items).forEach(s => {          // "Label: value" rows (skills style)
+        const rows = (items) => asList(items).forEach(s => {
           const row = el('div', 'r-skill');
           if (isObj(s) && s.label) add(row, el('b', '', str(s.label).replace(/:\s*$/, '') + ':'), ' ' + asText(s.value));
           else add(row, isObj(s) ? asText(s.value) : str(s));
-          add(root, row);
+          add(sectionRoot, row);
         });
-        const titleLine = (left, right, cls) => {                      // bold left + right-aligned date (Word right tab @ 9026tw)
+        const titleLine = (left, right, cls) => {
           const top = el('div', 'r-edu-top' + (cls ? ' ' + cls : ''));
-          add(top, el('span', 'deg', left), el('span', '', right)); add(root, top);
+          add(top, el('span', 'deg', left), el('span', '', right)); add(sectionRoot, top);
         };
 
-        /* ----- header ----- */
-        if (d.name) add(root, el('div', 'r-name', d.name));
         const c = isObj(d.contact) ? d.contact : {};
-        const parts = [];
-        ['location', 'email', 'phone'].forEach(k => c[k] && parts.push(document.createTextNode(str(c[k]))));
-        [['website', 'websiteUrl'], ['linkedin', 'linkedinUrl'], ['github', 'githubUrl'], ['portfolio', 'portfolioUrl']]
-          .forEach(([k, u]) => c[k] && parts.push(linkNode(str(c[k]), c[u], 'blue')));
-        asList(c.extra).forEach(x => parts.push(document.createTextNode(str(x))));
-        if (parts.length) {
-          const line = el('div', 'r-contact');
-          parts.forEach((pt, i) => { if (i) line.appendChild(document.createTextNode('   |   ')); line.appendChild(pt); });
-          add(root, line);
+
+        /* ----- Country Header Construction ----- */
+        if (activeFormatId === 'original') {
+          const hasPhoto = !!photoBlobUrl;
+          const header = el('div', hasPhoto ? 'profile-header' : 'profile-header-main');
+          const headerMain = el('div', hasPhoto ? 'profile-header-main' : '');
+          if (d.name) add(headerMain, el('div', 'r-name', d.name));
+          const parts = [];
+          ['location', 'email', 'phone'].forEach(k => c[k] && parts.push(document.createTextNode(str(c[k]))));
+          [['website', 'websiteUrl'], ['linkedin', 'linkedinUrl'], ['github', 'githubUrl'], ['portfolio', 'portfolioUrl']]
+            .forEach(([k, u]) => c[k] && parts.push(linkNode(str(c[k]), c[u], 'blue')));
+          asList(c.extra).forEach(x => parts.push(document.createTextNode(str(x))));
+          if (parts.length) {
+            const line = el('div', 'r-contact');
+            parts.forEach((pt, i) => { if (i) line.appendChild(document.createTextNode('   |   ')); line.appendChild(pt); });
+            add(headerMain, line);
+          }
+          if (hasPhoto) {
+            const photo = el('img', 'profile-photo ' + photoCrop); photo.src = photoBlobUrl; photo.alt = 'Profile photo';
+            add(header, photo, headerMain); add(root, header);
+          } else add(root, headerMain);
+        } else if (activeFormatId === 'us') {
+          const header = el('div', 'r-header-us');
+          if (d.name) add(header, el('div', 'r-name', d.name));
+          if (d.subtitle) add(header, el('div', 'r-subtitle', d.subtitle));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(header, row);
+          add(root, header);
+        } else if (activeFormatId === 'uk') {
+          const header = el('div', 'r-header-uk');
+          if (d.name) add(header, el('div', 'r-name', d.name));
+          add(header, el('div', 'r-subtitle', d.subtitle || 'Data Analyst & Software Developer'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(header, row);
+          add(root, header);
+        } else if (activeFormatId === 'canada') {
+          const header = el('div', 'r-header-canada');
+          if (d.name) add(header, el('div', 'r-name', d.name));
+          add(header, el('div', 'r-subtitle', d.subtitle || 'Data Analyst'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(header, row);
+          add(root, header);
+        } else if (activeFormatId === 'australia') {
+          const banner = el('div', 'r-banner--australia');
+          if (d.name) add(banner, el('div', 'r-name', d.name));
+          add(banner, el('div', 'r-subtitle', d.subtitle || 'Software Developer & Data Analyst'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(banner, row);
+          add(root, banner);
+        } else if (activeFormatId === 'uae') {
+          const banner = el('div', 'r-banner--uae');
+          add(banner, renderPhotoOrAvatar('circle', 'r-uae-photo'));
+          const bannerInfo = el('div', 'r-banner--uae-info');
+          if (d.name) add(bannerInfo, el('div', 'r-name', d.name));
+          add(bannerInfo, el('div', 'r-subtitle', d.subtitle || 'Data Analyst & Software Developer'));
+          const row = el('div', 'r-contact-row');
+          add(row,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(bannerInfo, row);
+          add(banner, bannerInfo);
+          add(root, banner);
+        } else if (activeFormatId === 'india') {
+          const header = el('div', 'r-header-india');
+          const headerMain = el('div', 'r-header-india-main');
+          if (d.name) add(headerMain, el('div', 'r-name', d.name));
+          add(headerMain, el('div', 'r-subtitle', d.subtitle || 'Software Developer | Data Analyst'));
+          const row1 = el('div', 'r-contact-row');
+          add(row1,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone)
+          );
+          const row2 = el('div', 'r-contact-row');
+          row2.style.marginTop = '2.5pt';
+          add(row2,
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl)
+          );
+          add(headerMain, row1, row2);
+          add(header, headerMain, renderPhotoOrAvatar('circle', 'r-india-photo'));
+          add(root, header);
         }
+
+        /* ----- Body Layout: Two-Column for Germany and UAE, Single-Column for others ----- */
+        let mainCol = root;
+        if (activeFormatId === 'germany') {
+          const twoCol = el('div', 'r-two-column--germany');
+          const sidebar = el('aside', 'r-col-sidebar');
+          mainCol = el('div', 'r-col-main');
+
+          const photoWrap = el('div', 'r-germany-photo-wrap');
+          add(photoWrap, renderPhotoOrAvatar('square', 'r-germany-photo'));
+          add(sidebar, photoWrap);
+
+          if (d.name) add(sidebar, el('div', 'r-name', d.name));
+          add(sidebar, el('div', 'r-subtitle', d.subtitle || 'Software Developer'));
+
+          const sideContact = el('div', 'r-sidebar-contact');
+          add(sideContact,
+            createContactItem('i-pin', c.location),
+            createContactItem('i-phone', c.phone),
+            createContactItem('i-mail', c.email),
+            createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
+            createContactItem('i-github', c.github, c.githubUrl),
+            createContactItem('i-globe', c.website, c.websiteUrl)
+          );
+          add(sidebar, sideContact);
+
+          if (asList(d.languages).length) {
+            add(sidebar, el('div', 'r-sidebar-heading', 'Languages'));
+            asList(d.languages).forEach(l => {
+              const item = el('div', 'r-sidebar-lang');
+              if (isObj(l)) add(item, el('b', '', l.name), l.level ? ' (' + l.level + ')' : '');
+              else add(item, el('b', '', str(l)));
+              add(sidebar, item);
+            });
+          }
+
+          add(twoCol, sidebar, mainCol);
+          add(root, twoCol);
+        } else if (activeFormatId === 'uae') {
+          const twoCol = el('div', 'r-two-column--uae');
+          const sidebar = el('aside', 'r-col-sidebar');
+          mainCol = el('div', 'r-col-main');
+
+          const piCard = el('div', 'r-personal-info-card');
+          add(piCard, el('div', 'r-sidebar-heading', 'Professional Information'));
+          const piData = d.personalInfo || {
+            'Nationality': 'Indian',
+            'Visa Status': 'Visit Visa',
+            'Notice Period': '30 Days'
+          };
+          Object.entries(piData).forEach(([k, v]) => {
+            const item = el('div', 'r-personal-info-item');
+            add(item, el('b', '', k + ': '), str(v));
+            add(piCard, item);
+          });
+          add(sidebar, piCard);
+
+          if (asList(d.skills).length) {
+            add(sidebar, el('div', 'r-sidebar-heading', 'Skills'));
+            const skillsUl = el('ul', 'r-ul');
+            getFlatSkills(d.skills).forEach(sk => add(skillsUl, el('li', '', sk)));
+            add(sidebar, skillsUl);
+          }
+
+          if (asList(d.languages).length) {
+            add(sidebar, el('div', 'r-sidebar-heading', 'Languages'));
+            asList(d.languages).forEach(l => {
+              const item = el('div', 'r-sidebar-lang');
+              if (isObj(l)) add(item, el('b', '', l.name), l.level ? ' (' + l.level + ')' : '');
+              else add(item, el('b', '', str(l)));
+              add(sidebar, item);
+            });
+          }
+
+          add(twoCol, sidebar, mainCol);
+          add(root, twoCol);
+        }
+
+        sectionRoot = mainCol;
 
         /* ----- sections ----- */
         const S = {
           summary() {
-            if (!d.summary) return;
-            heading(H.summary); add(root, el('div', 'r-summary', asText(d.summary, ' ')));
+            const summaryText = d.summary || d.profile;
+            if (!summaryText) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'summary';
+            add(sec, el('div', 'r-h', H.summary));
+            add(sec, el('div', 'r-summary r-item-block', asText(summaryText, ' ')));
+            add(sectionRoot, sec);
           },
           skills() {
-            if (!asList(d.skills).length) return;
-            heading(H.skills); rows(d.skills);
+            if (activeFormatId === 'uae') return; // rendered in UAE sidebar
+            const skillData = d.skills || d.technicalSkills;
+            if (!asList(skillData).length && !isObj(skillData)) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'skills';
+            add(sec, el('div', 'r-h', H.skills));
+            const block = el('div', 'r-skills-block r-item-block');
+            if (activeFormatId === 'uk' || activeFormatId === 'canada' || activeFormatId === 'australia') {
+              const grid = el('ul', 'r-skills-grid');
+              getFlatSkills(skillData).forEach(sk => add(grid, el('li', '', sk)));
+              add(block, grid);
+            } else {
+              if (isObj(skillData) && !Array.isArray(skillData)) {
+                Object.entries(skillData).forEach(([cat, val]) => {
+                  const row = el('div', 'r-skill');
+                  add(row, el('b', '', str(cat).replace(/:\s*$/, '') + ':'), ' ' + asText(val));
+                  add(block, row);
+                });
+              } else {
+                asList(skillData).forEach(s => {
+                  const row = el('div', 'r-skill');
+                  if (isObj(s) && (s.label || s.category)) {
+                    const lbl = s.label || s.category;
+                    const val = s.value != null ? s.value : s.skills;
+                    add(row, el('b', '', str(lbl).replace(/:\s*$/, '') + ':'), ' ' + asText(val));
+                  } else {
+                    add(row, isObj(s) ? asText(s.value || s.skills) : str(s));
+                  }
+                  add(block, row);
+                });
+              }
+            }
+            add(sec, block);
+            add(sectionRoot, sec);
           },
           experience() {
-            const items = asList(d.experience).filter(isObj); if (!items.length) return;
-            heading(H.experience);
+            const items = asList(d.experience || d.workExperience).filter(isObj); if (!items.length) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'experience';
+            add(sec, el('div', 'r-h', H.experience));
             items.forEach(x => {
               if (!isObj(x)) return;
-              titleLine(str(x.role || x.title), str(x.dates || x.period), 'exp');
-              const sub = [x.company, x.location].filter(Boolean).join(', ');
-              if (sub) add(root, el('div', 'r-edu-sub exp', sub));
-              bullets(x.bullets);
+              const item = el('div', 'r-exp-item r-item-block');
+              const roleText = str(x.role || x.title || x.position || '');
+              const dateText = str(x.dates || x.period || x.duration || x.year || '');
+              const top = el('div', 'r-edu-top exp');
+              add(top, el('span', 'deg', roleText), el('span', '', dateText));
+              add(item, top);
+
+              const sub = [x.company || x.employer || x.organization, x.location].filter(Boolean).join(', ');
+              if (sub) add(item, el('div', 'r-edu-sub exp', sub));
+
+              const bulletItems = asList(x.bullets || x.responsibilities || x.description || x.achievements);
+              if (bulletItems.length) {
+                const ul = el('ul', 'r-ul');
+                bulletItems.forEach(b => add(ul, el('li', '', str(b))));
+                add(item, ul);
+              }
+              add(sec, item);
             });
+            add(sectionRoot, sec);
           },
           projects() {
             const items = asList(d.projects).filter(isObj); if (!items.length) return;
-            heading(H.projects);
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'projects';
+            add(sec, el('div', 'r-h', H.projects));
             items.forEach(p => {
               if (!isObj(p)) return;
+              const item = el('div', 'r-proj-item r-item-block');
+              const titleText = str(p.title || p.name || '');
               const t = el('div', 'r-proj-title');
-              add(t, str(p.title));
-              if (p.link) add(t, '   ', linkNode(str(p.link), p.url, 'link'));
-              add(root, t);
-              if (p.tech) add(root, el('div', 'r-tech', asText(p.tech, ' · ')));
-              bullets(p.bullets);
+              add(t, titleText);
+              const linkUrl = p.url || p.linkUrl;
+              const linkText = p.link || p.website || p.github;
+              if (linkText) add(t, '   ', linkNode(str(linkText), linkUrl, 'link'));
+              else if (linkUrl) add(t, '   ', linkNode(str(linkUrl).replace(/^https?:\/\//, ''), linkUrl, 'link'));
+              add(item, t);
+
+              const techStack = p.tech || p.technologies || p.stack || p.tools;
+              if (techStack) add(item, el('div', 'r-tech', asText(techStack, ' · ')));
+
+              const bulletItems = asList(p.bullets || p.description || p.points);
+              if (bulletItems.length) {
+                const ul = el('ul', 'r-ul');
+                bulletItems.forEach(b => add(ul, el('li', '', str(b))));
+                add(item, ul);
+              }
+              add(sec, item);
             });
+            add(sectionRoot, sec);
           },
           education() {
             const items = asList(d.education).filter(isObj); if (!items.length) return;
-            heading(H.education);
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'education';
+            add(sec, el('div', 'r-h', H.education));
             items.forEach(e => {
               if (!isObj(e)) return;
-              titleLine(str(e.degree), str(e.year));
-              if (e.institution || e.grade) {
+              const item = el('div', 'r-edu-item r-item-block');
+              const degText = str(e.degree || e.title || '');
+              const yearText = str(e.year || e.dates || e.graduationYear || '');
+              const top = el('div', 'r-edu-top');
+              add(top, el('span', 'deg', degText), el('span', '', yearText));
+              add(item, top);
+
+              const inst = str(e.institution || e.school || e.university || e.college || '');
+              const grade = str(e.grade || e.gpa || e.cgpa || '');
+              if (inst || grade) {
                 const sub = el('div', 'r-edu-sub');
-                add(sub, el('span', '', str(e.institution)));
-                if (e.grade) {
-                  const g = el('span', '');
-                  add(g, el('b', '', str(e.gradeLabel == null ? 'CGPA: ' : e.gradeLabel + ' ')), str(e.grade));
+                add(sub, el('span', '', inst));
+                if (grade) {
+                  const g = el('span', activeFormatId === 'india' ? 'r-cgpa-badge' : '');
+                  add(g, el('b', '', str(e.gradeLabel == null ? 'CGPA: ' : e.gradeLabel + ' ')), grade);
                   add(sub, g);
                 }
-                add(root, sub);
+                add(item, sub);
               }
+              add(sec, item);
             });
+            add(sectionRoot, sec);
           },
           certifications() {
-            if (!asList(d.certifications).length) return;
-            heading(H.certifications); bullets(d.certifications, 'bold');
+            const items = asList(d.certifications);
+            if (!items.length) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'certifications';
+            add(sec, el('div', 'r-h', H.certifications));
+            const block = el('div', 'r-cert-block r-item-block');
+            const ul = el('ul', 'r-ul bold');
+            items.forEach(c => {
+              if (isObj(c)) {
+                const certText = [c.name || c.title, c.issuer, c.year || c.date].filter(Boolean).join(' — ');
+                add(ul, el('li', '', certText));
+              } else {
+                add(ul, el('li', '', str(c)));
+              }
+            });
+            add(block, ul);
+            add(sec, block);
+            add(sectionRoot, sec);
           },
           github() {
             const g = d.github;
-            if (!isObj(g) || !(g.link || g.text)) return;
-            heading(H.github);
-            const row = el('div', 'r-github');
+            if (!isObj(g) || !(g.link || g.text || g.url)) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'github';
+            add(sec, el('div', 'r-h', H.github));
+            const row = el('div', 'r-github r-item-block');
             if (g.link) add(row, linkNode(str(g.link), g.url, 'gh'));
             if (g.text) add(row, (g.link ? '  —  ' : '') + str(g.text));
-            add(root, row);
+            add(sec, row);
+            add(sectionRoot, sec);
           },
           languages() {
-            if (!asList(d.languages).length) return;
-            heading(H.languages);
+            if (activeFormatId === 'germany' || activeFormatId === 'uae') return; // rendered in sidebar
+            const items = asList(d.languages);
+            if (!items.length) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'languages';
+            add(sec, el('div', 'r-h', H.languages));
+            const block = el('div', 'r-lang-block r-item-block');
             const row = el('div', 'r-lang');
-            asList(d.languages).forEach((l, i) => {
+            items.forEach((l, i) => {
               if (i) add(row, '   |   ');
               if (isObj(l)) add(row, el('b', '', l.name), l.level ? ' (' + l.level + ')' : '');
               else add(row, el('b', '', str(l)));
             });
-            add(root, row);
+            add(block, row);
+            add(sec, block);
+            add(sectionRoot, sec);
           },
-          custom() {                                                  // any extra sections: Achievements, Awards, Volunteering, …
-            asList(d.custom).forEach(sec => {
-              if (!isObj(sec)) return;
-              heading(str(sec.heading || sec.title || ''));
-              if (sec.text) add(root, el('div', 'r-summary', asText(sec.text, ' ')));
-              if (sec.rows) rows(sec.rows);
-              bullets(sec.bullets);
+          custom() {
+            asList(d.custom).forEach(secData => {
+              if (!isObj(secData)) return;
+              const sec = el('section', 'r-section-block');
+              sec.dataset.section = 'custom';
+              add(sec, el('div', 'r-h', str(secData.heading || secData.title || 'ADDITIONAL INFORMATION')));
+              const block = el('div', 'r-custom-block r-item-block');
+              if (secData.text) add(block, el('div', 'r-summary', asText(secData.text, ' ')));
+              if (secData.rows) {
+                asList(secData.rows).forEach(r => {
+                  const row = el('div', 'r-skill');
+                  if (isObj(r) && r.label) add(row, el('b', '', str(r.label).replace(/:\s*$/, '') + ':'), ' ' + asText(r.value));
+                  else add(row, isObj(r) ? asText(r.value) : str(r));
+                  add(block, row);
+                });
+              }
+              const bulletList = asList(secData.bullets);
+              if (bulletList.length) {
+                const ul = el('ul', 'r-ul');
+                bulletList.forEach(b => add(ul, el('li', '', str(b))));
+                add(block, ul);
+              }
+              add(sec, block);
+              add(sectionRoot, sec);
             });
           }
         };
@@ -1414,6 +2790,14 @@
         if (!order.length) order = SECTION_ORDER;
         else SECTION_ORDER.forEach(k => { if (!order.includes(k) && k === 'custom') order.push(k); });
         order.forEach(k => S[k]());
+
+        if (activeFormatId === 'australia') {
+          const sec = el('section', 'r-section-block');
+          sec.dataset.section = 'referees';
+          add(sec, el('div', 'r-h', 'Referees'));
+          add(sec, el('div', 'r-referees-box r-item-block', str(d.referees || 'Available upon request')));
+          add(sectionRoot, sec);
+        }
 
         resumeEl.replaceChildren(root);
       }
@@ -1443,9 +2827,14 @@
 
       let current = null, lastPages = 1;
       function apply(text, { save = true } = {}) {
+        let raw = (text || '').trim();
+        // Automatically strip markdown ```json and ``` code blocks if copied directly from ChatGPT / Claude / Gemini
+        if (raw.startsWith('```')) {
+          raw = raw.replace(/^```(?:json)?\r?\n?/, '').replace(/\r?\n?```$/, '').trim();
+        }
         let data;
         try {
-          data = JSON.parse(text);
+          data = JSON.parse(raw);
           if (data === null || typeof data !== 'object' || Array.isArray(data)) throw new Error('Top level must be a JSON object { … }');
         } catch (err) {
           const m = /position (\d+)/.exec(err.message); errPos = m ? +m[1] : null;
@@ -1462,7 +2851,7 @@
         }
         current = data;
         const warns = lint(data);
-        const pages = Math.max(1, Math.ceil(resumeEl.querySelector('.content').offsetHeight * 0.75 / 759.1));
+        const pages = Math.max(1, Math.ceil(resumeEl.querySelector('.content').offsetHeight * 0.75 / PAGE_PT()));
         setStatus(warns.length ? '⚠ ' + warns.join('; ') : '✓ Valid JSON — resume updated', warns.length ? 'warn' : 'ok');
         setPill(warns.length ? 'warn' : 'ok', pages + ' page' + (pages > 1 ? 's' : '') + (warns.length ? ' · ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') : ''));
         lastPages = pages;
@@ -1490,40 +2879,114 @@
       };
       $('prompt-btn').onclick = async () => {
         const prompt = [
-          'Rewrite my resume for the job description below and return ONLY one valid JSON object (no markdown, no comments) in exactly the schema shown.',
+          'Act as an expert executive resume writer and ATS specialist.',
+          'Rewrite and tailor my resume for the target job description provided below.',
+          'Return ONLY a single valid JSON object (no markdown formatting, no code backticks, no conversational preamble or outro) adhering precisely to the schema below.',
           '',
-          'Rules:',
-          '- Keep everything truthful: reorder, re-word and emphasise what is relevant; never invent employers, dates, degrees or numbers.',
-          '- Aim for ONE page: 3–5 concise bullets per role/project, one line each where possible.',
-          '- Put the most relevant skills first. Use keywords from the job description naturally.',
-          '- All fields are optional – omit a section by leaving it out. Section order can be set with "order".',
-          '- Plain text only (no HTML). Use \u2014 for dashes if needed.',
+          '=== REQUIREMENTS & BEST PRACTICES ===',
+          '1. Truthful & Impact-Driven: Preserve real employers, dates, and degrees. Quantify achievements (metrics, %, performance gains).',
+          '2. Length & Formatting: Aim for 1 page (or 2 pages if 5+ years of experience). Write 3–4 impactful, active-verb bullets per project or job.',
+          '3. Project Integrity: Each project MUST include its title, live link/URL (if available), tech stack, and 2-4 outcome-oriented bullets.',
+          '4. Country & ATS Compatibility: Include "personalInfo" (Nationality, Visa Status, Notice Period) for UAE/Germany formats; "referees" for UK/Australia; clean categorized "skills".',
+          '5. Pure JSON: Return ONLY parseable JSON so it can be loaded directly into the resume builder.',
           '',
-          'Schema (field -> meaning):',
+          '=== JSON SCHEMA TEMPLATE ===',
           '{',
-          '  "name": "FULL NAME",',
-          '  "contact": { "location": "", "email": "", "phone": "", "website": "", "websiteUrl": "https://…", "linkedin": "", "linkedinUrl": "https://…", "github": "", "githubUrl": "https://…", "extra": ["any other text"] },',
-          '  "headings": { "summary": "PROFESSIONAL SUMMARY", "skills": "CORE SKILLS", "experience": "WORK EXPERIENCE", "projects": "PROJECTS", "education": "EDUCATION", "certifications": "CERTIFICATIONS", "github": "GITHUB PROFILE", "languages": "LANGUAGES" },   // optional renames',
-          '  "order": ["summary","skills","experience","projects","education","certifications","github","languages","custom"],   // optional',
-          '  "summary": "2–3 sentence summary",',
-          '  "skills": [ { "label": "Category", "value": "skill, skill, skill" } ],',
-          '  "experience": [ { "role": "", "company": "", "location": "", "dates": "Jan 2024 – Present", "bullets": ["…"] } ],',
-          '  "projects": [ { "title": "Name — short description", "link": "display text", "url": "https://…", "tech": "A · B · C", "bullets": ["…"] } ],',
-          '  "education": [ { "degree": "", "year": "", "institution": "", "gradeLabel": "cgpa:", "grade": "" } ],',
-          '  "certifications": ["…"],',
-          '  "github": { "link": "github.com/user", "url": "https://github.com/user", "text": "one sentence" },',
-          '  "languages": [ { "name": "English", "level": "Fluent" } ],',
-          '  "custom": [ { "heading": "ACHIEVEMENTS", "bullets": ["…"] } ]   // any extra sections (also supports "text": "…" or "rows": [{label,value}])',
+          '  "name": "VIRENDRA PHIRKE",',
+          '  "subtitle": "Software Developer | Full Stack & Data Analyst",',
+          '  "contact": {',
+          '    "location": "City, Country",',
+          '    "email": "email@example.com",',
+          '    "phone": "+1 234 567 8900",',
+          '    "website": "example.com",',
+          '    "websiteUrl": "https://example.com",',
+          '    "github": "github.com/username",',
+          '    "githubUrl": "https://github.com/username",',
+          '    "linkedin": "linkedin.com/in/username",',
+          '    "linkedinUrl": "https://linkedin.com/in/username"',
+          '  },',
+          '  "personalInfo": {',
+          '    "Nationality": "Your Nationality",',
+          '    "Visa Status": "Your Visa Status (e.g., Authorized to work / Visit Visa)",',
+          '    "Notice Period": "Immediate / 30 Days"',
+          '  },',
+          '  "headings": {',
+          '    "summary": "PROFESSIONAL SUMMARY",',
+          '    "skills": "TECHNICAL SKILLS",',
+          '    "experience": "WORK EXPERIENCE",',
+          '    "projects": "PROJECTS",',
+          '    "education": "EDUCATION",',
+          '    "certifications": "CERTIFICATIONS",',
+          '    "languages": "LANGUAGES"',
+          '  },',
+          '  "order": ["summary", "skills", "experience", "projects", "education", "certifications", "languages", "custom"],',
+          '  "summary": "2–3 sentence high-impact summary highlighting your technical strengths, core technologies, and proven track record.",',
+          '  "skills": [',
+          '    { "label": "Programming Languages", "value": "TypeScript, JavaScript, Python, Java" },',
+          '    { "label": "Frontend Development", "value": "React.js, Next.js, HTML5, CSS3, Tailwind CSS" },',
+          '    { "label": "Backend & APIs", "value": "Node.js, Express.js, REST APIs, WebRTC" },',
+          '    { "label": "Databases & Cloud", "value": "PostgreSQL, MySQL, Redis, Supabase, Firebase, Docker" },',
+          '    { "label": "Developer Tools", "value": "Git, GitHub, CI/CD, Vite, NPM" }',
+          '  ],',
+          '  "experience": [',
+          '    {',
+          '      "role": "Role / Job Title",',
+          '      "company": "Company Name",',
+          '      "location": "City, Country",',
+          '      "dates": "Jan 2024 – Present",',
+          '      "bullets": [',
+          '        "Accomplished [X] as measured by [Y] by doing [Z].",',
+          '        "Engineered scalable solutions resulting in improved performance or efficiency."',
+          '      ]',
+          '    }',
+          '  ],',
+          '  "projects": [',
+          '    {',
+          '      "title": "Project Name — Brief One-Line Tagline",',
+          '      "link": "demo.example.com",',
+          '      "url": "https://demo.example.com",',
+          '      "tech": "React.js · Node.js · PostgreSQL · Tailwind CSS",',
+          '      "bullets": [',
+          '        "Architected and deployed full-stack platform supporting real-time user interactions.",',
+          '        "Implemented secure JWT authentication, role-based access control, and automated tests."',
+          '      ]',
+          '    }',
+          '  ],',
+          '  "education": [',
+          '    {',
+          '      "degree": "B.E. in Computer Science Engineering",',
+          '      "year": "2026",',
+          '      "institution": "University / College Name, City",',
+          '      "gradeLabel": "CGPA:",',
+          '      "grade": "8.21"',
+          '    }',
+          '  ],',
+          '  "certifications": [',
+          '    "Certification Name (Issuer or In Progress)"',
+          '  ],',
+          '  "languages": [',
+          '    { "name": "English", "level": "Fluent" }',
+          '  ],',
+          '  "custom": [',
+          '    {',
+          '      "heading": "Key Achievements",',
+          '      "bullets": [',
+          '        "Solved 100+ algorithmic problems on LeetCode.",',
+          '        "Built 3+ production web applications deployed to public users."',
+          '      ]',
+          '    }',
+          '  ],',
+          '  "referees": "Available upon request"',
           '}',
           '',
-          'MY CURRENT RESUME (JSON):',
+          '=== CURRENT RESUME DATA ===',
           input.value,
           '',
-          'JOB DESCRIPTION / TARGET ROLE:',
-          '<paste here>'
+          '=== TARGET ROLE / JOB DESCRIPTION ===',
+          '<Paste the Job Description or Target Role requirements here>'
         ].join('\n');
         const ok = await copyText(prompt);
-        toast(ok ? 'AI prompt copied — paste it into an AI chat with the job description, then paste the JSON it returns here.' : 'Could not access the clipboard.', ok ? '' : 'error');
+        toast(ok ? 'AI Prompt + JSON template copied! Paste it into ChatGPT / Claude with your job description, then paste the returned JSON directly here.' : 'Could not access clipboard.', ok ? '' : 'error');
       };
       $('reset-btn').onclick = () => {
         closeMenus();
@@ -1571,9 +3034,10 @@
       function drawGuides() {
         const g = $('guides'); g.replaceChildren();
         const contentH = resumeEl.querySelector('.content') ? resumeEl.querySelector('.content').offsetHeight : 0;
-        const pages = Math.ceil(contentH * 0.75 / PAGE_PT);
+        const pageHeight = PAGE_PT();
+        const pages = Math.ceil(contentH * 0.75 / pageHeight);
         for (let k = 1; k < pages; k++) {
-          const line = el('div', 'guide'); line.style.top = (43.15 + k * PAGE_PT) + 'pt'; add(line, el('span', '', 'Page ' + (k + 1)));
+          const line = el('div', 'guide'); line.style.top = (activePage.marginsPt[0] + k * pageHeight) + 'pt'; add(line, el('span', '', 'Page ' + (k + 1)));
           g.appendChild(line);
         }
       }
@@ -1607,7 +3071,7 @@
         return libPromise;
       }
       (window.requestIdleCallback || ((f) => setTimeout(f, 2500)))(() => loadLib(), { timeout: 4000 });
-      const fileName = () => (str(current && current.name).trim().replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'Resume') + '_Resume.pdf';
+      const fileName = () => (str(current && current.name).trim().replace(/[^\w]+/g, '_').replace(/^_|_$/g, '') || 'Resume') + (activeFormatId === 'original' ? '' : '_' + activeFormatId.toUpperCase()) + '_Resume.pdf';
 
       /* ---------------- Light-theme Print & PDF Export Guarantees ---------------- */
       let printThemeState = null;
@@ -1626,18 +3090,22 @@
       window.addEventListener('beforeprint', prepareLightExport);
       window.addEventListener('afterprint', cleanupLightExport);
 
-      $('print-btn').onclick = () => {
+      function openPrintDialog(mode) {
         const old = document.title;
-        document.title = fileName().replace(/\.pdf$/, '');
+        document.title = fileName().replace(/\.pdf$/, '') + (mode === 'visual' ? '_Visual' : '_ATS');
+        document.documentElement.dataset.exportMode = mode;
         prepareLightExport();
         setTimeout(() => {
           window.print();
           setTimeout(() => {
             document.title = old;
+            delete document.documentElement.dataset.exportMode;
             cleanupLightExport();
           }, 500);
         }, 50);
-      };
+      }
+      $('print-btn').onclick = () => openPrintDialog('ats');
+      $('visual-print-btn').onclick = () => openPrintDialog('visual');
 
       $('download-btn').onclick = async function () {
         const btn = this;
@@ -1649,16 +3117,38 @@
         }
         prepareLightExport();
         const stage = $('export-stage'); stage.replaceChildren();
-        const clone = resumeEl.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('export'); stage.appendChild(clone);
+        const clone = resumeEl.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('export');
+        clone.style.width = (activePage.widthPt - activePage.marginsPt[1] - activePage.marginsPt[3]) + 'pt';
+        clone.style.minHeight = '0';
+        stage.appendChild(clone);
         try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (_) { }
         try {
           await window.html2pdf().set({
-            margin: [43.15, 57.6, 39.6, 57.6],                 // pt – identical to the Word page margins
+            margin: activePage.marginsPt,
             filename: fileName(),
             image: { type: 'png' },
             html2canvas: { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
-            jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait', compress: true },
-            pagebreak: { mode: ['css'], avoid: ['li', '.r-proj-title', '.r-tech', '.r-h', '.r-edu-top', '.r-edu-sub', '.r-skill'] }
+            jsPDF: { unit: 'pt', format: activePage.size.toLowerCase(), orientation: 'portrait', compress: true },
+            pagebreak: {
+              mode: ['css', 'legacy'],
+              avoid: [
+                '.r-item-block',
+                '.r-proj-item',
+                '.r-exp-item',
+                '.r-edu-item',
+                '.r-cert-block',
+                '.r-skills-block',
+                '.r-skills-grid',
+                '.r-personal-info-card',
+                '.r-h',
+                '.r-sidebar-heading',
+                '.r-banner--australia',
+                '.r-banner--uae',
+                '.r-header-india',
+                '.profile-header',
+                'li'
+              ]
+            }
           }).from(clone).save();
         } catch (err) {
           toast('PDF generation failed: ' + err.message, 'error');
@@ -1669,6 +3159,15 @@
       };
 
       /* ---------------- UI behaviours ---------------- */
+      // guide modal
+      const guideModal = $('guide-modal');
+      if (guideModal && $('guide-btn')) {
+        $('guide-btn').onclick = () => guideModal.showModal();
+        $('guide-close-btn').onclick = () => guideModal.close();
+        $('guide-got-it-btn').onclick = () => guideModal.close();
+        guideModal.addEventListener('click', (e) => { if (e.target === guideModal) guideModal.close(); });
+      }
+
       function closeMenus() { document.querySelectorAll('details.menu[open]').forEach(d => d.removeAttribute('open')); }
       document.addEventListener('click', (e) => { if (!e.target.closest('details.menu')) closeMenus(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenus(); });
@@ -1759,6 +3258,11 @@
       });
 
       /* ---------------- init ---------------- */
+      // Restore the format independently from the resume JSON.
+      let savedFormat = 'original';
+      try { savedFormat = localStorage.getItem(FORMAT_STORE_KEY) || 'original'; } catch (_) { }
+      setActiveFormat(savedFormat, { persist: false, rerender: false });
+
       // Auto-detect when default-data in HTML file is updated on disk:
       const dataSignature = 'sig_' + DEFAULT_JSON.length + '_' + (DEFAULT_JSON.slice(0, 30) + DEFAULT_JSON.slice(-30)).replace(/\s+/g, '');
       const lastSignature = localStorage.getItem('resume-default-sig');

@@ -1,0 +1,10 @@
+# Local MCP runtime state
+.codemcp/
+
+# OS and temp files
+.DS_Store
+Thumbs.db
+node_modules/
+dist/
+build/
+*.log
