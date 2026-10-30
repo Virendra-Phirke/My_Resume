@@ -414,8 +414,11 @@
       background: var(--panel);
       padding: 12px 14px;
       tab-size: 2;
-      white-space: pre;
-      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     #json-input:focus {
@@ -483,11 +486,14 @@
     .preview {
       flex: 0 1 auto;
       min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
     }
 
     .preview-fit {
-      transform-origin: top left;
+      transform-origin: top center;
       position: relative;
+      margin: 0 auto;
     }
 
     #guides {
@@ -611,7 +617,7 @@
         display: flex;
         gap: 4px;
         padding: 4px;
-        margin: 12px 16px 0;
+        margin: 10px 14px 0;
         background: var(--panel);
         border: 1px solid var(--border);
         border-radius: 11px;
@@ -644,7 +650,7 @@
 
       .workspace {
         display: block;
-        padding: 14px 12px 90px;
+        padding: 12px 10px 90px;
       }
 
       .workspace[data-view="edit"] .preview {
@@ -658,10 +664,10 @@
       .editor {
         position: static;
         min-width: 0;
+        width: 100%;
       }
 
       #toggle-editor,
-      #print-btn,
       #pill-wrap .pill span.txt,
       .brand small {
         display: none !important;
@@ -669,11 +675,13 @@
 
       .toolbar {
         flex-wrap: wrap;
-        padding: 9px 12px;
+        gap: 8px;
+        padding: 8px 12px;
       }
 
       .brand {
         flex: 1 1 100%;
+        margin-bottom: 2px;
       }
 
       .zoombar {
@@ -681,23 +689,57 @@
       }
     }
 
-    @media (max-width:520px) {
+    @media (max-width:640px) {
+      .toolbar {
+        gap: 6px;
+      }
+
+      .btn {
+        padding: 7px 10px;
+        font-size: 12.5px;
+      }
+
       .format-picker > span {
         display: none;
       }
 
       .format-picker select {
-        min-width: 112px;
-        max-width: 135px;
-        padding: 8px 5px;
+        min-width: 110px;
+        max-width: 140px;
+        padding: 6px 4px;
+        font-size: 12px;
       }
 
       #download-label {
         display: none;
       }
 
-      .btn.primary {
+      #print-btn span {
+        display: none;
+      }
+
+      #print-btn {
+        padding: 7px 9px;
+      }
+
+      .editor-head {
         padding: 8px 10px;
+      }
+
+      .editor-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width:420px) {
+      .btn {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .format-picker select {
+        max-width: 120px;
       }
     }
 
@@ -716,6 +758,8 @@
       line-height: 1.2207;
       /* Calibri ascent+descent, as Word */
       box-shadow: 0 2px 16px rgba(0, 0, 0, .18);
+      box-sizing: border-box;
+      max-width: 100%;
     }
 
     /* Word spacing rule: gap between paragraphs = larger of (space-after, space-before) -> same as CSS margin collapsing */
@@ -752,10 +796,11 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 4pt 10pt;
+      gap: 3.5pt 10pt;
       font-size: 8.8pt;
       line-height: 1.35;
       color: #374151;
+      max-width: 100%;
     }
     .r-contact-row--sub {
       margin-top: 2.5pt;
@@ -764,7 +809,10 @@
       display: inline-flex;
       align-items: center;
       gap: 3.5pt;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      max-width: 100%;
     }
     .r-icon {
       width: 10.5pt;
@@ -781,6 +829,8 @@
     .r-contact-link {
       color: inherit;
       text-decoration: none;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .r-contact-link:hover {
       text-decoration: underline;
@@ -819,8 +869,8 @@
     /* Multi-column bullet skills grid (UK, Canada, Australia) */
     .r-skills-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2pt 14pt;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.5pt 14pt;
       list-style: none;
       padding: 0;
       margin: 2pt 0 4pt 0;
@@ -828,9 +878,12 @@
     .r-skills-grid li {
       position: relative;
       padding-left: 12pt;
-      line-height: 1.3;
+      line-height: 1.34;
       break-inside: avoid;
       font-size: 9.6pt;
+      overflow-wrap: break-word;
+      word-break: normal;
+      min-width: 0;
     }
     .r-skills-grid li::before {
       content: "\2022";
@@ -1005,18 +1058,22 @@
     .r-two-column--germany .r-col-sidebar {
       width: 32%;
       flex: 0 0 32%;
+      min-width: 0;
       background: #f1f4f8;
       border-right: 1px solid #d9e2ec;
       border-radius: 3pt;
       padding: 12pt 10pt;
       box-sizing: border-box;
       color: #334155;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .r-two-column--germany .r-col-main {
       width: 68%;
       flex: 1 1 68%;
       min-width: 0;
       box-sizing: border-box;
+      overflow-wrap: break-word;
     }
     .r-germany-photo-wrap {
       display: flex;
@@ -1035,22 +1092,38 @@
       color: #0f172a;
       line-height: 1.15;
       margin-bottom: 2pt !important;
+      overflow-wrap: break-word;
     }
     .r-two-column--germany .r-subtitle {
       text-align: center;
       font-size: 9pt;
       color: #64748b;
       margin-bottom: 10pt;
+      overflow-wrap: break-word;
     }
     .r-sidebar-contact {
       display: flex;
       flex-direction: column;
-      gap: 5pt;
+      gap: 6pt;
       font-size: 8.5pt;
       line-height: 1.35;
       margin-bottom: 12pt;
       border-bottom: 1px solid #d8e2ec;
       padding-bottom: 10pt;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+    .r-sidebar-contact .r-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 5pt;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      max-width: 100%;
+    }
+    .r-sidebar-contact .r-icon {
+      margin-top: 1.5pt;
     }
     .r-sidebar-heading {
       font-size: 9.5pt;
@@ -1061,11 +1134,13 @@
       border-bottom: 1px solid #cbd5e1;
       padding-bottom: 2pt;
       margin: 8pt 0 4pt;
+      overflow-wrap: break-word;
     }
     .r-sidebar-lang {
       font-size: 8.6pt;
-      line-height: 1.3;
-      margin-bottom: 3pt;
+      line-height: 1.34;
+      margin-bottom: 3.5pt;
+      overflow-wrap: break-word;
     }
     .r-two-column--germany .r-h {
       font-size: 10.5pt;
@@ -1133,23 +1208,32 @@
     .r-two-column--uae .r-col-sidebar {
       width: 32%;
       flex: 0 0 32%;
+      min-width: 0;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 4px;
       padding: 9pt 8pt;
       box-sizing: border-box;
       color: #334155;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .r-two-column--uae .r-col-main {
       width: 68%;
       flex: 1 1 68%;
       min-width: 0;
       box-sizing: border-box;
+      overflow-wrap: break-word;
+    }
+    .r-personal-info-card {
+      margin-bottom: 10pt;
     }
     .r-personal-info-item {
       font-size: 8.5pt;
       line-height: 1.35;
       margin-bottom: 3.5pt;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     .r-personal-info-item b {
       color: #0f172a;
@@ -1255,17 +1339,24 @@
       font-size: 18pt;
       color: #1F3864;
       margin-bottom: 1.25pt !important;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
 
     .r-contact {
       text-align: center;
       font-size: 9pt;
       margin-bottom: 4.5pt !important;
-      white-space: pre-wrap;
+      white-space: normal;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .r-contact .blue {
       color: #1F3864;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .r-h {
@@ -1277,40 +1368,57 @@
       margin-top: 9.5pt !important;
       margin-bottom: 4.5pt !important;
       break-after: avoid;
+      overflow-wrap: break-word;
     }
 
     .r-summary {
-      text-align: justify;
-      margin-bottom: 2.5pt !important;
+      text-align: left;
+      text-wrap: pretty;
+      line-height: 1.34;
+      margin-bottom: 3pt !important;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
 
     .r-skill {
-      text-align: justify;
-      margin-bottom: .8pt !important;
+      text-align: left;
+      text-wrap: pretty;
+      line-height: 1.34;
+      margin-bottom: 1.5pt !important;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
 
     .r-skill:last-of-type {
-      margin-bottom: 2pt !important;
+      margin-bottom: 2.5pt !important;
     }
 
     .r-skill b {
       color: #000;
+      font-weight: 700;
     }
 
     .r-proj-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 1.5pt 8pt;
       font-weight: 700;
       font-size: 10.5pt;
       color: #000;
-      margin-top: 8pt !important;
-      margin-bottom: 1pt !important;
+      margin-top: 7pt !important;
+      margin-bottom: 1.5pt !important;
       break-after: avoid;
-      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
 
     .r-proj-title .link {
       font-weight: 400;
-      font-size: 9.5pt;
+      font-size: 9.3pt;
       color: #1F3864;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .r-tech {
@@ -1319,10 +1427,13 @@
       color: #1F3864;
       margin-bottom: 3pt !important;
       break-after: avoid;
+      overflow-wrap: break-word;
+      word-break: normal;
+      line-height: 1.3;
     }
 
     .r-edu-top.exp {
-      margin-top: 8pt !important;
+      margin-top: 7.5pt !important;
       break-after: avoid;
     }
 
@@ -1341,13 +1452,19 @@
     .r-ul {
       list-style: none;
       padding: 0;
+      margin: 2pt 0;
     }
 
     .r-ul li {
       position: relative;
       padding-left: 15.8pt;
-      margin-bottom: 1.5pt;
+      margin-bottom: 2pt;
       break-inside: avoid;
+      text-align: left;
+      text-wrap: pretty;
+      line-height: 1.34;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
 
     .r-ul li::before {
@@ -1363,39 +1480,51 @@
       color: #000;
     }
 
-    .r-edu-top {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: .5pt !important;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    .page[data-resume-format="original"] .r-edu-top {
-      width: 451.3pt;
-    }
-
-    /* right tab @ 9026tw */
-    .r-edu-top .deg {
-      font-weight: 700;
-      color: #000;
-    }
-
+    .r-edu-top,
     .r-edu-sub {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      font-style: italic;
-      margin-bottom: 2pt !important;
+      flex-wrap: wrap;
+      gap: 1.5pt 8pt;
+      min-width: 0;
       break-inside: avoid;
       page-break-inside: avoid;
     }
 
+    .r-edu-top {
+      margin-bottom: .5pt !important;
+    }
+
+    .r-edu-sub {
+      font-style: italic;
+      margin-bottom: 2pt !important;
+    }
+
+    .page[data-resume-format="original"] .r-edu-top,
     .page[data-resume-format="original"] .r-edu-sub {
-      width: 451.3pt;
+      width: 100%;
+      max-width: 451.3pt;
+    }
+
+    .r-edu-top > span:first-child,
+    .r-edu-sub > span:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .r-edu-top > span:last-child,
+    .r-edu-sub > span:last-child {
+      flex: 0 0 auto;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .r-edu-top .deg {
+      font-weight: 700;
+      color: #000;
     }
 
     .r-edu-sub b {
@@ -1453,9 +1582,11 @@
     }
 
     .r-github {
-      text-align: justify;
+      text-align: left;
+      text-wrap: pretty;
+      line-height: 1.34;
       margin-bottom: 2pt !important;
-      white-space: pre-wrap;
+      overflow-wrap: break-word;
     }
 
     .r-github .gh {
@@ -1464,8 +1595,9 @@
     }
 
     .r-lang {
+      line-height: 1.34;
       margin-bottom: .5pt !important;
-      white-space: pre-wrap;
+      overflow-wrap: break-word;
     }
 
     .r-lang b {
@@ -2036,7 +2168,9 @@
   <script type="application/json" id="default-data">
 {
   "name": "VIRENDRA PHIRKE",
+
   "subtitle": "Software Developer | Full Stack & Data Analyst",
+
   "contact": {
     "location": "Advihir, Buldhana, Maharashtra, India",
     "email": "virendraphirke2222@gmail.com",
@@ -2048,11 +2182,13 @@
     "linkedin": "linkedin.com/in/virendra-phirke",
     "linkedinUrl": "https://linkedin.com/in/virendra-phirke"
   },
+
   "personalInfo": {
     "Nationality": "Indian",
     "Visa Status": "Available for Relocation / Visit Visa",
     "Notice Period": "Immediate / 30 Days"
   },
+
   "headings": {
     "summary": "PROFESSIONAL SUMMARY",
     "skills": "TECHNICAL SKILLS",
@@ -2062,7 +2198,9 @@
     "certifications": "CERTIFICATIONS",
     "languages": "LANGUAGES"
   },
+
   "summary": "Software Engineer skilled in building scalable, user-friendly applications with React.js, Node.js, and TypeScript. Experienced in end-to-end system design, with a track record of shipping production-ready web applications.",
+
   "skills": [
     { "label": "Programming Languages", "value": "TypeScript, JavaScript, Python, Java, C" },
     { "label": "Frontend Development", "value": "React.js, HTML5, CSS3, Vite, Tailwind CSS" },
@@ -2072,6 +2210,7 @@
     { "label": "Developer Tools & Libraries", "value": "Git, GitHub, NPM, Capacitor" },
     { "label": "Soft Skills", "value": "Problem-solving, Fast Learner, Clean Code Practices" }
   ],
+
   "experience": [
     {
       "role": "Software Developer Intern",
@@ -2084,6 +2223,7 @@
       ]
     }
   ],
+
   "projects": [
     {
       "title": "QuizMaster — Online Examination Platform",
@@ -2117,6 +2257,7 @@
       ]
     }
   ],
+
   "education": [
     {
       "degree": "B.E. in Computer Science Engineering",
@@ -2126,22 +2267,26 @@
       "grade": "8.21"
     }
   ],
+
   "certifications": [
     "AWS Cloud Practitioner (In Progress)",
     "Advanced Java & SQL Certification",
     "Full Stack Development with Python & Django"
   ],
+
   "github": {
     "link": "github.com/Virendra-Phirke",
     "url": "https://github.com/Virendra-Phirke",
     "text": "Actively building and maintaining full-stack applications with a focus on performance, scalability, and user experience."
   },
+
   "languages": [
     { "name": "English", "level": "Fluent" },
     { "name": "Hindi", "level": "Native" },
     { "name": "Marathi", "level": "Native" },
     { "name": "German", "level": "Basic" }
   ],
+
   "custom": [
     {
       "heading": "Key Achievements",
@@ -2151,6 +2296,7 @@
       ]
     }
   ],
+
   "referees": "Available upon request"
 }
 </script>
@@ -2827,16 +2973,65 @@
         $('counter').textContent = lines + ' lines · ' + v.length.toLocaleString() + ' chars';
       }
 
+      function cleanJsonText(raw) {
+        if (!raw) return '';
+        let cleaned = String(raw).trim();
+        if (cleaned.startsWith('```')) {
+          cleaned = cleaned.replace(/^```(?:json)?\r?\n?/, '').replace(/\r?\n?```$/, '').trim();
+        }
+        const fenceMatch = /```(?:json)?\s*([\s\S]*?)\s*```/.exec(cleaned);
+        if (fenceMatch) {
+          cleaned = fenceMatch[1].trim();
+        }
+        return cleaned;
+      }
+
+      function parseJsonRelaxed(raw) {
+        const cleaned = cleanJsonText(raw);
+        try {
+          return { data: JSON.parse(cleaned), cleaned };
+        } catch (firstErr) {
+          try {
+            const noTrailingCommas = cleaned.replace(/,(\s*[\]\}])/g, '$1');
+            return { data: JSON.parse(noTrailingCommas), cleaned: noTrailingCommas };
+          } catch (_) {
+            throw firstErr;
+          }
+        }
+      }
+
+      function formatResumeJSON(raw) {
+        const { data } = parseJsonRelaxed(raw);
+        if (data === null || typeof data !== 'object' || Array.isArray(data)) {
+          throw new Error('Top level must be a JSON object { … }');
+        }
+
+        const jsonStr = JSON.stringify(data, null, 2);
+        const lines = jsonStr.split('\n');
+        const formatted = [];
+        let isFirstTopKey = true;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          if (/^  "[a-zA-Z0-9_-]+":/.test(line)) {
+            if (!isFirstTopKey) {
+              formatted.push('');
+            }
+            isFirstTopKey = false;
+          }
+          formatted.push(line);
+        }
+
+        return formatted.join('\n');
+      }
+
       let current = null, lastPages = 1;
       function apply(text, { save = true } = {}) {
-        let raw = (text || '').trim();
-        // Automatically strip markdown ```json and ``` code blocks if copied directly from ChatGPT / Claude / Gemini
-        if (raw.startsWith('```')) {
-          raw = raw.replace(/^```(?:json)?\r?\n?/, '').replace(/\r?\n?```$/, '').trim();
-        }
-        let data;
+        let data, cleanedText;
         try {
-          data = JSON.parse(raw);
+          const res = parseJsonRelaxed(text);
+          data = res.data;
+          cleanedText = res.cleaned;
           if (data === null || typeof data !== 'object' || Array.isArray(data)) throw new Error('Top level must be a JSON object { … }');
         } catch (err) {
           const m = /position (\d+)/.exec(err.message); errPos = m ? +m[1] : null;
@@ -2866,8 +3061,14 @@
       input.addEventListener('input', () => { updateCounter(); clearTimeout(t); t = setTimeout(() => apply(input.value), 300); });
 
       $('format-btn').onclick = () => {
-        try { input.value = JSON.stringify(JSON.parse(input.value), null, 2); apply(input.value); }
-        catch (e) { toast('Invalid JSON: ' + e.message, 'error'); }
+        try {
+          const formatted = formatResumeJSON(input.value);
+          input.value = formatted;
+          apply(formatted);
+          toast('JSON formatted & validated successfully');
+        } catch (e) {
+          toast('Invalid JSON: ' + e.message, 'error');
+        }
       };
       async function copyText(text) {
         try { await navigator.clipboard.writeText(text); return true; } catch (_) { }
@@ -3025,8 +3226,8 @@
         const ws = $('workspace'), cs = getComputedStyle(ws);
         const inner = ws.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         const ed = $('editor'); const side = ed.classList.contains('hidden') || getComputedStyle(ed).display === 'none' ? 0 : ed.offsetWidth + 20;
-        const room = Math.max(280, inner - side);
-        const w = resumeEl.offsetWidth;
+        const room = Math.max(260, inner - side);
+        const w = resumeEl.offsetWidth || 794;
         const fitScale = Math.min(1, room / w);
         zoomVal = zoomMode === 'fit' ? fitScale : zoomVal;
         box.style.zoom = zoomVal;
