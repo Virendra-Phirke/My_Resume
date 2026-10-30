@@ -757,6 +757,9 @@
       line-height: 1.35;
       color: #374151;
     }
+    .r-contact-row--sub {
+      margin-top: 2.5pt;
+    }
     .r-contact-item {
       display: inline-flex;
       align-items: center;
@@ -2483,8 +2486,7 @@
             createContactItem('i-pin', c.location),
             createContactItem('i-phone', c.phone)
           );
-          const row2 = el('div', 'r-contact-row');
-          row2.style.marginTop = '2.5pt';
+          const row2 = el('div', 'r-contact-row r-contact-row--sub');
           add(row2,
             createContactItem('i-mail', c.email),
             createContactItem('i-linkedin', c.linkedin, c.linkedinUrl),
@@ -3033,11 +3035,16 @@
       }
       function drawGuides() {
         const g = $('guides'); g.replaceChildren();
-        const contentH = resumeEl.querySelector('.content') ? resumeEl.querySelector('.content').offsetHeight : 0;
+        const content = resumeEl.querySelector('.content');
+        if (!content) return;
+        const contentH = content.offsetHeight;
         const pageHeight = PAGE_PT();
-        const pages = Math.ceil(contentH * 0.75 / pageHeight);
+        const printableH = pageHeight - activePage.marginsPt[0] - activePage.marginsPt[2];
+        const pages = Math.max(1, Math.ceil((contentH * 0.75) / printableH));
         for (let k = 1; k < pages; k++) {
-          const line = el('div', 'guide'); line.style.top = (activePage.marginsPt[0] + k * pageHeight) + 'pt'; add(line, el('span', '', 'Page ' + (k + 1)));
+          const line = el('div', 'guide');
+          line.style.top = (activePage.marginsPt[0] + k * printableH) + 'pt';
+          add(line, el('span', '', 'Page ' + (k + 1)));
           g.appendChild(line);
         }
       }

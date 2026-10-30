@@ -86,7 +86,26 @@ The resume builder supports 7 distinct country profiles matching international r
 ## Interactive features & export choices
 
 - **Country Guide Modal:** Built-in interactive guide in the toolbar displaying the "Key Differences at a Glance" comparison matrix and ATS tips.
-- **Save Vector PDF (ATS):** Browser print with 100% selectable vector text and clickable links; suppresses photos for ATS parsers.
-- **Save Visual PDF:** Browser print with exact visual design including photos, avatars, and navy banners.
+- **Save Vector PDF (ATS):** Browser print with 100% selectable vector text and clickable links; suppresses photos and avatars for robot ATS parsers.
+- **Save Visual PDF:** Browser print with exact visual design including photos, avatars, and navy banners for human reviewers.
 - **Quick PDF (Raster):** Direct download via html2pdf matching preview dimensions.
 - **Customization Preservation:** Source resume JSON schema remains canonical; custom headings, ordering, and user data are never mutated.
+
+## AI Resume Workflow (ChatGPT / Claude / Gemini)
+
+The application is engineered so users can effortlessly tailor their resume with AI:
+
+1. Click **`AI prompt`** in the toolbar to copy the complete prompt and strict JSON schema.
+2. Paste the prompt into ChatGPT or Claude along with your target Job Description.
+3. Ask the AI to tailor your resume for the role.
+4. Copy the JSON returned by the AI and paste it directly into the editor.
+   *(Markdown code blocks like ```` ```json ```` are automatically stripped and formatted upon pasting).*
+5. Select any country format (USA, UK, Canada, Australia, Germany, UAE, India) and export your tailored Vector PDF!
+
+## 2-Page Layout & Section Break Integrity
+
+To guarantee that multi-page resumes look completely professional and never split awkwardly across page boundaries:
+- **Atomic Item Blocks (`.r-item-block`):** Projects (`.r-proj-item`), job roles (`.r-exp-item`), degrees (`.r-edu-item`), and certifications (`.r-cert-block`) are wrapped in atomic containers with strict `break-inside: avoid; page-break-inside: avoid;`.
+- **Project Descriptions Stay Bound:** Project titles, live links, tech stacks, and bullet descriptions are encapsulated in a single item unit. They will never be separated or pushed away from each other.
+- **Heading Protection:** Section headings (`.r-h`, `.r-sidebar-heading`) use `break-after: avoid;` and `break-before: avoid;` so an orphan heading is never stranded at the bottom of Page 1 while its content begins on Page 2.
+- **Printable Area Guide:** Visual page-break guides dynamically calculate the true printable content area (`pageHeight - margins`) to show precisely where Page 1 ends and Page 2 begins.
