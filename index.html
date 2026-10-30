@@ -1361,11 +1361,17 @@
     }
 
     .r-edu-top {
-      width: 451.3pt;
+      width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       margin-bottom: .5pt !important;
       break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .page[data-resume-format="original"] .r-edu-top {
+      width: 451.3pt;
     }
 
     /* right tab @ 9026tw */
@@ -1375,17 +1381,72 @@
     }
 
     .r-edu-sub {
-      width: 451.3pt;
+      width: 100%;
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-style: italic;
       margin-bottom: 2pt !important;
       break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .page[data-resume-format="original"] .r-edu-sub {
+      width: 451.3pt;
     }
 
     .r-edu-sub b {
       font-weight: 700;
       color: #000;
+    }
+
+    /* Semantic Block Containers with Strict Page-Break Protection */
+    .r-section-block {
+      margin-bottom: 3pt;
+      break-inside: auto;
+    }
+
+    .r-item-block,
+    .r-proj-item,
+    .r-exp-item,
+    .r-edu-item,
+    .r-cert-block,
+    .r-skills-block,
+    .r-lang-block,
+    .r-custom-block,
+    .r-personal-info-card {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+
+    .r-proj-item {
+      margin-bottom: 6pt;
+    }
+
+    .r-proj-item:last-child {
+      margin-bottom: 1.5pt;
+    }
+
+    .r-exp-item {
+      margin-bottom: 6pt;
+    }
+
+    .r-exp-item:last-child {
+      margin-bottom: 1.5pt;
+    }
+
+    .r-edu-item {
+      margin-bottom: 5pt;
+    }
+
+    .r-edu-item:last-child {
+      margin-bottom: 1.5pt;
+    }
+
+    .r-h + .r-item-block,
+    .r-h + .r-summary {
+      break-before: avoid !important;
+      page-break-before: avoid !important;
     }
 
     .r-github {
@@ -1506,9 +1567,13 @@
       color: #333333 !important;
     }
     /* Page breaks and export suppression */
-    .r-h, .r-proj-title, .r-tech, .r-edu-top, .r-edu-sub, .r-banner {
-      break-after: avoid;
-      page-break-after: avoid;
+    .r-h, .r-proj-title, .r-tech, .r-edu-top, .r-edu-sub, .r-banner, .r-banner--australia, .r-banner--uae, .r-header-india, .profile-header {
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+    }
+    .r-item-block, .r-proj-item, .r-exp-item, .r-edu-item, .r-cert-block, .r-skills-block, .r-personal-info-card {
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
     }
     :root[data-export-mode="ats"] .profile-photo,
     :root[data-export-mode="ats"] .profile-avatar-placeholder {
@@ -1968,7 +2033,7 @@
   <script type="application/json" id="default-data">
 {
   "name": "VIRENDRA PHIRKE",
-  "subtitle": "Software Developer | Data Analyst",
+  "subtitle": "Software Developer | Full Stack & Data Analyst",
   "contact": {
     "location": "Advihir, Buldhana, Maharashtra, India",
     "email": "virendraphirke2222@gmail.com",
@@ -1982,8 +2047,8 @@
   },
   "personalInfo": {
     "Nationality": "Indian",
-    "Visa Status": "Visit Visa",
-    "Notice Period": "30 Days"
+    "Visa Status": "Available for Relocation / Visit Visa",
+    "Notice Period": "Immediate / 30 Days"
   },
   "headings": {
     "summary": "PROFESSIONAL SUMMARY",
@@ -1994,19 +2059,19 @@
     "certifications": "CERTIFICATIONS",
     "languages": "LANGUAGES"
   },
-  "summary": "Motivated Computer Science graduate with strong analytical skills and hands-on experience in full-stack web development and data analysis. Experienced in building scalable applications with React.js, Node.js, and modern databases.",
+  "summary": "Software Engineer skilled in building scalable, user-friendly applications with React.js, Node.js, and TypeScript. Experienced in end-to-end system design, with a track record of shipping production-ready web applications.",
   "skills": [
     { "label": "Programming Languages", "value": "TypeScript, JavaScript, Python, Java, C" },
-    { "label": "Frontend Development", "value": "React.js, HTML5, CSS3, Vite" },
-    { "label": "Backend & APIs", "value": "Node.js, REST APIs" },
-    { "label": "Databases & Caching", "value": "PostgreSQL, MySQL, Redis" },
-    { "label": "Cloud & Infrastructure", "value": "Supabase, Firebase, Vercel, Docker" },
+    { "label": "Frontend Development", "value": "React.js, HTML5, CSS3, Vite, Tailwind CSS" },
+    { "label": "Backend & APIs", "value": "Node.js, Express.js, REST APIs, WebRTC" },
+    { "label": "Databases & Caching", "value": "PostgreSQL, MySQL, Redis, Supabase" },
+    { "label": "Cloud & Infrastructure", "value": "Firebase, Vercel, Docker" },
     { "label": "Developer Tools & Libraries", "value": "Git, GitHub, NPM, Capacitor" },
     { "label": "Soft Skills", "value": "Problem-solving, Fast Learner, Clean Code Practices" }
   ],
   "experience": [
     {
-      "role": "Intern – Data Analyst & Software Developer",
+      "role": "Software Developer Intern",
       "company": "ABC Tech Solutions",
       "location": "Pune, India",
       "dates": "Jun 2025 – Aug 2025",
@@ -2018,46 +2083,50 @@
   ],
   "projects": [
     {
-      "title": "Smart Health & GPS Tracking System",
-      "link": "github.com/Virendra-Phirke",
-      "url": "https://github.com/Virendra-Phirke",
-      "tech": "React.js · Node.js · PostgreSQL · Maps API",
+      "title": "QuizMaster — Online Examination Platform",
+      "link": "quizmastor.tech",
+      "url": "https://quizmastor.tech",
+      "tech": "React.js · Node.js · PostgreSQL · JavaScript · TypeScript",
       "bullets": [
-        "Developed a system to track climbers' and outdoor field teams' location and vital metrics in real-time.",
-        "Implemented geofencing, real-time telemetry, and automated emergency SOS broadcasting."
+        "Built a full-stack platform for schools and organizations to conduct secure online exams.",
+        "Implemented role-based access, authentication, and anti-cheating controls (fullscreen lock, tab-switch detection).",
+        "Designed configurable quizzes with timers, negative marking, and question randomization."
       ]
     },
     {
-      "title": "Campus Mate — Campus Management App",
-      "tech": "React.js · Firebase · Tailwind CSS · Capacitor",
+      "title": "Campus Mate — Cross-Platform Campus Management App",
+      "tech": "React · TypeScript · Supabase (PostgreSQL) · Capacitor · MapLibre · Clerk · React Query",
       "bullets": [
-        "Built a cross-platform campus management and collaboration mobile app using Capacitor.",
-        "Developed indoor/outdoor navigation and QR-code-based attendance tracking."
+        "Built a cross-platform campus management app using Capacitor for multi-platform deployment.",
+        "Developed indoor/outdoor navigation (MapLibre) and QR-code-based attendance tracking.",
+        "Built event management and admin tools supporting multiple colleges."
       ]
     },
     {
-      "title": "ClipYard — Real-Time Clipboard & P2P File Sharing",
+      "title": "ClipYard — Real-Time Clipboard & File Sharing Platform",
       "link": "clip-yard-jet.vercel.app",
       "url": "https://clip-yard-jet.vercel.app",
-      "tech": "Next.js · TypeScript · Firebase · WebRTC",
+      "tech": "Next.js · React · TypeScript · Firebase · WebRTC · Tailwind CSS",
       "bullets": [
-        "Built a real-time clipboard sharing platform with temporary room-based sessions.",
-        "Implemented peer-to-peer file transfer using WebRTC with Firebase-based signaling."
+        "Built a real-time clipboard sharing platform with temporary room-based sessions for seamless device-to-device text synchronization.",
+        "Implemented peer-to-peer file transfer using WebRTC with Firebase-based signaling, eliminating the need for server-side file uploads.",
+        "Secured room communication with JWT authentication, AES-256-GCM encryption, rate limiting, Firebase security rules, and OWASP security headers."
       ]
     }
   ],
   "education": [
     {
-      "degree": "B.E. Computer Science Engineering",
+      "degree": "B.E. in Computer Science Engineering",
       "year": "2026",
-      "institution": "Shri Shivaji Education Society College of Engineering and Technology, Akola",
-      "gradeLabel": "CGPA:",
-      "grade": "8.2"
+      "institution": "Shri Shivaji Education Society College of Engineering and Technology, Akola, Maharashtra",
+      "gradeLabel": "cgpa:",
+      "grade": "8.21"
     }
   ],
   "certifications": [
     "AWS Cloud Practitioner (In Progress)",
-    "Advanced Java & SQL Certification"
+    "Advanced Java & SQL Certification",
+    "Full Stack Development with Python & Django"
   ],
   "github": {
     "link": "github.com/Virendra-Phirke",
@@ -2227,7 +2296,7 @@
 
       /* ---------------- render ---------------- */
       const SECTION_ORDER = ['summary', 'skills', 'experience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom'];
-      const KNOWN_KEYS = new Set(['name', 'subtitle', 'contact', 'personalInfo', 'referees', 'headings', 'order', 'summary', 'skills', 'experience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom']);
+      const KNOWN_KEYS = new Set(['name', 'subtitle', 'contact', 'personalInfo', 'referees', 'headings', 'order', 'summary', 'profile', 'skills', 'technicalSkills', 'experience', 'workExperience', 'projects', 'education', 'certifications', 'github', 'languages', 'custom', 'achievements']);
       const asList = (v) => Array.isArray(v) ? v.filter(x => x != null && x !== '') : (v == null || v === '' ? [] : [v]);
       const asText = (v, sep) => Array.isArray(v) ? v.join(sep == null ? ', ' : sep) : str(v);
       const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
@@ -2508,95 +2577,211 @@
         /* ----- sections ----- */
         const S = {
           summary() {
-            if (!d.summary) return;
-            heading(H.summary); add(sectionRoot, el('div', 'r-summary', asText(d.summary, ' ')));
+            const summaryText = d.summary || d.profile;
+            if (!summaryText) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'summary';
+            add(sec, el('div', 'r-h', H.summary));
+            add(sec, el('div', 'r-summary r-item-block', asText(summaryText, ' ')));
+            add(sectionRoot, sec);
           },
           skills() {
             if (activeFormatId === 'uae') return; // rendered in UAE sidebar
-            if (!asList(d.skills).length) return;
-            heading(H.skills);
+            const skillData = d.skills || d.technicalSkills;
+            if (!asList(skillData).length && !isObj(skillData)) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'skills';
+            add(sec, el('div', 'r-h', H.skills));
+            const block = el('div', 'r-skills-block r-item-block');
             if (activeFormatId === 'uk' || activeFormatId === 'canada' || activeFormatId === 'australia') {
               const grid = el('ul', 'r-skills-grid');
-              getFlatSkills(d.skills).forEach(sk => add(grid, el('li', '', sk)));
-              add(sectionRoot, grid);
+              getFlatSkills(skillData).forEach(sk => add(grid, el('li', '', sk)));
+              add(block, grid);
             } else {
-              rows(d.skills);
+              if (isObj(skillData) && !Array.isArray(skillData)) {
+                Object.entries(skillData).forEach(([cat, val]) => {
+                  const row = el('div', 'r-skill');
+                  add(row, el('b', '', str(cat).replace(/:\s*$/, '') + ':'), ' ' + asText(val));
+                  add(block, row);
+                });
+              } else {
+                asList(skillData).forEach(s => {
+                  const row = el('div', 'r-skill');
+                  if (isObj(s) && (s.label || s.category)) {
+                    const lbl = s.label || s.category;
+                    const val = s.value != null ? s.value : s.skills;
+                    add(row, el('b', '', str(lbl).replace(/:\s*$/, '') + ':'), ' ' + asText(val));
+                  } else {
+                    add(row, isObj(s) ? asText(s.value || s.skills) : str(s));
+                  }
+                  add(block, row);
+                });
+              }
             }
+            add(sec, block);
+            add(sectionRoot, sec);
           },
           experience() {
-            const items = asList(d.experience).filter(isObj); if (!items.length) return;
-            heading(H.experience);
+            const items = asList(d.experience || d.workExperience).filter(isObj); if (!items.length) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'experience';
+            add(sec, el('div', 'r-h', H.experience));
             items.forEach(x => {
               if (!isObj(x)) return;
-              titleLine(str(x.role || x.title), str(x.dates || x.period), 'exp');
-              const sub = [x.company, x.location].filter(Boolean).join(', ');
-              if (sub) add(sectionRoot, el('div', 'r-edu-sub exp', sub));
-              bullets(x.bullets);
+              const item = el('div', 'r-exp-item r-item-block');
+              const roleText = str(x.role || x.title || x.position || '');
+              const dateText = str(x.dates || x.period || x.duration || x.year || '');
+              const top = el('div', 'r-edu-top exp');
+              add(top, el('span', 'deg', roleText), el('span', '', dateText));
+              add(item, top);
+
+              const sub = [x.company || x.employer || x.organization, x.location].filter(Boolean).join(', ');
+              if (sub) add(item, el('div', 'r-edu-sub exp', sub));
+
+              const bulletItems = asList(x.bullets || x.responsibilities || x.description || x.achievements);
+              if (bulletItems.length) {
+                const ul = el('ul', 'r-ul');
+                bulletItems.forEach(b => add(ul, el('li', '', str(b))));
+                add(item, ul);
+              }
+              add(sec, item);
             });
+            add(sectionRoot, sec);
           },
           projects() {
             const items = asList(d.projects).filter(isObj); if (!items.length) return;
-            heading(H.projects);
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'projects';
+            add(sec, el('div', 'r-h', H.projects));
             items.forEach(p => {
               if (!isObj(p)) return;
+              const item = el('div', 'r-proj-item r-item-block');
+              const titleText = str(p.title || p.name || '');
               const t = el('div', 'r-proj-title');
-              add(t, str(p.title));
-              if (p.link) add(t, '   ', linkNode(str(p.link), p.url, 'link'));
-              add(sectionRoot, t);
-              if (p.tech) add(sectionRoot, el('div', 'r-tech', asText(p.tech, ' · ')));
-              bullets(p.bullets);
+              add(t, titleText);
+              const linkUrl = p.url || p.linkUrl;
+              const linkText = p.link || p.website || p.github;
+              if (linkText) add(t, '   ', linkNode(str(linkText), linkUrl, 'link'));
+              else if (linkUrl) add(t, '   ', linkNode(str(linkUrl).replace(/^https?:\/\//, ''), linkUrl, 'link'));
+              add(item, t);
+
+              const techStack = p.tech || p.technologies || p.stack || p.tools;
+              if (techStack) add(item, el('div', 'r-tech', asText(techStack, ' · ')));
+
+              const bulletItems = asList(p.bullets || p.description || p.points);
+              if (bulletItems.length) {
+                const ul = el('ul', 'r-ul');
+                bulletItems.forEach(b => add(ul, el('li', '', str(b))));
+                add(item, ul);
+              }
+              add(sec, item);
             });
+            add(sectionRoot, sec);
           },
           education() {
             const items = asList(d.education).filter(isObj); if (!items.length) return;
-            heading(H.education);
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'education';
+            add(sec, el('div', 'r-h', H.education));
             items.forEach(e => {
               if (!isObj(e)) return;
-              titleLine(str(e.degree), str(e.year));
-              if (e.institution || e.grade) {
+              const item = el('div', 'r-edu-item r-item-block');
+              const degText = str(e.degree || e.title || '');
+              const yearText = str(e.year || e.dates || e.graduationYear || '');
+              const top = el('div', 'r-edu-top');
+              add(top, el('span', 'deg', degText), el('span', '', yearText));
+              add(item, top);
+
+              const inst = str(e.institution || e.school || e.university || e.college || '');
+              const grade = str(e.grade || e.gpa || e.cgpa || '');
+              if (inst || grade) {
                 const sub = el('div', 'r-edu-sub');
-                add(sub, el('span', '', str(e.institution)));
-                if (e.grade) {
+                add(sub, el('span', '', inst));
+                if (grade) {
                   const g = el('span', activeFormatId === 'india' ? 'r-cgpa-badge' : '');
-                  add(g, el('b', '', str(e.gradeLabel == null ? 'CGPA: ' : e.gradeLabel + ' ')), str(e.grade));
+                  add(g, el('b', '', str(e.gradeLabel == null ? 'CGPA: ' : e.gradeLabel + ' ')), grade);
                   add(sub, g);
                 }
-                add(sectionRoot, sub);
+                add(item, sub);
               }
+              add(sec, item);
             });
+            add(sectionRoot, sec);
           },
           certifications() {
-            if (!asList(d.certifications).length) return;
-            heading(H.certifications); bullets(d.certifications, 'bold');
+            const items = asList(d.certifications);
+            if (!items.length) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'certifications';
+            add(sec, el('div', 'r-h', H.certifications));
+            const block = el('div', 'r-cert-block r-item-block');
+            const ul = el('ul', 'r-ul bold');
+            items.forEach(c => {
+              if (isObj(c)) {
+                const certText = [c.name || c.title, c.issuer, c.year || c.date].filter(Boolean).join(' — ');
+                add(ul, el('li', '', certText));
+              } else {
+                add(ul, el('li', '', str(c)));
+              }
+            });
+            add(block, ul);
+            add(sec, block);
+            add(sectionRoot, sec);
           },
           github() {
             const g = d.github;
-            if (!isObj(g) || !(g.link || g.text)) return;
-            heading(H.github);
-            const row = el('div', 'r-github');
+            if (!isObj(g) || !(g.link || g.text || g.url)) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'github';
+            add(sec, el('div', 'r-h', H.github));
+            const row = el('div', 'r-github r-item-block');
             if (g.link) add(row, linkNode(str(g.link), g.url, 'gh'));
             if (g.text) add(row, (g.link ? '  —  ' : '') + str(g.text));
-            add(sectionRoot, row);
+            add(sec, row);
+            add(sectionRoot, sec);
           },
           languages() {
             if (activeFormatId === 'germany' || activeFormatId === 'uae') return; // rendered in sidebar
-            if (!asList(d.languages).length) return;
-            heading(H.languages);
+            const items = asList(d.languages);
+            if (!items.length) return;
+            const sec = el('section', 'r-section-block');
+            sec.dataset.section = 'languages';
+            add(sec, el('div', 'r-h', H.languages));
+            const block = el('div', 'r-lang-block r-item-block');
             const row = el('div', 'r-lang');
-            asList(d.languages).forEach((l, i) => {
+            items.forEach((l, i) => {
               if (i) add(row, '   |   ');
               if (isObj(l)) add(row, el('b', '', l.name), l.level ? ' (' + l.level + ')' : '');
               else add(row, el('b', '', str(l)));
             });
-            add(sectionRoot, row);
+            add(block, row);
+            add(sec, block);
+            add(sectionRoot, sec);
           },
           custom() {
-            asList(d.custom).forEach(sec => {
-              if (!isObj(sec)) return;
-              heading(str(sec.heading || sec.title || ''));
-              if (sec.text) add(sectionRoot, el('div', 'r-summary', asText(sec.text, ' ')));
-              if (sec.rows) rows(sec.rows);
-              bullets(sec.bullets);
+            asList(d.custom).forEach(secData => {
+              if (!isObj(secData)) return;
+              const sec = el('section', 'r-section-block');
+              sec.dataset.section = 'custom';
+              add(sec, el('div', 'r-h', str(secData.heading || secData.title || 'ADDITIONAL INFORMATION')));
+              const block = el('div', 'r-custom-block r-item-block');
+              if (secData.text) add(block, el('div', 'r-summary', asText(secData.text, ' ')));
+              if (secData.rows) {
+                asList(secData.rows).forEach(r => {
+                  const row = el('div', 'r-skill');
+                  if (isObj(r) && r.label) add(row, el('b', '', str(r.label).replace(/:\s*$/, '') + ':'), ' ' + asText(r.value));
+                  else add(row, isObj(r) ? asText(r.value) : str(r));
+                  add(block, row);
+                });
+              }
+              const bulletList = asList(secData.bullets);
+              if (bulletList.length) {
+                const ul = el('ul', 'r-ul');
+                bulletList.forEach(b => add(ul, el('li', '', str(b))));
+                add(block, ul);
+              }
+              add(sec, block);
+              add(sectionRoot, sec);
             });
           }
         };
@@ -2607,8 +2792,11 @@
         order.forEach(k => S[k]());
 
         if (activeFormatId === 'australia') {
-          heading('Referees');
-          add(sectionRoot, el('div', 'r-referees-box', str(d.referees || 'Available upon request')));
+          const sec = el('section', 'r-section-block');
+          sec.dataset.section = 'referees';
+          add(sec, el('div', 'r-h', 'Referees'));
+          add(sec, el('div', 'r-referees-box r-item-block', str(d.referees || 'Available upon request')));
+          add(sectionRoot, sec);
         }
 
         resumeEl.replaceChildren(root);
@@ -2639,9 +2827,14 @@
 
       let current = null, lastPages = 1;
       function apply(text, { save = true } = {}) {
+        let raw = (text || '').trim();
+        // Automatically strip markdown ```json and ``` code blocks if copied directly from ChatGPT / Claude / Gemini
+        if (raw.startsWith('```')) {
+          raw = raw.replace(/^```(?:json)?\r?\n?/, '').replace(/\r?\n?```$/, '').trim();
+        }
         let data;
         try {
-          data = JSON.parse(text);
+          data = JSON.parse(raw);
           if (data === null || typeof data !== 'object' || Array.isArray(data)) throw new Error('Top level must be a JSON object { … }');
         } catch (err) {
           const m = /position (\d+)/.exec(err.message); errPos = m ? +m[1] : null;
@@ -2686,40 +2879,114 @@
       };
       $('prompt-btn').onclick = async () => {
         const prompt = [
-          'Rewrite my resume for the job description below and return ONLY one valid JSON object (no markdown, no comments) in exactly the schema shown.',
+          'Act as an expert executive resume writer and ATS specialist.',
+          'Rewrite and tailor my resume for the target job description provided below.',
+          'Return ONLY a single valid JSON object (no markdown formatting, no code backticks, no conversational preamble or outro) adhering precisely to the schema below.',
           '',
-          'Rules:',
-          '- Keep everything truthful: reorder, re-word and emphasise what is relevant; never invent employers, dates, degrees or numbers.',
-          '- Aim for ONE page: 3–5 concise bullets per role/project, one line each where possible.',
-          '- Put the most relevant skills first. Use keywords from the job description naturally.',
-          '- All fields are optional – omit a section by leaving it out. Section order can be set with "order".',
-          '- Plain text only (no HTML). Use \u2014 for dashes if needed.',
+          '=== REQUIREMENTS & BEST PRACTICES ===',
+          '1. Truthful & Impact-Driven: Preserve real employers, dates, and degrees. Quantify achievements (metrics, %, performance gains).',
+          '2. Length & Formatting: Aim for 1 page (or 2 pages if 5+ years of experience). Write 3–4 impactful, active-verb bullets per project or job.',
+          '3. Project Integrity: Each project MUST include its title, live link/URL (if available), tech stack, and 2-4 outcome-oriented bullets.',
+          '4. Country & ATS Compatibility: Include "personalInfo" (Nationality, Visa Status, Notice Period) for UAE/Germany formats; "referees" for UK/Australia; clean categorized "skills".',
+          '5. Pure JSON: Return ONLY parseable JSON so it can be loaded directly into the resume builder.',
           '',
-          'Schema (field -> meaning):',
+          '=== JSON SCHEMA TEMPLATE ===',
           '{',
-          '  "name": "FULL NAME",',
-          '  "contact": { "location": "", "email": "", "phone": "", "website": "", "websiteUrl": "https://…", "linkedin": "", "linkedinUrl": "https://…", "github": "", "githubUrl": "https://…", "extra": ["any other text"] },',
-          '  "headings": { "summary": "PROFESSIONAL SUMMARY", "skills": "CORE SKILLS", "experience": "WORK EXPERIENCE", "projects": "PROJECTS", "education": "EDUCATION", "certifications": "CERTIFICATIONS", "github": "GITHUB PROFILE", "languages": "LANGUAGES" },   // optional renames',
-          '  "order": ["summary","skills","experience","projects","education","certifications","github","languages","custom"],   // optional',
-          '  "summary": "2–3 sentence summary",',
-          '  "skills": [ { "label": "Category", "value": "skill, skill, skill" } ],',
-          '  "experience": [ { "role": "", "company": "", "location": "", "dates": "Jan 2024 – Present", "bullets": ["…"] } ],',
-          '  "projects": [ { "title": "Name — short description", "link": "display text", "url": "https://…", "tech": "A · B · C", "bullets": ["…"] } ],',
-          '  "education": [ { "degree": "", "year": "", "institution": "", "gradeLabel": "cgpa:", "grade": "" } ],',
-          '  "certifications": ["…"],',
-          '  "github": { "link": "github.com/user", "url": "https://github.com/user", "text": "one sentence" },',
-          '  "languages": [ { "name": "English", "level": "Fluent" } ],',
-          '  "custom": [ { "heading": "ACHIEVEMENTS", "bullets": ["…"] } ]   // any extra sections (also supports "text": "…" or "rows": [{label,value}])',
+          '  "name": "VIRENDRA PHIRKE",',
+          '  "subtitle": "Software Developer | Full Stack & Data Analyst",',
+          '  "contact": {',
+          '    "location": "City, Country",',
+          '    "email": "email@example.com",',
+          '    "phone": "+1 234 567 8900",',
+          '    "website": "example.com",',
+          '    "websiteUrl": "https://example.com",',
+          '    "github": "github.com/username",',
+          '    "githubUrl": "https://github.com/username",',
+          '    "linkedin": "linkedin.com/in/username",',
+          '    "linkedinUrl": "https://linkedin.com/in/username"',
+          '  },',
+          '  "personalInfo": {',
+          '    "Nationality": "Your Nationality",',
+          '    "Visa Status": "Your Visa Status (e.g., Authorized to work / Visit Visa)",',
+          '    "Notice Period": "Immediate / 30 Days"',
+          '  },',
+          '  "headings": {',
+          '    "summary": "PROFESSIONAL SUMMARY",',
+          '    "skills": "TECHNICAL SKILLS",',
+          '    "experience": "WORK EXPERIENCE",',
+          '    "projects": "PROJECTS",',
+          '    "education": "EDUCATION",',
+          '    "certifications": "CERTIFICATIONS",',
+          '    "languages": "LANGUAGES"',
+          '  },',
+          '  "order": ["summary", "skills", "experience", "projects", "education", "certifications", "languages", "custom"],',
+          '  "summary": "2–3 sentence high-impact summary highlighting your technical strengths, core technologies, and proven track record.",',
+          '  "skills": [',
+          '    { "label": "Programming Languages", "value": "TypeScript, JavaScript, Python, Java" },',
+          '    { "label": "Frontend Development", "value": "React.js, Next.js, HTML5, CSS3, Tailwind CSS" },',
+          '    { "label": "Backend & APIs", "value": "Node.js, Express.js, REST APIs, WebRTC" },',
+          '    { "label": "Databases & Cloud", "value": "PostgreSQL, MySQL, Redis, Supabase, Firebase, Docker" },',
+          '    { "label": "Developer Tools", "value": "Git, GitHub, CI/CD, Vite, NPM" }',
+          '  ],',
+          '  "experience": [',
+          '    {',
+          '      "role": "Role / Job Title",',
+          '      "company": "Company Name",',
+          '      "location": "City, Country",',
+          '      "dates": "Jan 2024 – Present",',
+          '      "bullets": [',
+          '        "Accomplished [X] as measured by [Y] by doing [Z].",',
+          '        "Engineered scalable solutions resulting in improved performance or efficiency."',
+          '      ]',
+          '    }',
+          '  ],',
+          '  "projects": [',
+          '    {',
+          '      "title": "Project Name — Brief One-Line Tagline",',
+          '      "link": "demo.example.com",',
+          '      "url": "https://demo.example.com",',
+          '      "tech": "React.js · Node.js · PostgreSQL · Tailwind CSS",',
+          '      "bullets": [',
+          '        "Architected and deployed full-stack platform supporting real-time user interactions.",',
+          '        "Implemented secure JWT authentication, role-based access control, and automated tests."',
+          '      ]',
+          '    }',
+          '  ],',
+          '  "education": [',
+          '    {',
+          '      "degree": "B.E. in Computer Science Engineering",',
+          '      "year": "2026",',
+          '      "institution": "University / College Name, City",',
+          '      "gradeLabel": "CGPA:",',
+          '      "grade": "8.21"',
+          '    }',
+          '  ],',
+          '  "certifications": [',
+          '    "Certification Name (Issuer or In Progress)"',
+          '  ],',
+          '  "languages": [',
+          '    { "name": "English", "level": "Fluent" }',
+          '  ],',
+          '  "custom": [',
+          '    {',
+          '      "heading": "Key Achievements",',
+          '      "bullets": [',
+          '        "Solved 100+ algorithmic problems on LeetCode.",',
+          '        "Built 3+ production web applications deployed to public users."',
+          '      ]',
+          '    }',
+          '  ],',
+          '  "referees": "Available upon request"',
           '}',
           '',
-          'MY CURRENT RESUME (JSON):',
+          '=== CURRENT RESUME DATA ===',
           input.value,
           '',
-          'JOB DESCRIPTION / TARGET ROLE:',
-          '<paste here>'
+          '=== TARGET ROLE / JOB DESCRIPTION ===',
+          '<Paste the Job Description or Target Role requirements here>'
         ].join('\n');
         const ok = await copyText(prompt);
-        toast(ok ? 'AI prompt copied — paste it into an AI chat with the job description, then paste the JSON it returns here.' : 'Could not access the clipboard.', ok ? '' : 'error');
+        toast(ok ? 'AI Prompt + JSON template copied! Paste it into ChatGPT / Claude with your job description, then paste the returned JSON directly here.' : 'Could not access clipboard.', ok ? '' : 'error');
       };
       $('reset-btn').onclick = () => {
         closeMenus();
@@ -2862,7 +3129,26 @@
             image: { type: 'png' },
             html2canvas: { scale: 2.5, useCORS: true, backgroundColor: '#ffffff', scrollX: 0, scrollY: 0 },
             jsPDF: { unit: 'pt', format: activePage.size.toLowerCase(), orientation: 'portrait', compress: true },
-            pagebreak: { mode: ['css'], avoid: ['li', '.r-proj-title', '.r-tech', '.r-h', '.r-edu-top', '.r-edu-sub', '.r-skill'] }
+            pagebreak: {
+              mode: ['css', 'legacy'],
+              avoid: [
+                '.r-item-block',
+                '.r-proj-item',
+                '.r-exp-item',
+                '.r-edu-item',
+                '.r-cert-block',
+                '.r-skills-block',
+                '.r-skills-grid',
+                '.r-personal-info-card',
+                '.r-h',
+                '.r-sidebar-heading',
+                '.r-banner--australia',
+                '.r-banner--uae',
+                '.r-header-india',
+                '.profile-header',
+                'li'
+              ]
+            }
           }).from(clone).save();
         } catch (err) {
           toast('PDF generation failed: ' + err.message, 'error');
